@@ -1,11 +1,12 @@
 export class User {
-    constructor(id, name, username, password, role, address) {
+    constructor(id, name, username, password, role, address, createdAt) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.password = password;
         this.role = role;
         this.address = address;
+        this.createdAt = createdAt;
     }
     get id() {
         return this._id;
@@ -42,5 +43,11 @@ export class User {
     }   
     set address(value) {    
         this._address = value;
+    }
+    get createdAt() {
+        return this._createdAt;
+    }
+    set createdAt(value) {
+        this._createdAt = value;
     }
 }

@@ -1,5 +1,5 @@
 export class Product {
-    constructor(id, name, description, price, category, color, quantity, discount, rate, sellerName, imageUrl, isBestSeller, isFeatured) {
+    constructor(id, name, description, price, category, color, quantity, discount, rate, sellerName, imageUrl, isBestSeller, isFeatured, createdAt, size) {
         this.Id = id;
         this.Name = name;
         this.Description = description;
@@ -13,6 +13,8 @@ export class Product {
         this.ImageUrl = imageUrl;
         this.IsBestSeller = isBestSeller;
         this.IsFeatured = isFeatured;
+        this.CreatedAt = createdAt;
+        this.Size = size;
     }
     get id() {
         return this._id;
@@ -91,5 +93,14 @@ export class Product {
     }
     set isFeatured(value) {
         this._isFeatured = value;
+    }
+    get createdAt() {
+        return this._createdAt;
+    }
+    set createdAt(value) {
+        this._createdAt = value;
+    }
+    get size() {
+        return this._size;
     }
 }
