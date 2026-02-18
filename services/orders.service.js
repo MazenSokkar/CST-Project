@@ -89,3 +89,18 @@ export async function updateOrder(order) {
         }
       }).catch(() => {return false;});
 }
+
+// Delete Order -> returns true if order was deleted successfully, false otherwise
+export async function deleteOrder(orderId) {
+  try {
+    const response = await fetch(
+      `https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app/orders/${orderId}.json`,
+      {
+        method: "DELETE"
+      }
+    );
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
