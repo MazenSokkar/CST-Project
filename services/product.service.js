@@ -1,11 +1,6 @@
-// get by id
-// get all
-// add new
-// update
-// delete
+import {Product} from "../shared/models/product.model.js";
 
 // Get Product By ID
-import {Product} from "../shared/models/product.model.js";
 export async function GetProductById(id) {
     const response = await fetch(`https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json`);
     if (!response.ok) 
@@ -67,8 +62,6 @@ export async function UpdateProduct(product) {
         return false;
     }
 }
-
-import { Product } from '../shared/models/product.model.js';
 
 // get all products 
 export async function getAllProducts() {
