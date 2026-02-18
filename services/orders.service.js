@@ -1,6 +1,6 @@
 import { Order } from '../shared/models/order.model.js';
 
-//get all orders
+//get all orders -> returns an array of Order objects
 export async function getAllOrders() {
     let orders = [];
     await fetch("https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app/orders.json")
@@ -26,7 +26,7 @@ export async function getAllOrders() {
     return orders;
 }
 
-// add new order
+// add new order -> returns true if order was added successfully, false otherwise
 export async function addOrder(order) {
   let allOrders = await getAllOrders();
   let newOrderId = allOrders[allOrders.length - 1].Id + 1;
@@ -60,7 +60,7 @@ export async function addOrder(order) {
       ).catch(() => {return false;});
 }
 
-// update order
+// update order -> returns true if order was updated successfully, false otherwise
 export async function updateOrder(order) {
   let orderToUpdate = new Order(                   
                     order.Id,
