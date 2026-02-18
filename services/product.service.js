@@ -3,7 +3,6 @@
 // add new
 // update
 // delete
-//      
 
 // Get Product By ID
 import {Product} from "../shared/models/product.model.js";
