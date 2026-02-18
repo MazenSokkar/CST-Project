@@ -1,9 +1,28 @@
 import { Order } from '../shared/models/order.model.js';
+const BASE_URL = "https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app";
+
+// Helper function to map Firebase data to Order instances
+export function mapToOrder(id, data) {
+    return new Order(
+        id,
+        data.Subtotal,
+        data.DeliveryPrice,
+        data.Vats,
+        data.Saving,
+        data.TotalPrice,
+        data.UserId,
+        data.Items,
+        data.Address,
+        data.PaymentMethod,
+        data.Status,
+        data.Timestamp
+    );
+}
 
 //get all orders -> returns an array of Order objects
 export async function getAllOrders() {
     let orders = [];
-    await fetch("https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app/orders.json")
+    await fetch(`${BASE_URL}/orders.json`)
         .then(response => response.json())
         .then(data => {
             orders = Object.values(data).map(order => 
@@ -44,7 +63,7 @@ export async function addOrder(order) {
                     order.Status,
                     order.Timestamp
                   );
-  return await fetch(`https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app/orders/${newOrderId}.json`,
+  return await fetch(`${BASE_URL}/orders/${newOrderId}.json`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -76,7 +95,7 @@ export async function updateOrder(order) {
                     order.Status,
                     order.Timestamp
                   );
-  return await fetch(`https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app/orders/${orderToUpdate.Id}.json`,
+  return await fetch(`${BASE_URL}/orders/${orderToUpdate.Id}.json`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -88,4 +107,25 @@ export async function updateOrder(order) {
           return false;
         }
       }).catch(() => {return false;});
+}
+
+
+
+
+
+// Get order by id
+export async function getOrderById(id) {
+    try {
+        const response = await fetch(`${BASE_URL}/orders/${id}.json`);
+        if (!response.ok) return null;
+
+        const data = await response.json();
+        if (!data) return null;
+
+        return mapToOrder(id, data);
+
+    } catch (error) {
+        console.error("Error in getOrderById:", error);
+        return null;
+    }
 }
