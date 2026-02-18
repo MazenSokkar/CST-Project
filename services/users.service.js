@@ -102,6 +102,90 @@ export async function AddUser(user) {
         return null;
     }
 }
+export async function getUserById(id) {
+    try {
+        const response = await fetch(`${BASE_URL}/users/${id}.json`);
 
+        if (!response.ok) {
+            console.error("Failed to fetch user:", response.status);
+            return null;
+        }
+
+        const data = await response.json();
+
+        if (!data) {
+            console.warn("User not found");
+            return null;
+        }
+
+        return mapToUser(id, data);
+
+    } catch (error) {
+        console.error("Error in getUserById:", error);
+        return null;
+    }
+}
+
+export async function updateUser(id, updatedData) {
+    try {
+        const existingUser = await getUserById(id);
+        if (!existingUser) {
+            console.warn("User not found");
+            return null;
+        }
+
+        if (updatedData.Role) {
+            const allowedRoles = ["Admin", "Seller", "Customer"];
+            if (!allowedRoles.includes(updatedData.Role)) {
+                console.warn(`Role must be one of: ${allowedRoles.join(", ")}`);
+                return null;
+            }
+        }
+
+        const response = await fetch(`${BASE_URL}/users/${id}.json`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+        });
+
+        if (!response.ok) {
+            console.error("Failed to update user");
+            return null;
+        }
+
+        const data = await response.json();
+
+        console.log("User updated successfully");
+
+        return mapToUser(id, {
+            ...existingUser,
+            ...updatedData
+        });
+
+    } catch (error) {
+        console.error("Error in updateUser:", error);
+        return null;
+    }
+}
+
+export async function deleteUser(id) {
+    try {
+        const response = await fetch(`${BASE_URL}/users/${id}.json`, {
+            method: "DELETE"
+        });
+
+        if (!response.ok) {
+            console.error("Failed to delete user");
+            return false;
+        }
+
+        console.log("User deleted successfully");
+        return true;
+
+    } catch (error) {
+        console.error("Error in deleteUser:", error);
+        return false;
+    }
+}
 
 
