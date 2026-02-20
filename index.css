@@ -1,0 +1,154 @@
+/* Colors*/
+:root {
+    --body-font-family: 'Poppins', sans-serif;
+    --theme-default: #8C593B;
+    --secondary: #222;
+    --theme-default-2: #267D92;
+    --background-color: #f7f7f7;
+}
+
+/* Fonts */
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Navbar */
+.navbar-brand img {
+    height: 55px;
+}
+
+.navbar-nav .nav-link {
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #333;
+}
+
+/* Dropdown hover for desktop */
+@media (min-width: 992px) {
+    .navbar-nav .dropdown:hover .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navbar-nav .dropdown .dropdown-toggle::after {
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-nav .dropdown:hover .dropdown-toggle::after {
+        transform: rotate(-180deg);
+    }
+}
+
+.navbar-search {
+    position: relative;
+    width: 250px;
+}
+
+.navbar-search input {
+    width: 100%;
+    padding-right: 2.5rem;
+    color: #555;
+}
+
+.navbar-search input::placeholder {
+    color: #888;
+}
+
+.navbar-search button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 0 0.75rem;
+    color: #555;
+    cursor: pointer;
+}
+
+.navbar-icons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navbar-icons a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #555;
+    text-decoration: none;
+    position: relative;
+}
+
+.navbar-icons a i {
+    font-size: 1.5rem;
+}
+
+.navbar-icons a span.badge {
+    font-size: 0.65rem;
+    background-color: var(--theme-default);
+}
+
+.navbar-icons a span.icon-label {
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 991px) {
+    .navbar-search {
+        width: 100%;
+        margin-bottom: 0.75rem;
+    }
+
+    .navbar-icons {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Footer */
+footer {
+    background-color: #f8f9fa;
+}
+
+.footer-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.footer-menu a {
+    text-decoration: none;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+    transition: 0.3s;
+}
+
+.footer-menu a:hover {
+    color: #000;
+    padding-left: 5px;
+}
+
+.footer-logo img {
+    height: 50px;
+}
+
+.newsletter {
+    background-color: var(--secondary);
+    color: #fff;
+    padding: 1.5rem 0;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: var(--theme-default) !important;
+    border-color: var(--theme-default) !important;
+    font-weight: 600;
+    transition: all 0.4s ease;
+}
