@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shop Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="shop.css" />
   </head>
   <body>
-    <!-- Header Section -->
     <div id="header" class="py-5 text-center d-flex flex-column justify-content-center align-items-center">
       <h3 class="fw-bold mb-2">Shop Page</h3>
       <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: &quot;>&quot;">
@@ -26,19 +25,16 @@
         </ol>
       </nav>
     </div>
-    <!-- Main Content -->
     <div class="container my-5">
       <div class="row">
         <div class="col-2 d-none d-xl-block">
-          <!-- Filters -->
-          <!-- Price rangebar -->
           <div class="filter-section mb-4">
             <h5 class="fw-bold mb-3">Price</h5>
-<div class="price-range-wrapper">
-    <div class="range-track"></div>
-    <input type="range" class="price-range-input" id="priceMin" min="0" max="1000" value="0">
-    <input type="range" class="price-range-input" id="priceMax" min="0" max="1000" value="1000">
-</div>
+            <div class="price-range-wrapper">
+              <div class="range-track"></div>
+              <input type="range" class="price-range-input" id="priceMin" min="0" max="1000" value="0" />
+              <input type="range" class="price-range-input" id="priceMax" min="0" max="1000" value="1000" />
+            </div>
             <div class="d-flex justify-content-between mt-3">
               <small>
                 $
@@ -51,14 +47,12 @@
             </div>
           </div>
           <hr />
-
-          <!-- Color (checkboxes)-->
           <div class="filter-section mb-4">
             <h5 class="fw-bold mb-3">Color</h5>
-<div class="form-check">
-    <input class="form-check-input color-filter" type="checkbox" value="Grey" id="colorGrey">
-    <label class="form-check-label" for="colorGrey">Grey</label>
-</div>
+            <div class="form-check">
+              <input class="form-check-input color-filter" type="checkbox" value="Grey" id="colorGrey" />
+              <label class="form-check-label" for="colorGrey">Grey</label>
+            </div>
             <div class="form-check">
               <input class="form-check-input color-filter" type="checkbox" value="Black" id="colorBlack" />
               <label class="form-check-label" for="colorBlack">Black</label>
@@ -69,8 +63,6 @@
             </div>
           </div>
           <hr />
-
-          <!-- Size (checkboxes)-->
           <div class="filter-section mb-4">
             <h5 class="fw-bold mb-3">Size</h5>
             <div class="form-check">
@@ -87,8 +79,6 @@
             </div>
           </div>
           <hr />
-
-          <!-- Rating by stars (checkboxes) from 5 to 1 star -->
           <div class="filter-section mb-4">
             <h5 class="fw-bold mb-3">Rating</h5>
             <div class="form-check">
@@ -116,36 +106,33 @@
           <button class="btn btn-outline-secondary w-100" id="resetFilters">Reset Filters</button>
         </div>
 
-<div class="col-12 col-xl-10"> <!-- Product listing -->
-          <!-- Sort Options -->
-<div class="row mb-4 align-items-end">
-    <div class="col-auto d-xl-none">
-        <div>
-            <button class="btn btn-outline-secondary btn-sm" 
-                    data-bs-toggle="offcanvas" 
-                    data-bs-target="#filtersOffcanvas">
-                Filters
-            </button>
-        </div>
-    </div>
-    <div class="col-auto">
-        <label for="sortSelect" class="form-label">Sort by:</label>
-        <select class="form-select form-select-sm" id="sortSelect" style="width: auto;">
-            <option value="">Default</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-        </select>
-    </div>
-</div>
-          <div class="row g-4" id="productsContainer">
-            <!-- Products will be loaded here by JavaScript -->
+        <div class="col-12 col-xl-10">
+          <div class="row mb-4 align-items-end">
+            <div class="col-auto d-xl-none">
+              <div>
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#filtersOffcanvas">
+                  Filters
+                </button>
+              </div>
+            </div>
+            <div class="col-auto">
+              <label for="sortSelect" class="form-label">Sort by:</label>
+              <select class="form-select form-select-sm" id="sortSelect" style="width: auto">
+                <option value="">Default</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+              </select>
+            </div>
           </div>
-          <!-- Pagination -->
+          <div class="row g-4" id="productsContainer">
+          </div>
           <div class="row mt-5">
             <div class="col-12">
               <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center" id="pagination">
-                  <!-- Pagination will be generated by JavaScript -->
                 </ul>
               </nav>
             </div>
@@ -160,14 +147,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body">
-        <!-- Price -->
         <div class="filter-section mb-4">
           <h5 class="fw-bold mb-3">Price</h5>
-<div class="price-range-wrapper">
-    <div class="range-track"></div>
-    <input type="range" class="price-range-input" id="priceMinMobile" min="0" max="1000" value="0">
-    <input type="range" class="price-range-input" id="priceMaxMobile" min="0" max="1000" value="1000">
-</div>
+          <div class="price-range-wrapper">
+            <div class="range-track"></div>
+            <input type="range" class="price-range-input" id="priceMinMobile" min="0" max="1000" value="0" />
+            <input type="range" class="price-range-input" id="priceMaxMobile" min="0" max="1000" value="1000" />
+          </div>
           <div class="d-flex justify-content-between mt-3">
             <small>
               $
@@ -180,13 +166,12 @@
           </div>
         </div>
         <hr />
-        <!-- Color -->
-<div class="filter-section mb-4">
-    <h5 class="fw-bold mb-3">Color</h5>
-    <div class="form-check">
-        <input class="form-check-input color-filter" type="checkbox" value="Grey" id="colorGreyM">
-        <label class="form-check-label" for="colorGreyM">Grey</label>
-    </div>
+        <div class="filter-section mb-4">
+          <h5 class="fw-bold mb-3">Color</h5>
+          <div class="form-check">
+            <input class="form-check-input color-filter" type="checkbox" value="Grey" id="colorGreyM" />
+            <label class="form-check-label" for="colorGreyM">Grey</label>
+          </div>
           <div class="form-check">
             <input class="form-check-input color-filter" type="checkbox" value="Black" id="colorBlackM" />
             <label class="form-check-label" for="colorBlackM">Black</label>
@@ -197,7 +182,6 @@
           </div>
         </div>
         <hr />
-        <!-- Size -->
         <div class="filter-section mb-4">
           <h5 class="fw-bold mb-3">Size</h5>
           <div class="form-check">
@@ -214,7 +198,6 @@
           </div>
         </div>
         <hr />
-        <!-- Rating -->
         <div class="filter-section mb-4">
           <h5 class="fw-bold mb-3">Rating</h5>
           <div class="form-check">
