@@ -54,6 +54,27 @@ export function addToCart(product) {
     }
 }
 
+export function removeFromCart(productId) {
+    if (isAuthenticated()) {
+        let user = getCurrentUser();
+        let allKeys = getAllKeysFromLocalStorage();
+        let userCartKey = allKeys.find(key => key.startsWith(`cart_${user.Id}`));
+        if (!userCartKey) {
+            showToast('Your cart is empty.');
+            return;
+        }
+        let cart = getFromLocalStorage(userCartKey);
+        let index = cart.findIndex(item => item.product.Id === productId);
+        if (index !== -1) {
+            cart.splice(index, 1);
+            saveToLocalStorage(userCartKey, cart);
+            showToast('Product removed from cart.');
+        }
+    } else {
+        showToast('Please log in to remove items from your cart.');
+    }
+}
+
 export function clearCart() {
     if (isAuthenticated()) {
         let user = getCurrentUser();
