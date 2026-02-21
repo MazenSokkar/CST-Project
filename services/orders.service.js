@@ -118,8 +118,13 @@ export async function deleteOrder(orderId) {
         method: "DELETE"
       }
     );
-    return response.ok;
-  } catch {
+    if (!response.ok) {
+      console.error(`Failed to delete order with id: ${orderId}`);
+      return false;
+    }
+    return true;
+  } catch{
+    console.error("Error deleting order");
     return false;
   }
 }
