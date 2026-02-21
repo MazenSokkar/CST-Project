@@ -87,6 +87,22 @@ export function clearCart() {
     }
 }
 
+export function getCartItems() {
+    if (isAuthenticated()) {
+        let user = getCurrentUser();
+        let allKeys = getAllKeysFromLocalStorage();
+        let userCartKey = allKeys.find(key => key.startsWith(`cart_${user.Id}`));
+        if (!userCartKey) {
+            showToast('Your cart is empty.');
+            return [];
+        }
+        return userCartKey ? getFromLocalStorage(userCartKey) : [];
+    } else {
+        showToast('Please log in to view your cart.');
+        return [];
+    }
+}
+
 export function addToWishlist(productId) {
     if (isAuthenticated()) {
         let user = getCurrentUser();
@@ -136,6 +152,22 @@ export function clearWishlist() {
         }
     } else {
         showToast('Please log in to clear your wishlist.');
+    }
+}
+
+export function getWishlistItems() {
+    if (isAuthenticated()) {
+        let user = getCurrentUser();
+        let allKeys = getAllKeysFromLocalStorage();
+        let userWishlistKey = allKeys.find(key => key.startsWith(`wishlist_${user.Id}`));
+        if (!userWishlistKey) {
+            showToast('Your wishlist is empty.');
+            return [];
+        }
+        return userWishlistKey ? getFromLocalStorage(userWishlistKey) : [];
+    } else {
+        showToast('Please log in to view your wishlist.');
+        return [];
     }
 }
 
