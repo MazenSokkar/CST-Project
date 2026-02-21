@@ -16,12 +16,22 @@ let prevCatBtn = document.getElementById('prevCatBtn');
 let nextCatBtn = document.getElementById('nextCatBtn');
 let slideContainer = document.getElementById('cat-slide-container');
 let shopNowBtns = document.querySelectorAll('.shop-btn');
+let productCards = document.querySelectorAll('.product-card');
+let productCardSpans = document.querySelectorAll('.product-card-img > span');
 
 // add event listeners
 prevCatBtn.addEventListener('click', prevCatSlide);
 nextCatBtn.addEventListener('click', nextCatSlide);
 shopNowBtns.forEach(btn => {
     btn.addEventListener('click', goToShop);
+});
+productCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        productCardSpans.forEach(span => span.style.display = 'block');
+    });
+    card.addEventListener('mouseleave', () => {
+        productCardSpans.forEach(span => span.style.display = 'none');
+    });
 });
 
 // cat data
