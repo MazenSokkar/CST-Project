@@ -213,7 +213,7 @@ function createProductCard(product) {
   const stars = renderStars(product.Rate || 0);
   return `
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-<div class="card product-card h-100" onclick="window.location.href='ziad.html'" style="cursor: pointer;">
+                <div class="card product-card h-100" onclick="window.location.href='ziad.html'" style="cursor: pointer;">
                 <div class="product-card-img">
                     ${product.Discount ? `<span class="bg-danger p-1 px-2 text-white fw-lighter">${product.Discount}% OFF</span>` : ""}
                     <span class="p-2 shadow"><i class="bi bi-heart"></i></span>
@@ -226,7 +226,7 @@ function createProductCard(product) {
                         <span class="fw-bold fs-5">$${discountedPrice}</span>
                         ${product.Discount ? `<span class="text-decoration-line-through text-muted me-2">$${product.Price.toFixed(2)}</span>` : ""}
                     </div>
-<div class="d-flex flex-column flex-lg-row gap-2 mt-3">
+                        <div class="d-flex flex-column flex-lg-row gap-2 mt-3">
                         <button class="btn btn-primary flex-grow-1" onclick="addToCart(${product.Id})">Add To Cart</button>
                         <button class="btn btn-secondary flex-grow-1" onclick="buyNow(${product.Id})">Buy Now</button>
                     </div>
@@ -303,7 +303,6 @@ window.addToCart = function (productId) {
       quantity: 1,
     });
   }
-
   localStorage.setItem("cart", JSON.stringify(cart));
   alert(`${product.Name} added to cart!`);
 };
