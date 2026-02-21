@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#header{
+    background-image: url(../../assets/images/banner-shoppage.png);
+    background-size: cover;
+    background-position: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 100px;
+    height: 250px;
+}
+#home,  .breadcrumb-item + .breadcrumb-item::before{
+    color: #8A593D !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+#shop{
+    font-weight: bold;
+}
