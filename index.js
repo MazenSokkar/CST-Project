@@ -1,3 +1,5 @@
+import { getAllProducts } from './services/product.service.js';
+
 // index.js - works for any page
 // Load Navbar
 fetch('/Shared/Navbar/navbar.html')   // absolute path from root
@@ -16,8 +18,7 @@ let prevCatBtn = document.getElementById('prevCatBtn');
 let nextCatBtn = document.getElementById('nextCatBtn');
 let slideContainer = document.getElementById('cat-slide-container');
 let shopNowBtns = document.querySelectorAll('.shop-btn');
-let productCards = document.querySelectorAll('.product-card');
-let productCardSpans = document.querySelectorAll('.product-card-img > span');
+let ourProductTitles = document.getElementById('our-products-titles');
 
 // add event listeners
 prevCatBtn.addEventListener('click', prevCatSlide);
@@ -25,15 +26,22 @@ nextCatBtn.addEventListener('click', nextCatSlide);
 shopNowBtns.forEach(btn => {
     btn.addEventListener('click', goToShop);
 });
-productCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.children[0].children[2].src = `assets/images/${getRandomInt(1, 6)}.png`;
-        productCardSpans.forEach(span => span.style.display = 'block');
-    });
-    card.addEventListener('mouseleave', () => {
-        card.children[0].children[2].src = `assets/images/${getRandomInt(1, 6)}.png`;
-        productCardSpans.forEach(span => span.style.display = 'none');
-    });
+ourProductTitles.addEventListener('click', (e) => {
+    if (e.target.id == 'latest') {
+        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+        e.target.style.color = 'var(--theme-default)';
+        buildProductCards(latestProducts, 'our-products-container');
+    }
+    if (e.target.id == 'featured') {
+        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+        e.target.style.color = 'var(--theme-default)';
+        buildProductCards(featuredProducts, 'our-products-container');
+    }
+    if (e.target.id == 'best-selling') {
+        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+        e.target.style.color = 'var(--theme-default)';
+        buildProductCards(bestSellingAndNotFeaturedProducts, 'our-products-container');
+    }
 });
 
 // cat data
@@ -82,6 +90,75 @@ function prevCatSlide() {
 setInterval(() => {
     nextCatSlide();
 }, 3000);
+
+// Our Products Section
+// get all products
+let allProducts = await getAllProducts();
+// get latest 8 products added
+let latestProducts = allProducts
+    .filter(p => p.CreatedAt && !isNaN(new Date(p.CreatedAt)))
+    .sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt))
+    .slice(0, 8);
+// get first 8 featured products
+let featuredProducts = allProducts.filter(p => p.IsFeatured).slice(0, 8);
+// get first 8 best selling products
+let bestSellingAndNotFeaturedProducts = allProducts.filter(p => p.IsBestSeller && !p.IsFeatured).slice(0, 8);
+// product cards builder function
+function buildProductCards(products, containerId) {
+    let container = document.getElementById(containerId);
+    container.innerHTML = '';
+    products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'col-12 col-sm-6 col-md-3';
+        // handle rate
+        const rate = Math.round(product.Rate) || 0;
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+            starsHtml += `<span class="fa fa-star${i <= rate ? ' checked' : 'text-muted'}"></span>`;
+        }
+        productCard.innerHTML = `
+            <div class="card product-card h-100">
+                <div class="product-card-img">
+                    <span class="bg-danger p-1 px-2 text-white fw-lighter">${product.Discount}% OFF</span>
+                    <span class="p-2 shadow add-to-wishlist-btn"><i class="bi bi-heart"></i></span>
+                    <img src="assets/${product.ImageUrl[getRandomInt(0, product.ImageUrl.length - 1)]}" alt="${product.Name}">
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-semibold mb-2">${product.Name}</h5>
+                    <div class="mb-auto">
+                        <div class="mb-2 text-warning">${starsHtml}</div>
+                        <span class="fw-bold fs-5">$${product.Price - (product.Price * product.Discount / 100)}</span>
+                        <span class="text-decoration-line-through text-muted me-2">$${product.Price}</span>
+                    </div>
+                    <div class="d-flex flex-wrap flex-xl-nowrap justify-content-between mt-3 gap-2">
+                        <button class="btn btn-primary flex-grow-1 add-to-cart-btn" type="button">Add To Cart</button>
+                        <button class="btn btn-secondary flex-grow-1 buy-now-btn" type="button">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        // Add hover event listeners to the product card
+        let cardElement = productCard.querySelector('.product-card');
+        let productCardImg = cardElement.querySelector('.product-card-img');
+        let spans = productCardImg.querySelectorAll('span');
+        let img = productCardImg.querySelector('img');
+        let name = cardElement.querySelector('.card-title');
+        cardElement.addEventListener('mouseenter', () => {
+            img.src = `assets/images/${getRandomInt(1, 6)}.png`;
+            spans.forEach(span => span.style.display = 'block');
+        });
+        cardElement.addEventListener('mouseleave', () => {
+            img.src = `assets/images/${getRandomInt(1, 6)}.png`;
+            spans.forEach(span => span.style.display = 'none');
+        });
+        name.addEventListener('click', () => {
+            goToProductDetails(product.Id);
+        });
+        container.appendChild(productCard);
+    });
+}
+// initially build latest products
+buildProductCards(latestProducts, 'our-products-container');
 
 // navigation functions
 function goToShop() {

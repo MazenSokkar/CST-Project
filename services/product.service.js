@@ -88,9 +88,9 @@ export async function getAllProducts() {
                     product.Discount,
                     product.Rate,
                     product.SellerName,
-                    product.imageUrl,
-                    product.isBestSeller,
-                    product.isFeatured,
+                    product.ImageUrl,
+                    product.IsBestSeller,
+                    product.IsFeatured,
                     product.CreatedAt ?? null,
                     product.Size ?? null
                 );
