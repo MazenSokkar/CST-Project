@@ -134,7 +134,7 @@ function addTestItem() {
     saveCart(cart);
     renderCart();
 }
-// function checkout() {
-//     alert("Proceeding to checkout 💳");
-// }
+function checkout() {
+    alert("Proceeding to checkout 💳");
+}
 renderCart();
