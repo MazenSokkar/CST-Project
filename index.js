@@ -16,13 +16,10 @@ fetch('/Shared/Footer/footer.html')   // absolute path from root
 // get elements
 let prevCatBtn = document.getElementById('prevCatBtn');
 let nextCatBtn = document.getElementById('nextCatBtn');
-let slideContainer = document.getElementById('cat-slide-container');
 let shopNowBtns = document.querySelectorAll('.shop-btn');
 let ourProductTitles = document.getElementById('our-products-titles');
-let newArrivalsSlideContainer = document.getElementById('new-arrivals-slide-container');
 let nextNewArrivalsBtn = document.getElementById('nextNewArrivalsBtn');
 let prevNewArrivalsBtn = document.getElementById('prevNewArrivalsBtn');
-let latestBlogSlideContainer = document.getElementById('latest-blog-slide-container');
 let nextLatestBlogBtn = document.getElementById('nextLatestBlogBtn');
 let prevLatestBlogBtn = document.getElementById('prevLatestBlogBtn');
 
@@ -66,35 +63,16 @@ let categories = [
 ];
 // slides arrays
 let catSlideArr = [categories.slice(0, 6), categories.slice(1, 7)]
-// create card 4 each category
-function renderCatSlide() {
-    slideContainer.innerHTML = '';
-    catSlideArr[0].forEach(cat => {
-        let catCard = document.createElement('div');
-        catCard.className = 'col-4 col-md-2';
-        catCard.innerHTML = `
-            <div class="card category-card border-0 justify-content-center align-items-center">
-                <div class="img-wrapper mt-3">
-                        <img src="${cat.image}" class="card-img-top p-2" alt="${cat.name}">
-                </div>                
-                <div class="card-body text-center">
-                    <h5 class="card-title text-capitalize fw-medium fs-6">${cat.name}</h5>
-                </div>
-            </div>
-        `;
-        slideContainer.appendChild(catCard);
-    });
-}
 // call it for the first time to render on page load
-renderCatSlide();
+buildCategoryCards(catSlideArr, 'cat-slide-container');
 // slide functions
 function nextCatSlide() {
     catSlideArr.push(catSlideArr.shift());
-    renderCatSlide();
+    buildCategoryCards(catSlideArr, 'cat-slide-container');
 }
 function prevCatSlide() {
     catSlideArr.unshift(catSlideArr.pop());
-    renderCatSlide();
+    buildCategoryCards(catSlideArr, 'cat-slide-container');
 }
 // auto slide every 3 seconds
 setInterval(() => {
@@ -113,6 +91,79 @@ let latestProducts = allProducts
 let featuredProducts = allProducts.filter(p => p.IsFeatured).slice(0, 8);
 // get first 8 best selling products
 let bestSellingAndNotFeaturedProducts = allProducts.filter(p => p.IsBestSeller && !p.IsFeatured).slice(0, 8);
+
+// initially build latest products
+buildProductCards(latestProducts, 'our-products-container');
+
+// new arrivals section
+// slides arrays
+let newArrivalsSlideArr = [latestProducts.slice(0, 4), latestProducts.slice(4, 8)]
+// call it for the first time to render on page load
+buildProductCards(newArrivalsSlideArr[0], 'new-arrivals-slide-container');
+// slide functions
+function nextNewArrivalsSlide() {
+    newArrivalsSlideArr.push(newArrivalsSlideArr.shift());
+    buildProductCards(newArrivalsSlideArr[0], 'new-arrivals-slide-container');
+}
+function prevNewArrivalsSlide() {
+    newArrivalsSlideArr.unshift(newArrivalsSlideArr.pop());
+    buildProductCards(newArrivalsSlideArr[0], 'new-arrivals-slide-container');
+}
+// auto slide every 3 seconds
+setInterval(() => {
+    nextNewArrivalsSlide();
+}, 3000);
+
+// latest blog section
+// cat data
+let latestBlogs = [
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-1.jpg", date: "2023-11-12", commentsNumber: 5 },
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-2.jpg", date: "2023-11-13", commentsNumber: 3 },
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-3.jpg", date: "2023-11-14", commentsNumber: 7 },
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-4.jpg", date: "2023-11-15", commentsNumber: 2 },
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-6.jpg", date: "2023-11-17", commentsNumber: 4 },
+];
+// slides arrays
+let latestBlogsSlideArr = [latestBlogs.slice(0, 3), latestBlogs.slice(1, 4)]
+// call it for the first time to render on page load
+buildLatestBlogCards(latestBlogsSlideArr, 'latest-blog-slide-container');
+// slide functions
+function nextLatestBlogsSlide() {
+    latestBlogsSlideArr.push(latestBlogsSlideArr.shift());
+    buildLatestBlogCards(latestBlogsSlideArr, 'latest-blog-slide-container');
+}
+function prevLatestBlogsSlide() {
+    latestBlogsSlideArr.unshift(latestBlogsSlideArr.pop());
+    buildLatestBlogCards(latestBlogsSlideArr, 'latest-blog-slide-container');
+}
+// auto slide every 3 seconds
+setInterval(() => {
+    nextLatestBlogsSlide();
+}, 3000);
+
+// navigation functions
+function goToShop() {
+    window.location.href = '/pages/shop/shop.html';
+}
+
+function goToShopFilteredByCategory(categoryName) {
+    window.location.href = `/pages/shop/shop.html?category=${categoryName}`;
+}
+
+function goToShopFilteredBySearch(searchQuery) {
+    window.location.href = `/pages/shop/shop.html?search=${searchQuery}`;
+}
+
+function goToProductDetails(productId) {
+    window.location.href = `/pages/product-details/product-details.html?id=${productId}`;
+}
+
+// helpers
+//get random number between min and max
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // product cards builder function
 function buildProductCards(products, containerId) {
     let container = document.getElementById(containerId);
@@ -167,48 +218,33 @@ function buildProductCards(products, containerId) {
         container.appendChild(productCard);
     });
 }
-// initially build latest products
-buildProductCards(latestProducts, 'our-products-container');
 
-// new arrivals section
-// slides arrays
-let newArrivalsSlideArr = [latestProducts.slice(0, 4), latestProducts.slice(4, 8)]
-// create card 4 each category
-function renderNewArrivalsSlide() {
-    newArrivalsSlideContainer.innerHTML = '';
-    buildProductCards(newArrivalsSlideArr[0], 'new-arrivals-slide-container');
+// build categories cards in categories section
+function buildCategoryCards(categories, containerId) {
+    let container = document.getElementById(containerId);
+    container.innerHTML = '';
+    categories[0].forEach(cat => {
+        let catCard = document.createElement('div');
+        catCard.className = 'col-4 col-md-2';
+        catCard.innerHTML = `
+            <div class="card category-card border-0 justify-content-center align-items-center">
+                <div class="img-wrapper mt-3">
+                        <img src="${cat.image}" class="card-img-top p-2" alt="${cat.name}">
+                </div>                
+                <div class="card-body text-center">
+                    <h5 class="card-title text-capitalize fw-medium fs-6">${cat.name}</h5>
+                </div>
+            </div>
+        `;
+        container.appendChild(catCard);
+    });
 }
-// call it for the first time to render on page load
-renderNewArrivalsSlide();
-// slide functions
-function nextNewArrivalsSlide() {
-    newArrivalsSlideArr.push(newArrivalsSlideArr.shift());
-    renderNewArrivalsSlide();
-}
-function prevNewArrivalsSlide() {
-    newArrivalsSlideArr.unshift(newArrivalsSlideArr.pop());
-    renderNewArrivalsSlide();
-}
-// auto slide every 3 seconds
-setInterval(() => {
-    nextNewArrivalsSlide();
-}, 3000);
 
-// latest blog section
-// cat data
-let latestBlogs = [
-    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-1.jpg", date: "2023-11-12", commentsNumber: 5 },
-    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-2.jpg", date: "2023-11-13", commentsNumber: 3 },
-    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-3.jpg", date: "2023-11-14", commentsNumber: 7 },
-    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-4.jpg", date: "2023-11-15", commentsNumber: 2 },
-    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-6.jpg", date: "2023-11-17", commentsNumber: 4 },
-];
-// slides arrays
-let latestBlogsSlideArr = [latestBlogs.slice(0, 3), latestBlogs.slice(1, 4)]
-// create card 4 each category
-function renderLatestBlogsSlide() {
-    latestBlogSlideContainer.innerHTML = '';
-    latestBlogsSlideArr[0].forEach(blog => {
+// build blog cards in latest blog section
+function buildLatestBlogCards(blogs, containerId) {
+    let container = document.getElementById(containerId);
+    container.innerHTML = '';
+    blogs[0].forEach(blog => {
         let blogCard = document.createElement('div');
         blogCard.className = 'col-12 col-sm-6 col-md-4 mb-4';
         blogCard.innerHTML = `
@@ -224,44 +260,6 @@ function renderLatestBlogsSlide() {
                 </div>
         </div>
         `;
-        latestBlogSlideContainer.appendChild(blogCard);
+        container.appendChild(blogCard);
     });
-}
-// call it for the first time to render on page load
-renderLatestBlogsSlide();
-// slide functions
-function nextLatestBlogsSlide() {
-    latestBlogsSlideArr.push(latestBlogsSlideArr.shift());
-    renderLatestBlogsSlide();
-}
-function prevLatestBlogsSlide() {
-    latestBlogsSlideArr.unshift(latestBlogsSlideArr.pop());
-    renderLatestBlogsSlide();
-}
-// auto slide every 3 seconds
-setInterval(() => {
-    nextLatestBlogsSlide();
-}, 3000);
-
-// navigation functions
-function goToShop() {
-    window.location.href = '/pages/shop/shop.html';
-}
-
-function goToShopFilteredByCategory(categoryName) {
-    window.location.href = `/pages/shop/shop.html?category=${categoryName}`;
-}
-
-function goToShopFilteredBySearch(searchQuery) {
-    window.location.href = `/pages/shop/shop.html?search=${searchQuery}`;
-}
-
-function goToProductDetails(productId) {
-    window.location.href = `/pages/product-details/product-details.html?id=${productId}`;
-}
-
-// helpers
-//get random number between min and max
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
