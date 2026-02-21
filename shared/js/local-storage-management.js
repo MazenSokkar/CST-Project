@@ -82,6 +82,7 @@ export function clearCart() {
         let userCartKey = allKeys.find(key => key.startsWith(`cart_${user.Id}`));
         if (userCartKey) {
             removeFromLocalStorage(userCartKey);
+            showToast('Cart cleared.');
         }
     }
 }
@@ -121,6 +122,20 @@ export function removeFromWishlist(productId) {
         }
     } else {
         showToast('Please log in to remove items from your wishlist.');
+    }
+}
+
+export function clearWishlist() {
+    if (isAuthenticated()) {
+        let user = getCurrentUser();
+        let allKeys = getAllKeysFromLocalStorage();
+        let userWishlistKey = allKeys.find(key => key.startsWith(`wishlist_${user.Id}`));
+        if (userWishlistKey) {
+            removeFromLocalStorage(userWishlistKey);
+            showToast('Wishlist cleared.');
+        }
+    } else {
+        showToast('Please log in to clear your wishlist.');
     }
 }
 
