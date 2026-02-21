@@ -1,4 +1,5 @@
 import { getAllProducts } from './services/product.service.js';
+import * as LSManager from './shared/js/local-storage-management.js';
 
 // index.js - works for any page
 // Load Navbar
@@ -204,6 +205,9 @@ function buildProductCards(products, containerId) {
         let spans = productCardImg.querySelectorAll('span');
         let img = productCardImg.querySelector('img');
         let name = cardElement.querySelector('.card-title');
+        let addToWishlistBtn = cardElement.querySelector('.add-to-wishlist-btn');
+        let addToCartBtn = cardElement.querySelector('.add-to-cart-btn');
+        let buyNowBtn = cardElement.querySelector('.buy-now-btn');
         cardElement.addEventListener('mouseenter', () => {
             img.src = `assets/images/${getRandomInt(1, 6)}.png`;
             spans.forEach(span => span.style.display = 'block');
@@ -214,6 +218,15 @@ function buildProductCards(products, containerId) {
         });
         name.addEventListener('click', () => {
             goToProductDetails(product.Id);
+        });
+        addToWishlistBtn.addEventListener('click', () => {
+            LSManager.addToWishlist(product.Id);
+        });
+        addToCartBtn.addEventListener('click', () => {
+            LSManager.addToCart(product);
+        });
+        buyNowBtn.addEventListener('click', () => {
+            LSManager.buyNow(product);
         });
         container.appendChild(productCard);
     });

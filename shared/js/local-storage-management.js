@@ -37,7 +37,10 @@ export function addToCart(product) {
         let user = getCurrentUser();
         let allKeys = getAllKeysFromLocalStorage();
         let userCartKey = allKeys.find(key => key.startsWith(`cart_${user.Id}`));
-        let cart = userCartKey ? getFromLocalStorage(userCartKey) : [];
+        if (!userCartKey) {
+            userCartKey = `cart_${user.Id}`;
+        }
+        let cart = getFromLocalStorage(userCartKey) || [];
         let existingProductIndex = cart.findIndex(item => item.product.Id === product.Id);
         if (existingProductIndex !== -1) {
             cart[existingProductIndex].quantity += 1;
@@ -45,8 +48,20 @@ export function addToCart(product) {
             cart.push({ product, quantity: 1 });
         }
         saveToLocalStorage(userCartKey, cart);
+        showToast('Product added to cart.');
     } else {
         showToast('Please log in to add items to your cart.');
+    }
+}
+
+export function clearCart() {
+    if (isAuthenticated()) {
+        let user = getCurrentUser();
+        let allKeys = getAllKeysFromLocalStorage();
+        let userCartKey = allKeys.find(key => key.startsWith(`cart_${user.Id}`));
+        if (userCartKey) {
+            removeFromLocalStorage(userCartKey);
+        }
     }
 }
 
@@ -55,10 +70,17 @@ export function addToWishlist(productId) {
         let user = getCurrentUser();
         let allKeys = getAllKeysFromLocalStorage();
         let userWishlistKey = allKeys.find(key => key.startsWith(`wishlist_${user.Id}`));
-        let wishlist = userWishlistKey ? getFromLocalStorage(userWishlistKey) : [];
+        if (!userWishlistKey) {
+            userWishlistKey = `wishlist_${user.Id}`;
+        }
+        let wishlist = getFromLocalStorage(userWishlistKey) || [];
         if (!wishlist.includes(productId)) {
             wishlist.push(productId);
             saveToLocalStorage(userWishlistKey, wishlist);
+            showToast('Product added to wishlist.');
+        } else if(wishlist.includes(productId)) {
+            removeFromWishlist(productId);
+            showToast('Product removed from wishlist.');
         }
     } else {
         showToast('Please log in to add items to your wishlist.');
@@ -83,6 +105,7 @@ export function removeFromWishlist(productId) {
 
 export function buyNow(product) {
     if (isAuthenticated()) {
+        clearCart();
         addToCart(product);
         window.location.href = 'pages/checkout/checkout.html';
     } else {
