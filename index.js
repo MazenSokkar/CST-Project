@@ -18,16 +18,11 @@ fetch('/Shared/Footer/footer.html')   // absolute path from root
 let prevCatBtn = document.getElementById('prevCatBtn');
 let nextCatBtn = document.getElementById('nextCatBtn');
 let shopNowBtns = document.querySelectorAll('.shop-btn');
-<<<<<<< HEAD
-let productCards = document.querySelectorAll('.product-card');
-let productCardSpans = document.querySelectorAll('.product-card-img > span');
-=======
 let ourProductTitles = document.getElementById('our-products-titles');
 let nextNewArrivalsBtn = document.getElementById('nextNewArrivalsBtn');
 let prevNewArrivalsBtn = document.getElementById('prevNewArrivalsBtn');
 let nextLatestBlogBtn = document.getElementById('nextLatestBlogBtn');
 let prevLatestBlogBtn = document.getElementById('prevLatestBlogBtn');
->>>>>>> dev
 
 // add event listeners
 prevCatBtn.addEventListener('click', prevCatSlide);
@@ -35,18 +30,6 @@ nextCatBtn.addEventListener('click', nextCatSlide);
 shopNowBtns.forEach(btn => {
     btn.addEventListener('click', goToShop);
 });
-<<<<<<< HEAD
-productCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.children[0].children[2].src = `assets/images/${getRandomInt(1, 6)}.png`;
-        productCardSpans.forEach(span => span.style.display = 'block');
-    });
-    card.addEventListener('mouseleave', () => {
-        card.children[0].children[2].src = `assets/images/${getRandomInt(1, 6)}.png`;
-        productCardSpans.forEach(span => span.style.display = 'none');
-    });
-});
-=======
 ourProductTitles.addEventListener('click', (e) => {
     if (e.target.id == 'latest') {
         Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
@@ -68,7 +51,6 @@ nextNewArrivalsBtn.addEventListener('click', nextNewArrivalsSlide);
 prevNewArrivalsBtn.addEventListener('click', prevNewArrivalsSlide);
 nextLatestBlogBtn.addEventListener('click', nextLatestBlogsSlide);
 prevLatestBlogBtn.addEventListener('click', prevLatestBlogsSlide);
->>>>>>> dev
 
 // cat data
 let categories = [
@@ -181,8 +163,6 @@ function goToProductDetails(productId) {
 //get random number between min and max
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-<<<<<<< HEAD
-=======
 }
 
 // product cards builder function
@@ -295,5 +275,4 @@ function buildLatestBlogCards(blogs, containerId) {
         `;
         container.appendChild(blogCard);
     });
->>>>>>> dev
 }
