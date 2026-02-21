@@ -1,0 +1,64 @@
+/* Global font */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: white;
+}
+
+ /* Hero Section */
+ .hero {
+     background: url('../../../assets/images/login.png') no-repeat center center/cover;
+     height: 300px;
+     position: relative;
+ }
+
+
+ .hero-content {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     z-index: 2;
+     text-align: center;
+ }
+
+ .hero h2 {
+     font-weight: 600;
+ }
+
+ .breadcrumb-custom {
+     color: #8b5e3c;
+     font-size: 14px;
+ }
+
+/* Card */
+.card {
+    border-radius: 0.5rem;
+    background-color: #fff;
+}
+
+.card h3 {
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-brown {
+    background-color: #a66d4b;
+    color: #fff;
+    font-weight: 500;
+}
+
+.btn-brown:hover {
+    background-color: #fff;
+    border: 1px solid #6f472c;
+    color: #6f472c;
+}
+
+/* Links */
+.text-brown {
+    color: #a66d4b;
+    text-decoration: none;
+}
+
+.text-brown:hover {
+    text-decoration: underline;
+}
