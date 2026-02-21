@@ -113,7 +113,7 @@ export async function updateOrder(order) {
 export async function deleteOrder(orderId) {
   try {
     const response = await fetch(
-      `https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app/orders/${orderId}.json`,
+      `${BASE_URL}/orders/${orderId}.json`,
       {
         method: "DELETE"
       }
@@ -123,8 +123,6 @@ export async function deleteOrder(orderId) {
     return false;
   }
 }
-
-
 
 // Get order by id
 export async function getOrderById(id) {
