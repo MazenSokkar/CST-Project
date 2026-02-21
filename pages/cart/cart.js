@@ -138,20 +138,3 @@ function checkout() {
     alert("Proceeding to checkout 💳");
 }
 renderCart();
-
-//Test --> Adding Item 1
-// cart.push({
-//   id: 2,
-//   image: "images/product.jpg",
-//   name: "Second Product",
-//   model: "Model 2",
-//   quantity: 1,
-//   price: 200
-// });
-// localStorage.setItem("cart", JSON.stringify(cart));
-
-// localStorage.removeItem("cart")
-// دا عشان امسح العنصر اللى اسمه item اللى فى local storage 
-
-//localStorage.clear()
-// دا عشان امسح كل اللى فى الlocal storage عموما
