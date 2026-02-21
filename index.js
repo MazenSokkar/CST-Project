@@ -22,6 +22,9 @@ let ourProductTitles = document.getElementById('our-products-titles');
 let newArrivalsSlideContainer = document.getElementById('new-arrivals-slide-container');
 let nextNewArrivalsBtn = document.getElementById('nextNewArrivalsBtn');
 let prevNewArrivalsBtn = document.getElementById('prevNewArrivalsBtn');
+let latestBlogSlideContainer = document.getElementById('latest-blog-slide-container');
+let nextLatestBlogBtn = document.getElementById('nextLatestBlogBtn');
+let prevLatestBlogBtn = document.getElementById('prevLatestBlogBtn');
 
 // add event listeners
 prevCatBtn.addEventListener('click', prevCatSlide);
@@ -48,6 +51,8 @@ ourProductTitles.addEventListener('click', (e) => {
 });
 nextNewArrivalsBtn.addEventListener('click', nextNewArrivalsSlide);
 prevNewArrivalsBtn.addEventListener('click', prevNewArrivalsSlide);
+nextLatestBlogBtn.addEventListener('click', nextLatestBlogsSlide);
+prevLatestBlogBtn.addEventListener('click', prevLatestBlogsSlide);
 
 // cat data
 let categories = [
@@ -187,6 +192,55 @@ function prevNewArrivalsSlide() {
 // auto slide every 3 seconds
 setInterval(() => {
     nextNewArrivalsSlide();
+}, 3000);
+
+// latest blog section
+// cat data
+let latestBlogs = [
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-1.jpg", date: "2023-11-12", commentsNumber: 5 },
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-2.jpg", date: "2023-11-13", commentsNumber: 3 },
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-3.jpg", date: "2023-11-14", commentsNumber: 7 },
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-4.jpg", date: "2023-11-15", commentsNumber: 2 },
+    { description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptates excepturi enim!", image: "assets/images/bg-6.jpg", date: "2023-11-17", commentsNumber: 4 },
+];
+// slides arrays
+let latestBlogsSlideArr = [latestBlogs.slice(0, 3), latestBlogs.slice(1, 4)]
+// create card 4 each category
+function renderLatestBlogsSlide() {
+    latestBlogSlideContainer.innerHTML = '';
+    latestBlogsSlideArr[0].forEach(blog => {
+        let blogCard = document.createElement('div');
+        blogCard.className = 'col-12 col-sm-6 col-md-4 mb-4';
+        blogCard.innerHTML = `
+            <div class="card">
+                <img src="${blog.image}" alt="${blog.description}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-center flex-wrap">
+                        <div class="px-3 py-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M216 64C229.3 64 240 74.7 240 88L240 128L400 128L400 88C400 74.7 410.7 64 424 64C437.3 64 448 74.7 448 88L448 128L480 128C515.3 128 544 156.7 544 192L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 192C96 156.7 124.7 128 160 128L192 128L192 88C192 74.7 202.7 64 216 64zM216 176L160 176C151.2 176 144 183.2 144 192L144 240L496 240L496 192C496 183.2 488.8 176 480 176L216 176zM144 288L144 480C144 488.8 151.2 496 160 496L480 496C488.8 496 496 488.8 496 480L496 288L144 288z"/></svg> ${blog.date}</div>
+                        <div class="px-3 py-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20" height="20"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M115.9 448.9C83.3 408.6 64 358.4 64 304C64 171.5 178.6 64 320 64C461.4 64 576 171.5 576 304C576 436.5 461.4 544 320 544C283.5 544 248.8 536.8 217.4 524L101 573.9C97.3 575.5 93.5 576 89.5 576C75.4 576 64 564.6 64 550.5C64 546.2 65.1 542 67.1 538.3L115.9 448.9zM153.2 418.7C165.4 433.8 167.3 454.8 158 471.9L140 505L198.5 479.9C210.3 474.8 223.7 474.7 235.6 479.6C261.3 490.1 289.8 496 319.9 496C437.7 496 527.9 407.2 527.9 304C527.9 200.8 437.8 112 320 112C202.2 112 112 200.8 112 304C112 346.8 127.1 386.4 153.2 418.7z"/></svg> ${blog.commentsNumber} comments</div>
+                    </div>
+                    <p class="card-text">${blog.description}</p>
+                    <button class="btn btn-primary px-4 py-2" type="button">Read More</button>
+                </div>
+        </div>
+        `;
+        latestBlogSlideContainer.appendChild(blogCard);
+    });
+}
+// call it for the first time to render on page load
+renderLatestBlogsSlide();
+// slide functions
+function nextLatestBlogsSlide() {
+    latestBlogsSlideArr.push(latestBlogsSlideArr.shift());
+    renderLatestBlogsSlide();
+}
+function prevLatestBlogsSlide() {
+    latestBlogsSlideArr.unshift(latestBlogsSlideArr.pop());
+    renderLatestBlogsSlide();
+}
+// auto slide every 3 seconds
+setInterval(() => {
+    nextLatestBlogsSlide();
 }, 3000);
 
 // navigation functions
