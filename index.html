@@ -48,7 +48,7 @@
         <div class="carousel-caption text-start h-75">
             <p class="fs-6 text-black m-1 m-md-2">Top Selling!</p>
             <p class="fs-2 fw-bold text-black m-1 m-md-2">BEST COLLECTION<br />FURNITURE</p>
-            <button class="btn btn-primary px-4 py-2" type="button">Shop Now</button>
+            <button id="banners-btn" class="btn btn-primary px-4 py-2 shop-btn" type="button">Shop Now</button>
         </div>
     </div>
 
@@ -61,7 +61,7 @@
                         <div class="card-body">
                             <h5 class="card-title text-capitalize fw-medium">EXCLUSIVE SALE</h5>
                             <p class="card-text fw-bold fs-1">Modern</p>
-                            <button class="btn btn-primary px-4 py-2" type="button">Shop Now</button>
+                            <button class="btn btn-primary px-4 py-2 shop-btn" type="button">Shop Now</button>
                         </div>
                     </div>
                     <div class="col-6">
@@ -77,7 +77,7 @@
                         <div class="card-body">
                             <h5 class="card-title text-capitalize fw-medium fs-2">SUPER SALE</h5>
                             <p class="card-text fw-bold fs-1">Furniture</p>
-                            <button class="btn btn-primary px-4 py-2" type="button">Shop Now</button>
+                            <button class="btn btn-primary px-4 py-2 shop-btn" type="button">Shop Now</button>
                         </div>
                     </div>
                     <div class="col-6">
@@ -88,6 +88,19 @@
         </div>
     </div>
 
+    <section id="categoies" class="my-4 mx-2 m-md-5">
+        <div class="d-flex bottom-border mb-4">
+            <div class="flex-grow-1 fs-3 fw-bold font-monospace">Categories</div>
+            <div class="px-2">
+                <span id="prevCatBtn" class="carousel-control-prev-icon2 p-3 py-2" aria-hidden="true">&#60;</span>
+            </div>
+            <div class="px-2">
+                <span id="nextCatBtn" class="carousel-control-next-icon2 p-3 py-2" aria-hidden="true">&#62;</span>
+            </div>
+        </div>
+        <div id="cat-slide-container" class="row justify-content-center">
+        </div>
+    </section>
 
     <!-- Footer -->
     <div id="footer-container"></div>
