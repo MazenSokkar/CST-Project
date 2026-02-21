@@ -19,3 +19,113 @@
 #shop{
     font-weight: bold;
 }
+
+/* Dual Price Range Slider */
+.price-range-wrapper {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.price-range-input {
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.price-range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    pointer-events: auto;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.price-range-input::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    pointer-events: auto;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.price-range-input::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    border: none;
+}
+
+.price-range-input::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    background: transparent;
+    border: none;
+}
+
+.price-range-input::-moz-range-progress {
+    background: transparent;
+}
+
+#priceMin {
+    z-index: 6;
+}
+
+#priceMax {
+    z-index: 5;
+}
+.checked {
+    color: orange;
+}
+
+.product-card-img {
+    position: relative;
+}
+
+.product-card-img > span {
+    display: none;
+    position: absolute;
+    z-index: 2;
+}
+
+.product-card-img > span.bg-danger {
+    top: 20px;
+    left: 20px;
+    border-radius: 5px;
+}
+
+.product-card-img > span.shadow {
+    top: 20px;
+    right: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.product-card-img > span.shadow:hover {
+    background-color: var(--theme-default);
+    color: white;
+}
+
+.product-card-img > img {
+    width: 100%;
+    height: auto;
+}
