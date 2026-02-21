@@ -15,6 +15,8 @@ function savewish(wish) {
 function renderwish() {
     let wish = loadwish();
 
+    if (!emptyMessage || !wishContainer) return;
+
     if (wish.length === 0) {
         emptyMessage.style.display = "block";
         wishContainer.style.display = "none";
@@ -26,10 +28,10 @@ function renderwish() {
     wishContainer.innerHTML = "";
 
     wish.forEach((item, index) => {
-    let card = document.createElement("div");
-    card.className = "card p-3 mb-3";
+        let card = document.createElement("div");
+        card.className = "card p-3 mb-3";
 
-    card.innerHTML = `
+        card.innerHTML = `
         <div class="card p-3 mb-3 border">
             <div class="row align-items-center">
 
@@ -56,10 +58,9 @@ function renderwish() {
 
             </div>
         </div>
-    `;
-
-    wishContainer.appendChild(card);
-});
+        `;
+        wishContainer.appendChild(card);
+    });
 }
 
 // Remove item
@@ -105,7 +106,7 @@ function addTestItem() {
     let wish = loadwish();
     wish.push({
         id: Date.now(),
-        // image: "assets/images/1.png", 
+        image: "assets/images/1.png", 
         name: "New Test Product",
         model: "Model X",
         quantity: 1,
@@ -114,4 +115,8 @@ function addTestItem() {
     savewish(wish);
     renderwish();
 }
-renderwish();
+// renderwish();
+// دى عشان الايرور اللى بيطلع لم انقل للكارت
+document.addEventListener("DOMContentLoaded", () => {
+    renderwish();
+});
