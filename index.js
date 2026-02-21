@@ -19,6 +19,9 @@ let nextCatBtn = document.getElementById('nextCatBtn');
 let slideContainer = document.getElementById('cat-slide-container');
 let shopNowBtns = document.querySelectorAll('.shop-btn');
 let ourProductTitles = document.getElementById('our-products-titles');
+let newArrivalsSlideContainer = document.getElementById('new-arrivals-slide-container');
+let nextNewArrivalsBtn = document.getElementById('nextNewArrivalsBtn');
+let prevNewArrivalsBtn = document.getElementById('prevNewArrivalsBtn');
 
 // add event listeners
 prevCatBtn.addEventListener('click', prevCatSlide);
@@ -43,6 +46,8 @@ ourProductTitles.addEventListener('click', (e) => {
         buildProductCards(bestSellingAndNotFeaturedProducts, 'our-products-container');
     }
 });
+nextNewArrivalsBtn.addEventListener('click', nextNewArrivalsSlide);
+prevNewArrivalsBtn.addEventListener('click', prevNewArrivalsSlide);
 
 // cat data
 let categories = [
@@ -159,6 +164,30 @@ function buildProductCards(products, containerId) {
 }
 // initially build latest products
 buildProductCards(latestProducts, 'our-products-container');
+
+// new arrivals section
+// slides arrays
+let newArrivalsSlideArr = [latestProducts.slice(0, 4), latestProducts.slice(4, 8)]
+// create card 4 each category
+function renderNewArrivalsSlide() {
+    newArrivalsSlideContainer.innerHTML = '';
+    buildProductCards(newArrivalsSlideArr[0], 'new-arrivals-slide-container');
+}
+// call it for the first time to render on page load
+renderNewArrivalsSlide();
+// slide functions
+function nextNewArrivalsSlide() {
+    newArrivalsSlideArr.push(newArrivalsSlideArr.shift());
+    renderNewArrivalsSlide();
+}
+function prevNewArrivalsSlide() {
+    newArrivalsSlideArr.unshift(newArrivalsSlideArr.pop());
+    renderNewArrivalsSlide();
+}
+// auto slide every 3 seconds
+setInterval(() => {
+    nextNewArrivalsSlide();
+}, 3000);
 
 // navigation functions
 function goToShop() {
