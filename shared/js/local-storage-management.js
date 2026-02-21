@@ -1,3 +1,5 @@
+import { showToast } from './toast.js';
+
 export function saveToLocalStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
@@ -28,4 +30,62 @@ export function isAuthenticated() {
 
 export function getCurrentUser() {
     return getFromLocalStorage('currentUser');
+}
+
+export function addToCart(product) {
+    if (isAuthenticated()) {
+        let user = getCurrentUser();
+        let allKeys = getAllKeysFromLocalStorage();
+        let userCartKey = allKeys.find(key => key.startsWith(`cart_${user.Id}`));
+        let cart = userCartKey ? getFromLocalStorage(userCartKey) : [];
+        let existingProductIndex = cart.findIndex(item => item.product.Id === product.Id);
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].quantity += 1;
+        } else {
+            cart.push({ product, quantity: 1 });
+        }
+        saveToLocalStorage(userCartKey, cart);
+    } else {
+        showToast('Please log in to add items to your cart.');
+    }
+}
+
+export function addToWishlist(productId) {
+    if (isAuthenticated()) {
+        let user = getCurrentUser();
+        let allKeys = getAllKeysFromLocalStorage();
+        let userWishlistKey = allKeys.find(key => key.startsWith(`wishlist_${user.Id}`));
+        let wishlist = userWishlistKey ? getFromLocalStorage(userWishlistKey) : [];
+        if (!wishlist.includes(productId)) {
+            wishlist.push(productId);
+            saveToLocalStorage(userWishlistKey, wishlist);
+        }
+    } else {
+        showToast('Please log in to add items to your wishlist.');
+    }
+}
+
+export function removeFromWishlist(productId) {
+    if (isAuthenticated()) {
+        let user = getCurrentUser();
+        let allKeys = getAllKeysFromLocalStorage();
+        let userWishlistKey = allKeys.find(key => key.startsWith(`wishlist_${user.Id}`));
+        let wishlist = userWishlistKey ? getFromLocalStorage(userWishlistKey) : [];
+        let index = wishlist.indexOf(productId);
+        if (index !== -1) {
+            wishlist.splice(index, 1);
+            saveToLocalStorage(userWishlistKey, wishlist);
+        }
+    } else {
+        showToast('Please log in to remove items from your wishlist.');
+    }
+}
+
+export function buyNow(product) {
+    if (isAuthenticated()) {
+        addToCart(product);
+        window.location.href = 'pages/checkout/checkout.html';
+    } else {
+        showToast('Please log in to purchase items.');
+    }
 }
