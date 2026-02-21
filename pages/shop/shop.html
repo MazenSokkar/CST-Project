@@ -4,13 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shop Page</title>
-<<<<<<< HEAD
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
-=======
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
->>>>>>> dev
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -39,11 +34,11 @@
           <!-- Price rangebar -->
           <div class="filter-section mb-4">
             <h5 class="fw-bold mb-3">Price</h5>
-            <div class="price-range-wrapper">
-              <div class="range-track"></div>
-              <input type="range" class="price-range-input" id="priceMin" min="0" max="1000" value="0" />
-              <input type="range" class="price-range-input" id="priceMax" min="0" max="1000" value="1000" />
-            </div>
+<div class="price-range-wrapper">
+    <div class="range-track"></div>
+    <input type="range" class="price-range-input" id="priceMin" min="0" max="1000" value="0">
+    <input type="range" class="price-range-input" id="priceMax" min="0" max="1000" value="1000">
+</div>
             <div class="d-flex justify-content-between mt-3">
               <small>
                 $
@@ -56,13 +51,14 @@
             </div>
           </div>
           <hr />
+
           <!-- Color (checkboxes)-->
           <div class="filter-section mb-4">
             <h5 class="fw-bold mb-3">Color</h5>
-            <div class="form-check">
-              <input class="form-check-input color-filter" type="checkbox" value="Grey" id="colorGrey" />
-              <label class="form-check-label" for="colorGrey">Grey</label>
-            </div>
+<div class="form-check">
+    <input class="form-check-input color-filter" type="checkbox" value="Grey" id="colorGrey">
+    <label class="form-check-label" for="colorGrey">Grey</label>
+</div>
             <div class="form-check">
               <input class="form-check-input color-filter" type="checkbox" value="Black" id="colorBlack" />
               <label class="form-check-label" for="colorBlack">Black</label>
@@ -73,6 +69,7 @@
             </div>
           </div>
           <hr />
+
           <!-- Size (checkboxes)-->
           <div class="filter-section mb-4">
             <h5 class="fw-bold mb-3">Size</h5>
@@ -90,6 +87,7 @@
             </div>
           </div>
           <hr />
+
           <!-- Rating by stars (checkboxes) from 5 to 1 star -->
           <div class="filter-section mb-4">
             <h5 class="fw-bold mb-3">Rating</h5>
@@ -112,125 +110,6 @@
             <div class="form-check">
               <input class="form-check-input rating-filter" type="checkbox" value="1" id="rating1" />
               <label class="form-check-label text-warning" for="rating1">★</label>
-            </div>
-          </div>
-
-<<<<<<< HEAD
-          <button class="btn btn-outline-secondary w-100" id="resetFilters">Reset Filters</button>
-        </div>
-        <div class="col-12 col-xl-10">
-          <!-- Product listing -->
-          <!-- Sort Options -->
-          <div class="row mb-4 align-items-end">
-            <div class="col-auto d-xl-none">
-              <div>
-                <button
-                  class="btn btn-outline-secondary btn-sm"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#filtersOffcanvas">
-                  Filters
-                </button>
-              </div>
-            </div>
-            <div class="col-auto">
-              <label for="sortSelect" class="form-label">Sort by:</label>
-              <select class="form-select form-select-sm" id="sortSelect" style="width: auto">
-                <option value="">Default</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-              </select>
-            </div>
-          </div>
-=======
-
-
-    <!-- Main Content -->
-    <div class="container my-5">
-      <div class="row">
-        <div class="col-2 d-none d-xl-block">
-          <!-- Filters -->
-          <!-- Price rangebar -->
-          <div class="filter-section mb-4">
-            <h5 class="fw-bold mb-3">Price</h5>
-            <div class="price-range-wrapper">
-              <input type="range" class="form-range price-range-input" id="priceMin" min="0" max="1000" value="0" />
-              <input type="range" class="form-range price-range-input" id="priceMax" min="0" max="1000" value="1000" />
-            </div>
-            <div class="d-flex justify-content-between mt-3">
-              <small>
-                $
-                <span id="minPrice">0</span>
-              </small>
-              <small>
-                $
-                <span id="maxPrice">1000</span>
-              </small>
-            </div>
-          </div>
-          <hr />
-
-          <!-- Color (checkboxes)-->
-          <div class="filter-section mb-4">
-            <h5 class="fw-bold mb-3">Color</h5>
-            <div class="form-check">
-              <input class="form-check-input color-filter" type="checkbox" value="Red" id="colorRed" />
-              <label class="form-check-label" for="colorRed">Red</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input color-filter" type="checkbox" value="Blue" id="colorBlue" />
-              <label class="form-check-label" for="colorBlue">Blue</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input color-filter" type="checkbox" value="Black" id="colorBlack" />
-              <label class="form-check-label" for="colorBlack">Black</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input color-filter" type="checkbox" value="White" id="colorWhite" />
-              <label class="form-check-label" for="colorWhite">White</label>
-            </div>
-          </div>
-          <hr />
-
-          <!-- Size (checkboxes)-->
-          <div class="filter-section mb-4">
-            <h5 class="fw-bold mb-3">Size</h5>
-            <div class="form-check">
-              <input class="form-check-input size-filter" type="checkbox" value="Small" id="sizeSmall" />
-              <label class="form-check-label" for="sizeSmall">Small</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input size-filter" type="checkbox" value="Medium" id="sizeMedium" />
-              <label class="form-check-label" for="sizeMedium">Medium</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input size-filter" type="checkbox" value="Large" id="sizeLarge" />
-              <label class="form-check-label" for="sizeLarge">Large</label>
-            </div>
-          </div>
-          <hr />
-
-          <!-- Rating by stars (checkboxes) from 5 to 1 star -->
-          <div class="filter-section mb-4">
-            <h5 class="fw-bold mb-3">Rating</h5>
-            <div class="form-check">
-              <input class="form-check-input rating-filter" type="checkbox" value="5" id="rating5" />
-              <label class="form-check-label" for="rating5">★★★★★</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input rating-filter" type="checkbox" value="4" id="rating4" />
-              <label class="form-check-label" for="rating4">★★★★</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input rating-filter" type="checkbox" value="3" id="rating3" />
-              <label class="form-check-label" for="rating3">★★★</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input rating-filter" type="checkbox" value="2" id="rating2" />
-              <label class="form-check-label" for="rating2">★★</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input rating-filter" type="checkbox" value="1" id="rating1" />
-              <label class="form-check-label" for="rating1">★</label>
             </div>
           </div>
 
@@ -258,7 +137,6 @@
         </select>
     </div>
 </div>
->>>>>>> dev
           <div class="row g-4" id="productsContainer">
             <!-- Products will be loaded here by JavaScript -->
           </div>
@@ -275,10 +153,7 @@
         </div>
       </div>
     </div>
-<<<<<<< HEAD
-=======
 
->>>>>>> dev
     <div class="offcanvas offcanvas-start" tabindex="-1" id="filtersOffcanvas">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title fw-bold">Filters</h5>
@@ -288,22 +163,11 @@
         <!-- Price -->
         <div class="filter-section mb-4">
           <h5 class="fw-bold mb-3">Price</h5>
-          <div class="price-range-wrapper">
-<<<<<<< HEAD
-            <div class="range-track"></div>
-            <input type="range" class="price-range-input" id="priceMinMobile" min="0" max="1000" value="0" />
-            <input type="range" class="price-range-input" id="priceMaxMobile" min="0" max="1000" value="1000" />
-=======
-            <input type="range" class="form-range price-range-input" id="priceMinMobile" min="0" max="1000" value="0" />
-            <input
-              type="range"
-              class="form-range price-range-input"
-              id="priceMaxMobile"
-              min="0"
-              max="1000"
-              value="1000" />
->>>>>>> dev
-          </div>
+<div class="price-range-wrapper">
+    <div class="range-track"></div>
+    <input type="range" class="price-range-input" id="priceMinMobile" min="0" max="1000" value="0">
+    <input type="range" class="price-range-input" id="priceMaxMobile" min="0" max="1000" value="1000">
+</div>
           <div class="d-flex justify-content-between mt-3">
             <small>
               $
@@ -317,21 +181,12 @@
         </div>
         <hr />
         <!-- Color -->
-        <div class="filter-section mb-4">
-          <h5 class="fw-bold mb-3">Color</h5>
-          <div class="form-check">
-<<<<<<< HEAD
-            <input class="form-check-input color-filter" type="checkbox" value="Grey" id="colorGreyM" />
-            <label class="form-check-label" for="colorGreyM">Grey</label>
-=======
-            <input class="form-check-input color-filter" type="checkbox" value="Red" id="colorRedM" />
-            <label class="form-check-label" for="colorRedM">Red</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input color-filter" type="checkbox" value="Blue" id="colorBlueM" />
-            <label class="form-check-label" for="colorBlueM">Blue</label>
->>>>>>> dev
-          </div>
+<div class="filter-section mb-4">
+    <h5 class="fw-bold mb-3">Color</h5>
+    <div class="form-check">
+        <input class="form-check-input color-filter" type="checkbox" value="Grey" id="colorGreyM">
+        <label class="form-check-label" for="colorGreyM">Grey</label>
+    </div>
           <div class="form-check">
             <input class="form-check-input color-filter" type="checkbox" value="Black" id="colorBlackM" />
             <label class="form-check-label" for="colorBlackM">Black</label>
@@ -364,7 +219,6 @@
           <h5 class="fw-bold mb-3">Rating</h5>
           <div class="form-check">
             <input class="form-check-input rating-filter" type="checkbox" value="5" id="rating5M" />
-<<<<<<< HEAD
             <label class="form-check-label text-warning" for="rating5M">★★★★★</label>
           </div>
           <div class="form-check">
@@ -382,25 +236,6 @@
           <div class="form-check">
             <input class="form-check-input rating-filter" type="checkbox" value="1" id="rating1M" />
             <label class="form-check-label text-warning" for="rating1M">★</label>
-=======
-            <label class="form-check-label" for="rating5M">★★★★★</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input rating-filter" type="checkbox" value="4" id="rating4M" />
-            <label class="form-check-label" for="rating4M">★★★★</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input rating-filter" type="checkbox" value="3" id="rating3M" />
-            <label class="form-check-label" for="rating3M">★★★</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input rating-filter" type="checkbox" value="2" id="rating2M" />
-            <label class="form-check-label" for="rating2M">★★</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input rating-filter" type="checkbox" value="1" id="rating1M" />
-            <label class="form-check-label" for="rating1M">★</label>
->>>>>>> dev
           </div>
         </div>
         <button class="btn btn-outline-secondary w-100" id="resetFiltersMobile">Reset Filters</button>
@@ -412,8 +247,4 @@
       crossorigin="anonymous"></script>
     <script type="module" src="shop.js"></script>
   </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> dev
