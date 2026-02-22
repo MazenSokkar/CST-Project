@@ -1,5 +1,5 @@
 import { getAllProducts } from "../../services/product.service.js";
-import { addToWishlist } from "../../shared/js/local-storage-management.js";
+import { addToWishlist , removeFromWishlist, addToCart, removeFromCart} from "../../shared/js/local-storage-management.js";
 let allProducts = [];
 let filteredProducts = [];
 let currentPage = 1;
@@ -17,6 +17,7 @@ async function loadProducts() {
   try {
     allProducts = await getAllProducts();
     filteredProducts = [...allProducts];
+    console.log(allProducts);
     if (allProducts.length > 0) {
       maxProductPrice = Math.ceil(
         Math.max(...allProducts.map((p) => (p.Discount ? p.Price * (1 - p.Discount / 100) : p.Price))),
@@ -188,7 +189,7 @@ function createProductCard(product) {
   const stars = renderStars(product.Rate || 0);
   return `
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-<div class="card product-card h-100" onclick="window.location.href='../product-details/product-details.html?id=${product.Id}'" style="cursor: pointer;">
+            <div class="card product-card h-100" onclick="window.location.href='../product-details/product-details.html?id=${product.Id}'" style="cursor: pointer;">
                 <div class="product-card-img">
                     ${product.Discount ? `<span class="bg-danger p-1 px-2 text-white fw-lighter">${product.Discount}% OFF</span>` : ""}
             <span class="p-2 shadow wishlist-btn" onclick="event.stopPropagation(); handleWishlist(${product.Id}, this)"><i class="bi bi-heart"></i></span>
@@ -201,12 +202,12 @@ function createProductCard(product) {
                         <span class="fw-bold fs-5">$${discountedPrice}</span>
                         ${product.Discount ? `<span class="text-decoration-line-through text-muted me-2">$${product.Price.toFixed(2)}</span>` : ""}
                     </div>
-<div class="d-flex flex-column flex-lg-row gap-2 mt-3">
-    <div class="cart-control flex-grow-1" id="cart-control-${product.Id}">
-        <button class="btn btn-primary w-100" onclick="event.stopPropagation(); addToCart(${product.Id}, ${product.Quantity})">Add To Cart</button>
-    </div>
-    <button class="btn btn-secondary flex-grow-1" onclick="event.stopPropagation(); buyNow(${product.Id})">Buy Now</button>
-</div>
+                <div class="d-flex flex-column flex-lg-row gap-2 mt-3">
+                    <div class="cart-control flex-grow-1" id="cart-control-${product.Id}">
+                        <button class="btn btn-primary w-100" onclick="event.stopPropagation(); addToCart(${product.Id}, ${product.Quantity})">Add To Cart</button>
+                    </div>
+                    <button class="btn btn-secondary flex-grow-1" onclick="event.stopPropagation(); buyNow(${product.Id})">Buy Now</button>
+                </div>
                 </div>
             </div>
         </div>
@@ -257,74 +258,73 @@ window.goToPage = function (page) {
   setupPagination();
   window.scrollTo({ top: 300, behavior: "smooth" });
 };
-window.addToCart = function (productId, maxQuantity) {
-  const product = allProducts.find((p) => p.Id === productId);
-  if (!product) return;
+window.addToCart = function(productId, maxQuantity) {
+    const product = allProducts.find(p => p.Id === productId);
+    if (!product) return;
 
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const existingItem = cart.find((item) => item.id === productId);
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
+    const existingItem = cart.find(item => item.product.Id === productId);
 
-  if (existingItem) {
-    if (existingItem.quantity >= maxQuantity) {
-      alert(`Maximum quantity available is ${maxQuantity}`);
-      return;
+    if (existingItem) {
+        if (existingItem.quantity >= maxQuantity) {
+            alert(`Maximum quantity available is ${maxQuantity}`);
+            return;
+        }
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ product, quantity: 1 });
     }
-    existingItem.quantity += 1;
-  } else {
-    cart.push({
-      id: product.Id,
-      name: product.Name,
-      model: product.Category || "",
-      price: product.Discount ? parseFloat((product.Price * (1 - product.Discount / 100)).toFixed(2)) : product.Price,
-      quantity: 1,
-      image: `../../assets/images/${getRandomInt(1, 3)}.png`,
-    });
-  }
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartControl(productId, maxQuantity);
+
+    localStorage.setItem(`cart_${user?.Id}`, JSON.stringify(cart));
+    updateCartControl(productId, maxQuantity);
 };
-window.updateCartControl = function (productId, maxQuantity) {
-  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const item = cart.find((i) => i.id === productId);
-  const control = document.getElementById(`cart-control-${productId}`);
-  if (!control) return;
-  if (item) {
-    control.innerHTML = `
+window.updateCartControl = function(productId, maxQuantity) {
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    const cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
+    const item = cart.find(i => i.product.Id === productId);
+    const control = document.getElementById(`cart-control-${productId}`);
+    if (!control) return;
+
+    if (item) {
+        control.innerHTML = `
             <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); decreaseFromCart(${productId}, ${maxQuantity})">-</button>
                 <span class="fw-bold">${item.quantity}</span>
                 <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); increaseInCart(${productId}, ${maxQuantity})">+</button>
             </div>
         `;
-  } else {
-    control.innerHTML = `
+    } else {
+        control.innerHTML = `
             <button class="btn btn-primary w-100" onclick="event.stopPropagation(); addToCart(${productId}, ${maxQuantity})">Add To Cart</button>
         `;
-  }
+    }
 };
-window.increaseInCart = function (productId, maxQuantity) {
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const item = cart.find((i) => i.id === productId);
-  if (!item) return;
-  if (item.quantity >= maxQuantity) {
-    alert(`Maximum quantity available is ${maxQuantity}`);
-    return;
-  }
-  item.quantity += 1;
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartControl(productId, maxQuantity);
+window.increaseInCart = function(productId, maxQuantity) {
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
+    const item = cart.find(i => i.product.Id === productId);
+    if (!item) return;
+    if (item.quantity >= maxQuantity) {
+        alert(`Maximum quantity available is ${maxQuantity}`);
+        return;
+    }
+    item.quantity += 1;
+    localStorage.setItem(`cart_${user?.Id}`, JSON.stringify(cart));
+    updateCartControl(productId, maxQuantity);
 };
-window.decreaseFromCart = function (productId, maxQuantity) {
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const itemIndex = cart.findIndex((i) => i.id === productId);
-  if (itemIndex === -1) return;
-  if (cart[itemIndex].quantity === 1) {
-    cart.splice(itemIndex, 1);
-  } else {
-    cart[itemIndex].quantity -= 1;
-  }
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartControl(productId, maxQuantity);
+window.decreaseFromCart = function(productId, maxQuantity) {
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
+    const itemIndex = cart.findIndex(i => i.product.Id === productId);
+    if (itemIndex === -1) return;
+    if (cart[itemIndex].quantity === 1) {
+        cart.splice(itemIndex, 1);
+    } else {
+        cart[itemIndex].quantity -= 1;
+    }
+    localStorage.setItem(`cart_${user?.Id}`, JSON.stringify(cart));
+    updateCartControl(productId, maxQuantity);
 };
 window.addToWishlist = function (productId) {
   const product = allProducts.find((p) => p.Id === productId);
@@ -341,30 +341,10 @@ window.addToWishlist = function (productId) {
   }
   localStorage.setItem("wishlist", JSON.stringify(wishlist));
 };
-window.buyNow = function (productId) {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  if (!isLoggedIn) {
-    window.location.href = "../auth/login/login.html";
-    return;
-  }
-  const product = allProducts.find((p) => p.Id === productId);
-  if (!product) return;
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  const existingItem = cart.find((item) => item.id === productId);
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    cart.push({
-      id: product.Id,
-      name: product.Name,
-      model: product.Category || "",
-      price: product.Discount ? parseFloat((product.Price * (1 - product.Discount / 100)).toFixed(2)) : product.Price,
-      quantity: 1,
-      image: `../../assets/images/${getRandomInt(1, 3)}.png`,
-    });
-  }
-  localStorage.setItem("cart", JSON.stringify(cart));
-  window.location.href = "../cart/cart.html";
+window.buyNow = function(productId) {
+    const product = allProducts.find(p => p.Id === productId);
+    if (!product) return;
+    buyNow(product);
 };
 function setupCardHover() {
   document.querySelectorAll(".product-card").forEach((card) => {
@@ -400,23 +380,23 @@ function syncCheckboxes(changedCheckbox, className) {
     }
   });
 }
-window.handleWishlist = function (productId, btn) {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  if (!isLoggedIn) {
-    window.location.href = "../auth/login/login.html";
-    return;
-  }
-  addToWishlist(productId);
-  const icon = btn.querySelector("i");
-  if (icon.classList.contains("bi-heart-fill")) {
-    icon.classList.remove("bi-heart-fill");
-    icon.classList.add("bi-heart");
-    btn.style.backgroundColor = "";
-    btn.style.color = "";
-  } else {
-    icon.classList.remove("bi-heart");
-    icon.classList.add("bi-heart-fill");
-    btn.style.backgroundColor = "white";
-    btn.style.color = "#8A593D";
-  }
+window.handleWishlist = function(productId, btn) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+        window.location.href = '../auth/login/login.html';
+        return;
+    }
+    addToWishlist(productId);
+    const icon = btn.querySelector('i');
+    if (icon.classList.contains('bi-heart-fill')) {
+        icon.classList.remove('bi-heart-fill');
+        icon.classList.add('bi-heart');
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+    } else {
+        icon.classList.remove('bi-heart');
+        icon.classList.add('bi-heart-fill');
+        btn.style.backgroundColor = 'white';
+        btn.style.color = '#8A593D';
+    }
 };
