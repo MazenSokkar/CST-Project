@@ -259,24 +259,34 @@ window.goToPage = function (page) {
   window.scrollTo({ top: 300, behavior: "smooth" });
 };
 window.addToCart = function(productId, maxQuantity) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+        window.location.href = '../auth/login/login.html';
+        return;
+    }
     const product = allProducts.find(p => p.Id === productId);
     if (!product) return;
-
+    addToCart(product);
+    updateCartControl(productId, maxQuantity);
+};
+window.increaseInCart = function(productId, maxQuantity) {
+    const product = allProducts.find(p => p.Id === productId);
+    if (!product) return;
     let user = JSON.parse(localStorage.getItem('currentUser'));
     let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
-    const existingItem = cart.find(item => item.product.Id === productId);
-
-    if (existingItem) {
-        if (existingItem.quantity >= maxQuantity) {
-            alert(`Maximum quantity available is ${maxQuantity}`);
-            return;
-        }
-        existingItem.quantity += 1;
-    } else {
-        cart.push({ product, quantity: 1 });
+    const item = cart.find(i => i.product.Id === productId);
+    if (!item) return;
+    if (item.quantity >= maxQuantity) {
+        alert(`Maximum quantity available is ${maxQuantity}`);
+        return;
     }
-
-    localStorage.setItem(`cart_${user?.Id}`, JSON.stringify(cart));
+    addToCart(product);
+    updateCartControl(productId, maxQuantity);
+};
+window.decreaseFromCart = function(productId, maxQuantity) {
+    const product = allProducts.find(p => p.Id === productId);
+    if (!product) return;
+    removeFromCart(productId);
     updateCartControl(productId, maxQuantity);
 };
 window.updateCartControl = function(productId, maxQuantity) {
@@ -285,7 +295,6 @@ window.updateCartControl = function(productId, maxQuantity) {
     const item = cart.find(i => i.product.Id === productId);
     const control = document.getElementById(`cart-control-${productId}`);
     if (!control) return;
-
     if (item) {
         control.innerHTML = `
             <div class="d-flex align-items-center justify-content-center gap-2">
@@ -299,32 +308,6 @@ window.updateCartControl = function(productId, maxQuantity) {
             <button class="btn btn-primary w-100" onclick="event.stopPropagation(); addToCart(${productId}, ${maxQuantity})">Add To Cart</button>
         `;
     }
-};
-window.increaseInCart = function(productId, maxQuantity) {
-    let user = JSON.parse(localStorage.getItem('currentUser'));
-    let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
-    const item = cart.find(i => i.product.Id === productId);
-    if (!item) return;
-    if (item.quantity >= maxQuantity) {
-        alert(`Maximum quantity available is ${maxQuantity}`);
-        return;
-    }
-    item.quantity += 1;
-    localStorage.setItem(`cart_${user?.Id}`, JSON.stringify(cart));
-    updateCartControl(productId, maxQuantity);
-};
-window.decreaseFromCart = function(productId, maxQuantity) {
-    let user = JSON.parse(localStorage.getItem('currentUser'));
-    let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
-    const itemIndex = cart.findIndex(i => i.product.Id === productId);
-    if (itemIndex === -1) return;
-    if (cart[itemIndex].quantity === 1) {
-        cart.splice(itemIndex, 1);
-    } else {
-        cart[itemIndex].quantity -= 1;
-    }
-    localStorage.setItem(`cart_${user?.Id}`, JSON.stringify(cart));
-    updateCartControl(productId, maxQuantity);
 };
 window.addToWishlist = function (productId) {
   const product = allProducts.find((p) => p.Id === productId);
