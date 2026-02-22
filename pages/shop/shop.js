@@ -17,7 +17,6 @@ async function loadProducts() {
   try {
     allProducts = await getAllProducts();
     filteredProducts = [...allProducts];
-    console.log(allProducts);
     if (allProducts.length > 0) {
       maxProductPrice = Math.ceil(
         Math.max(...allProducts.map((p) => (p.Discount ? p.Price * (1 - p.Discount / 100) : p.Price))),
@@ -260,7 +259,8 @@ window.goToPage = function (page) {
 };
 window.addToCart = function(productId, maxQuantity) {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (!isLoggedIn) {
+    const currentUser = localStorage.getItem('currentUser');
+    if (!isLoggedIn || !currentUser) {
         window.location.href = '../auth/login/login.html';
         return;
     }
@@ -309,21 +309,7 @@ window.updateCartControl = function(productId, maxQuantity) {
         `;
     }
 };
-window.addToWishlist = function (productId) {
-  const product = allProducts.find((p) => p.Id === productId);
-  if (!product) return;
 
-  let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-
-  if (wishlist.includes(productId)) {
-    wishlist = wishlist.filter((id) => id !== productId);
-    alert(`${product.Name} removed from wishlist.`);
-  } else {
-    wishlist.push(productId);
-    alert(`${product.Name} added to wishlist!`);
-  }
-  localStorage.setItem("wishlist", JSON.stringify(wishlist));
-};
 window.buyNow = function(productId) {
     const product = allProducts.find(p => p.Id === productId);
     if (!product) return;
@@ -369,14 +355,15 @@ window.handleWishlist = function(productId, btn) {
         window.location.href = '../auth/login/login.html';
         return;
     }
-    addToWishlist(productId);
     const icon = btn.querySelector('i');
     if (icon.classList.contains('bi-heart-fill')) {
+        removeFromWishlist(productId);
         icon.classList.remove('bi-heart-fill');
         icon.classList.add('bi-heart');
         btn.style.backgroundColor = '';
         btn.style.color = '';
     } else {
+        addToWishlist(productId);
         icon.classList.remove('bi-heart');
         icon.classList.add('bi-heart-fill');
         btn.style.backgroundColor = 'white';
