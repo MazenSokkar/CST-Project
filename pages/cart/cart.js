@@ -5,11 +5,21 @@ let emptyMessage = document.getElementById("emptyMessage");
 let cartContainer = document.getElementById("cartContainer");
 
 function loadCart() {
-    return JSON.parse(localStorage.getItem("cart")) || [];
+    if (!isAuthenticated()) return [];
+
+    let user = getCurrentUser();
+    let allKeys = getAllKeysFromLocalStorage();
+    let userCartKey = allKeys.find(key => key.startsWith(`cart_${user.Id}`));
+
+    if (!userCartKey) return [];
+
+    return getFromLocalStorage(userCartKey) || [];
 }
 
 function saveCart(cart) {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    let user = getCurrentUser();
+    let key = `cart_${user.Id}`;
+    saveToLocalStorage(key, cart);
 }
 
 function renderCart() {
@@ -34,20 +44,20 @@ card.innerHTML = `
         <div class="row align-items-center">
 
             <div class="col-md-2 text-center">
-                <img src="${item.image}" width="80" height="80" style="object-fit: cover;">
+                <img src="${item.product.image}" width="80" height="80" style="object-fit: cover;">
             </div>
 
             <div class="col-md-6">
-                <p class="mb-1"><strong>Name:</strong> ${item.name}</p>
-                <p class="mb-1"><strong>Model:</strong> ${item.model}</p>
-                <p class="mb-0"><strong>Price:</strong> $${item.price * item.quantity}</p>
+                <p class="mb-1"><strong>Name:</strong> ${item.product.name}</p>
+                <p class="mb-1"><strong>Model:</strong> ${item.product.model}</p>
+                <p class="mb-0"><strong>Price:</strong> $${item.product.price * item.product.quantity}</p>
             </div>
 
             <div class="col-md-2 text-center">
                 <div class="d-flex justify-content-center align-items-center gap-2">
                      <p class="mb-1"><strong>Quantity:</strong></p>
                     <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQty(${index})">-</button>
-                    <span>${item.quantity}</span>
+                    <span>${item.product.quantity}</span>
                     <button class="btn btn-sm btn-outline-secondary" onclick="increaseQty(${index})">+</button>
                 </div>
             </div>
@@ -63,6 +73,31 @@ card.innerHTML = `
 `;
         cartContainer.appendChild(card);
     });
+        const totals = calculateTotals(cart);
+
+        const summarySection = document.createElement("div");
+        summarySection.className = "card p-3 mt-3";
+
+        summarySection.innerHTML = `
+        <div class="d-flex justify-content-between">
+        <span>Subtotal:</span>
+        <strong>$${totals.subtotal.toFixed(2)}</strong>
+        </div>
+
+        <div class="d-flex justify-content-between">
+        <span>VAT (14%):</span>
+        <strong>$${totals.vatAmount.toFixed(2)}</strong>
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+        <span class="fw-bold">Total:</span>
+        <strong class="text-danger">$${totals.total.toFixed(2)}</strong>
+        </div>
+       `;
+
+cartContainer.appendChild(summarySection);
 
     const couponSection = document.createElement("div");
     couponSection.className = "card p-3 mb-3 border";
@@ -93,6 +128,20 @@ card.innerHTML = `
 
     cartContainer.appendChild(checkoutbtn);
 }
+// calculate Total
+function calculateTotals(cart) {
+    let subtotal = 0;
+
+    cart.forEach(item => {
+        subtotal += item.product.Price * item.quantity;
+    });
+
+    const vatRate = 0.14; // 14%
+    const vatAmount = subtotal * vatRate;
+    const total = subtotal + vatAmount;
+
+    return { subtotal, vatAmount, total };
+}
 
 // Increase quantity
 function increaseQty(index) {
@@ -120,21 +169,25 @@ function removeItem(index) {
     renderCart();
 }
 
-// Add new item (Test)
-function addTestItem() {
-    let cart = loadCart();
-    cart.push({
-        id: Date.now(),
-        image: "assets/images/1.png", 
-        name: "New Test Product",
-        model:"Model X",
-        quantity: 1,
-        price: 250
-    });
-    saveCart(cart);
-    renderCart();
-}
+// check out
 function checkout() {
-    alert("Proceeding to checkout 💳");
+    let cart = loadCart();
+
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    const totals = calculateTotals(cart);
+
+    const confirmCheckout = confirm(
+        `Your total is $${totals.total.toFixed(2)}.\nProceed to checkout?`
+    );
+
+    if (confirmCheckout) {
+        saveCart([]); 
+        alert("Payment successful 🎉");
+        renderCart();
+    }
 }
 renderCart();
