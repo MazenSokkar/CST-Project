@@ -125,7 +125,7 @@ function addTestItem() {
     let cart = loadCart();
     cart.push({
         id: Date.now(),
-        // image: "assets/images/1.png", 
+        image: "assets/images/1.png", 
         name: "New Test Product",
         model:"Model X",
         quantity: 1,
