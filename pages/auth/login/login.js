@@ -1,7 +1,8 @@
 import { getAllUsers } from "../../../services/users.service.js";
+import { saveToLocalStorage, getFromLocalStorage ,isAuthenticated} from "../../../shared/js/local-storage-management.js";
 
 // If already logged in, redirect to home page
-if (localStorage.getItem("isLoggedIn") === "true") {
+if (isAuthenticated()) {
     window.location.replace("../../../index.html");
 }
 
@@ -12,9 +13,6 @@ const togglePassword = document.getElementById("togglePassword");
 const loginError = document.getElementById("loginError");
 const passwordError = document.getElementById("passwordError");
 const emailError = document.getElementById("emailError");
-
-
-
 
 // Show / Hide Password
 togglePassword.addEventListener("click", () => {
@@ -39,7 +37,7 @@ form.addEventListener("submit", async (e) => {
     emailError.style.display = "none";
     passwordError.style.display = "none";
 
-    // Username validation 
+    // Email validation 
     if (!email) {
         emailError.style.display = "block";
         emailInput.classList.add("is-invalid");
@@ -62,42 +60,25 @@ form.addEventListener("submit", async (e) => {
     try {
         const usersObject = await getAllUsers();
 
-        //transform object to array to use array methods like find
+        // transform object to array
         const usersArray = Object.values(usersObject);
 
-        const user = usersArray.find(u => u.Username === email && u.Password === password);
+        const user = usersArray.find(
+            u => u.Username === email && u.Password === password
+        );
 
         if (user) {
-            localStorage.setItem("isLoggedIn", "true");
-            localStorage.setItem("currentUser", JSON.stringify(user));
-            window.location.href = "../../../index.html";
+            saveToLocalStorage("isLoggedIn", true);
+            saveToLocalStorage("currentUser", user);
 
+            window.location.href = "../../../index.html";
         } else {
             loginError.textContent = "Invalid Username or Password ❌";
             loginError.style.display = "block";
         }
     } catch (error) {
         console.error(error);
-        loginError.textContent = "Invalid Username or Password ❌";
+        loginError.textContent = "Something went wrong ❌";
         loginError.style.display = "block";
     }
 });
-
-
-/*
-
-// Example of how to get current user data from localStorage
-const user = JSON.parse(localStorage.getItem("currentUser"));
-
-if (user) {
-    console.log("Welcome", user.Name);
-}
-
-
-// Example of how to logout
-function logout() {
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("isLoggedIn");
-    window.location.href = "../login/login.html";
-}
-*/
