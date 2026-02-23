@@ -104,7 +104,7 @@ card.innerHTML = `
         </div>
        `;
 
-cartContainer.appendChild(summarySection);
+    cartContainer.appendChild(summarySection);
 
     const couponSection = document.createElement("div");
     couponSection.className = "card p-3 mb-3 border";
@@ -198,7 +198,7 @@ function checkout() {
     }
 }
 //ده يخليهم متاحين للـ 
-HTML. window.increaseQty = increaseQty;
+window.increaseQty = increaseQty;
 window.decreaseQty = decreaseQty; 
 window.removeItem = removeItem; 
 window.checkout = checkout;
