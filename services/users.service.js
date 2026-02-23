@@ -11,7 +11,7 @@ export function mapToUser(id, data) {
         data.Password || "",
         data.Role || "user",
         data.Address || "",
-        data.createdAt || new Date().toISOString()
+        data.CreatedAt || new Date().toISOString()
     );
 }
 
@@ -47,16 +47,9 @@ export async function AddUser(user) {
         }
 
         // make sure the username is unique
-        const usernameExists = users.some(u => u.username === user.Username);
+        const usernameExists = users.some(u => u.Username === user.Username);
         if (usernameExists) {
             console.warn(`Username "${user.Username}" already exists!`);
-            return null;
-        }
-
-        // make sure the combination of Name and Role is unique
-        const nameRoleExists = users.some(u => u.name === user.Name && u.role === user.Role);
-        if (nameRoleExists) {
-            console.warn(`A user with Name "${user.Name}" and Role "${user.Role}" already exists!`);
             return null;
         }
 
@@ -70,7 +63,7 @@ export async function AddUser(user) {
         // select the last id and increment it for the new user
         let lastId = 1000;
         if (users.length > 0) {
-            const ids = users.map(u => Number(u.id));
+            const ids = users.map(u => Number(u.Id));
             lastId = Math.max(...ids);
         }
 
@@ -84,7 +77,7 @@ export async function AddUser(user) {
             Password: user.Password,
             Role: user.Role,
             Address: user.Address || "",
-            createdAt: user.createdAt || new Date().toISOString()
+            CreatedAt: user.CreatedAt || new Date().toISOString()
         };
 
         //add the new user to Firebase using PUT to set the id as the key
