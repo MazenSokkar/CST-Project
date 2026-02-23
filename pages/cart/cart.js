@@ -57,14 +57,14 @@ card.innerHTML = `
             <div class="col-md-6">
                 <p class="mb-1"><strong>Name:</strong> ${item.product.name}</p>
                 <p class="mb-1"><strong>Model:</strong> ${item.product.model}</p>
-                <p class="mb-0"><strong>Price:</strong> $${item.product.price * item.quantity}</p>
+                <p class="mb-0"><strong>Price:</strong> $${item.product.price * item.product.quantity}</p>
             </div>
 
             <div class="col-md-2 text-center">
                 <div class="d-flex justify-content-center align-items-center gap-2">
                      <p class="mb-1"><strong>Quantity:</strong></p>
                     <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQty(${index})">-</button>
-                   <span>${item.quantity}</span>
+                    <span>${item.product.quantity}</span>
                     <button class="btn btn-sm btn-outline-secondary" onclick="increaseQty(${index})">+</button>
                 </div>
             </div>
@@ -140,10 +140,10 @@ function calculateTotals(cart) {
     let subtotal = 0;
 
     cart.forEach(item => {
-        subtotal += item.product.price * item.quantity;
+        subtotal += item.product.Price * item.quantity;
     });
 
-    const vatRate = 0.14;
+    const vatRate = 0.14; // 14%
     const vatAmount = subtotal * vatRate;
     const total = subtotal + vatAmount;
 
@@ -197,9 +197,9 @@ function checkout() {
         renderCart();
     }
 }
-//ده يخليهم متاحين للـ HTML.
-window.increaseQty = increaseQty;
-window.decreaseQty = decreaseQty;
-window.removeItem = removeItem;
+//ده يخليهم متاحين للـ 
+HTML. window.increaseQty = increaseQty;
+window.decreaseQty = decreaseQty; 
+window.removeItem = removeItem; 
 window.checkout = checkout;
 renderCart();
