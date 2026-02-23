@@ -6,7 +6,7 @@ import {
     getAllKeysFromLocalStorage,
     isAuthenticated,
     getCurrentUser
-} from "../../index.js";
+} from "../../shared/js/local-storage-management.js";
 
 let emptyMessage = document.getElementById("emptyMessage");
 let cartContainer = document.getElementById("cartContainer");
