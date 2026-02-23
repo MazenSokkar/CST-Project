@@ -1,0 +1,34 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3f4f6;
+}
+
+.profile-card {
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.profile-img img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+h3 {
+    font-weight: 600;
+}
+
+.text-muted {
+    font-weight: 400;
+}
+
+.list-group-item {
+    font-size: 15px;
+    border: none;
+    padding-left: 0;
+}
+
+.btn-danger {
+    font-weight: 500;
+    border-radius: 0.5rem;
+}

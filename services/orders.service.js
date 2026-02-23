@@ -113,18 +113,21 @@ export async function updateOrder(order) {
 export async function deleteOrder(orderId) {
   try {
     const response = await fetch(
-      `https://ecommerce-database-dcfc2-default-rtdb.europe-west1.firebasedatabase.app/orders/${orderId}.json`,
+      `${BASE_URL}/orders/${orderId}.json`,
       {
         method: "DELETE"
       }
     );
-    return response.ok;
-  } catch {
+    if (!response.ok) {
+      console.error(`Failed to delete order with id: ${orderId}`);
+      return false;
+    }
+    return true;
+  } catch{
+    console.error("Error deleting order");
     return false;
   }
 }
-
-
 
 // Get order by id
 export async function getOrderById(id) {
