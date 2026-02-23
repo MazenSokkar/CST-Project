@@ -29,6 +29,11 @@
      font-size: 14px;
  }
 
+ .breadcrumb-custom a {
+     color: #8b5e3c;
+     text-decoration: none;
+ }
+
  /* Card */
  .login-card {
      max-width: 500px;
