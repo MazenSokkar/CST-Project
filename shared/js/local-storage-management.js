@@ -49,6 +49,8 @@ export function addToCart(product) {
         }
         saveToLocalStorage(userCartKey, cart);
         showToast('Product added to cart.');
+        // Dispatch a custom event to notify navbar of the application about the cart update
+        window.dispatchEvent(new Event("cartUpdated"));
     } else {
         showToast('Please log in to add items to your cart.');
     }
@@ -69,6 +71,8 @@ export function removeFromCart(productId) {
             cart.splice(index, 1);
             saveToLocalStorage(userCartKey, cart);
             showToast('Product removed from cart.');
+            // Dispatch a custom event to notify navbar of the application about the cart update
+            window.dispatchEvent(new Event("cartUpdated"));
         }
     } else {
         showToast('Please log in to remove items from your cart.');
@@ -83,6 +87,8 @@ export function clearCart() {
         if (userCartKey) {
             removeFromLocalStorage(userCartKey);
             showToast('Cart cleared.');
+            // Dispatch a custom event to notify navbar of the application about the cart update
+            window.dispatchEvent(new Event("cartUpdated"));
         }
     }
 }
@@ -116,7 +122,7 @@ export function addToWishlist(productId) {
             wishlist.push(productId);
             saveToLocalStorage(userWishlistKey, wishlist);
             showToast('Product added to wishlist.');
-        } else if(wishlist.includes(productId)) {
+        } else if (wishlist.includes(productId)) {
             removeFromWishlist(productId);
             showToast('Product removed from wishlist.');
         }
