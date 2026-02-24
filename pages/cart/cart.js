@@ -31,6 +31,7 @@ function saveCart(cart) {
 
 function renderCart() {
     let cart = loadCart();
+    console.log("Cart items:", cart);
 
     if (cart.length === 0) {
         emptyMessage.style.display = "block";
@@ -51,26 +52,26 @@ card.innerHTML = `
         <div class="row align-items-center">
 
             <div class="col-md-2 text-center">
-                <img src="${item.product.image}" width="80" height="80" style="object-fit: cover;">
+                <img src="/assets/${item.product.ImageUrl[0]}" width="80" height="80" style="object-fit: cover;">
             </div>
 
             <div class="col-md-6">
-                <p class="mb-1"><strong>Name:</strong> ${item.product.name}</p>
-                <p class="mb-1"><strong>Model:</strong> ${item.product.model}</p>
-                <p class="mb-0"><strong>Price:</strong> $${item.product.price * item.product.quantity}</p>
+                <p class="mb-1"><strong>Name:</strong> ${item.product.Name}</p>
+                <p class="mb-1"><strong>Description:</strong> ${item.product.Description}</p>
+                <p class="mb-0"><strong>Price:</strong> $${item.product.Price * item.quantity}</p>
             </div>
 
             <div class="col-md-2 text-center">
                 <div class="d-flex justify-content-center align-items-center gap-2">
                      <p class="mb-1"><strong>Quantity:</strong></p>
                     <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQty(${index})">-</button>
-                    <span>${item.product.quantity}</span>
+                    <span>${item.quantity}</span>
                     <button class="btn btn-sm btn-outline-secondary" onclick="increaseQty(${index})">+</button>
                 </div>
             </div>
 
             <div class="col-md-2 text-center">
-                <button class="btn btn-danger btn-sm" onclick="removeItem(${index})">
+                <button class="btn btn-danger btn-sm mt-3 mt-md-0" onclick="removeItem(${index})">
                     Remove 🗑️
                 </button>
             </div>
