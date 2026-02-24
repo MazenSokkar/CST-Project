@@ -51,13 +51,13 @@ card.innerHTML = `
         <div class="row align-items-center">
 
             <div class="col-md-2 text-center">
-                <img src="${item.product.image}" width="80" height="80" style="object-fit: cover;">
+                <img src="/assets/${item.product.ImageUrl[0]}" width="80" height="80" style="object-fit: cover;">
             </div>
 
             <div class="col-md-6">
-                <p class="mb-1"><strong>Name:</strong> ${item.product.name}</p>
-                <p class="mb-1"><strong>Model:</strong> ${item.product.model}</p>
-                <p class="mb-0"><strong>Price:</strong> $${item.product.price * item.quantity}</p>
+                <p class="mb-1"><strong>Name:</strong> ${item.product.Name}</p>
+                <p class="mb-1"><strong>Description:</strong> ${item.product.Description}</p>
+                <p class="mb-0"><strong>Price:</strong> $${item.product.Price * item.quantity}</p>
             </div>
 
             <div class="col-md-2 text-center">
