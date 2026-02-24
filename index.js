@@ -2,17 +2,42 @@ import { getAllProducts } from './services/product.service.js';
 import * as LSManager from './shared/js/local-storage-management.js';
 
 // index.js - works for any page
+// Function to update the cart count in the navbar
+function updateCartCount() {
+    const cartCountElement = document.getElementById("cart-count");
+    if (!cartCountElement) return;
+
+    const cartItems = LSManager.getCartItems();
+
+    let totalQuantity = 0;
+
+    cartItems.forEach(item => {
+        totalQuantity += item.quantity;
+    });
+
+    cartCountElement.textContent = totalQuantity;
+}
 // Load Navbar
-fetch('/Shared/Navbar/navbar.html')   // absolute path from root
-  .then(res => res.text())
-  .then(html => document.getElementById('navbar-container').innerHTML = html)
-  .catch(err => console.error("Error loading Navbar:", err));
+fetch('/Shared/Navbar/navbar.html')
+    .then(res => res.text())
+    .then(html => {
+        document.getElementById('navbar-container').innerHTML = html;
+
+        // Update cart count on page load
+        updateCartCount();
+    })
+    .catch(err => console.error("Error loading Navbar:", err));
 
 // Load Footer
 fetch('/Shared/Footer/footer.html')   // absolute path from root
   .then(res => res.text())
   .then(html => document.getElementById('footer-container').innerHTML = html)
   .catch(err => console.error("Error loading Footer:", err));
+
+  // Listen for cart updates to refresh the cart count in the navbar after the page has loaded
+  window.addEventListener("cartUpdated", () => {
+    updateCartCount();
+});
 
 // get elements
 let prevCatBtn = document.getElementById('prevCatBtn');
