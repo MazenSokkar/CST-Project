@@ -8,8 +8,7 @@
   background-size: cover;
   background-position: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 100px;
-  height: 250px;
+  height: 350px;
 }
 #home,
 .breadcrumb-item + .breadcrumb-item::before {
