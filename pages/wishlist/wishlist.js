@@ -2,10 +2,12 @@ import {
     getFromLocalStorage,
     saveToLocalStorage,
     getCurrentUser,
-    isAuthenticated
+    isAuthenticated,
+    addToCart
 } from "../../shared/js/local-storage-management.js";
 
 import { GetProductById } from "../../services/product.service.js"; 
+
 
 let emptyMessage;
 let wishContainer;
@@ -98,13 +100,14 @@ async function addWishlistItemToCart(index) {
     const wish = await loadWishlist();
     const product = wish[index];
     if (!product) return;
+    addToCart(product);
 
-    const cartKey = `cart_${getCurrentUser().Id}`;
-    let cart = getFromLocalStorage(cartKey) || [];
-    const existing = cart.find(p => p.Id === product.Id);
-    if (existing) existing.quantity += 1;
-    else cart.push({ ...product, quantity: 1 });
-    saveToLocalStorage(cartKey, cart);
+    // const cartKey = `cart_${getCurrentUser().Id}`;
+    // let cart = getFromLocalStorage(cartKey) || [];
+    // const existing = cart.find(p => p.Id === product.Id);
+    // if (existing) existing.quantity += 1;
+    // else cart.push({ ...product, quantity: 1 });
+    // saveToLocalStorage(cartKey, cart);
 
     await removeFromWishlistUI(index);
     alert("Added to cart ✅");
