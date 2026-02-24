@@ -1,5 +1,5 @@
 import { getAllProducts } from "../../services/product.service.js";
-import { addToWishlist , removeFromWishlist, addToCart, removeFromCart} from "../../shared/js/local-storage-management.js";
+import { addToWishlist , removeFromWishlist, addToCart, removeFromCart, buyNow} from "../../shared/js/local-storage-management.js";
 let allProducts = [];
 let filteredProducts = [];
 let currentPage = 1;
@@ -309,7 +309,6 @@ window.updateCartControl = function(productId, maxQuantity) {
         `;
     }
 };
-
 window.buyNow = function(productId) {
     const product = allProducts.find(p => p.Id === productId);
     if (!product) return;

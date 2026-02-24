@@ -6,7 +6,7 @@ import {
     getAllKeysFromLocalStorage,
     isAuthenticated,
     getCurrentUser
-} from "../../index.js";
+} from "../../shared/js/local-storage-management.js";
 
 let emptyMessage = document.getElementById("emptyMessage");
 let cartContainer = document.getElementById("cartContainer");
@@ -31,6 +31,7 @@ function saveCart(cart) {
 
 function renderCart() {
     let cart = loadCart();
+    console.log("Cart items:", cart);
 
     if (cart.length === 0) {
         emptyMessage.style.display = "block";
@@ -64,13 +65,13 @@ card.innerHTML = `
                 <div class="d-flex justify-content-center align-items-center gap-2">
                      <p class="mb-1"><strong>Quantity:</strong></p>
                     <button class="btn btn-sm btn-outline-secondary" onclick="decreaseQty(${index})">-</button>
-                   <span>${item.quantity}</span>
+                    <span>${item.quantity}</span>
                     <button class="btn btn-sm btn-outline-secondary" onclick="increaseQty(${index})">+</button>
                 </div>
             </div>
 
             <div class="col-md-2 text-center">
-                <button class="btn btn-danger btn-sm" onclick="removeItem(${index})">
+                <button class="btn btn-danger btn-sm mt-3 mt-md-0" onclick="removeItem(${index})">
                     Remove 🗑️
                 </button>
             </div>
@@ -104,7 +105,7 @@ card.innerHTML = `
         </div>
        `;
 
-cartContainer.appendChild(summarySection);
+    cartContainer.appendChild(summarySection);
 
     const couponSection = document.createElement("div");
     couponSection.className = "card p-3 mb-3 border";
@@ -140,10 +141,10 @@ function calculateTotals(cart) {
     let subtotal = 0;
 
     cart.forEach(item => {
-        subtotal += item.product.price * item.quantity;
+        subtotal += item.product.Price * item.quantity;
     });
 
-    const vatRate = 0.14;
+    const vatRate = 0.14; // 14%
     const vatAmount = subtotal * vatRate;
     const total = subtotal + vatAmount;
 
@@ -197,9 +198,9 @@ function checkout() {
         renderCart();
     }
 }
-//ده يخليهم متاحين للـ HTML.
+//ده يخليهم متاحين للـ 
 window.increaseQty = increaseQty;
-window.decreaseQty = decreaseQty;
-window.removeItem = removeItem;
+window.decreaseQty = decreaseQty; 
+window.removeItem = removeItem; 
 window.checkout = checkout;
 renderCart();
