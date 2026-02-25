@@ -7,6 +7,7 @@ import {
     isAuthenticated,
     getCurrentUser
 } from "../../shared/js/local-storage-management.js";
+import { showToast } from "../../shared/js/toaster.js";
 
 let emptyMessage = document.getElementById("emptyMessage");
 let cartContainer = document.getElementById("cartContainer");
@@ -182,21 +183,15 @@ function checkout() {
     let cart = loadCart();
 
     if (cart.length === 0) {
-        alert("Your cart is empty!");
+        showToast("Your cart is empty!", {
+            title: "Cart",
+            icon: "/assets/images/bell-regular-full.svg",
+            duration: 3000
+        });
         return;
     }
 
-    const totals = calculateTotals(cart);
-
-    const confirmCheckout = confirm(
-        `Your total is $${totals.total.toFixed(2)}.\nProceed to checkout?`
-    );
-
-    if (confirmCheckout) {
-        saveCart([]); 
-        alert("Payment successful 🎉");
-        renderCart();
-    }
+    window.location.href = "/pages/checkout/checkout.html";
 }
 //ده يخليهم متاحين للـ 
 window.increaseQty = increaseQty;
