@@ -20,35 +20,54 @@
 
             <div class="col-lg-7 mb-4">
                 <div class="card p-4 shadow-sm">
-                    <h4 class="mb-4">Billing Details</h4>
+                    <h4 class="mb-4">Shipping Details</h4>
 
                     <form id="checkoutForm">
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">First Name *</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" placeholder="first name" class="form-control" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Last Name *</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" placeholder="last name" class="form-control" required>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Email Address *</label>
-                            <input type="email" class="form-control" required>
+                            <input type="email" placeholder="email address" class="form-control" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Phone *</label>
-                            <input type="tel" class="form-control" required>
+                            <input type="tel" placeholder="phone" class="form-control" required>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Address *</label>
-                            <input type="text" class="form-control" required>
+                       <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Address *</label>
+                                <input type="text" class="form-control" placeholder="house number & street name" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label"></label>
+                                <input type="text" placeholder="apartment , unit etc (optional)" class="form-control" required>
+                            </div>
+                        </div>
+
+                            <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Town / City</label>
+                                <input type="text" placeholder="town / city" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">State</label>
+                                <input type="text"  placeholder="state" class="form-control" required>
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -59,9 +78,22 @@
                     </form>
                 </div>
             </div>
-
             
             <div class="col-lg-5">
+                <div class="mb-3">
+    <label for="shippingMethodSelect" class="form-label fw-semibold">Shipping Method</label>
+    <select id="shippingMethodSelect" class="form-select">
+        <option value="online" selected>Online Shipping - Free</option>
+    </select>
+    </div>
+
+
+    <div class="mb-4">
+    <label for="paymentMethodSelect" class="form-label fw-semibold">Payment Method</label>
+    <select id="paymentMethodSelect" class="form-select">
+        <option value="cod" selected>Cash on Delivery (COD)</option>
+    </select>
+    </div>
                 <div class="card p-4 shadow-sm">
                     <h4 class="mb-4">Your Order</h4>
 
@@ -70,10 +102,15 @@
                     </div>
 
                     <hr>
+ 
+                    <div class="d-flex justify-content-between">
+                        <span>Product Name</span>
+                        <strong id="pname"></strong>
+                    </div>
 
                     <div class="d-flex justify-content-between">
-                        <span>Subtotal</span>
-                        <strong id="subtotal">$0.00</strong>
+                        <span>Price</span>
+                        <strong id="pprice"></strong>
                     </div>
 
                     <div class="d-flex justify-content-between">
