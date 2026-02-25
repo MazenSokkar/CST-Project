@@ -45,38 +45,51 @@ export async function getAllOrders() {
     return orders;
 }
 
-// add new order -> returns true if order was added successfully, false otherwise
+// add new order -> splits items by seller and creates a separate order for each seller
 export async function addOrder(order) {
+  let itemsBySeller = {};
+  for (let item of order.Items) {
+    let seller = item.SellerName ?? 'Unknown';
+    if (!itemsBySeller[seller]) {
+      itemsBySeller[seller] = [];
+    }
+    itemsBySeller[seller].push(item);
+  }
+  let sellers = Object.keys(itemsBySeller);
+  let sellerSubtotals = {};
+  for (let seller of sellers) {
+    sellerSubtotals[seller] = itemsBySeller[seller].reduce(
+      (sum, item) => sum + (item.Price) * (item.Quantity),
+      0
+    );
+  }
+  let grandSubtotal = Object.values(sellerSubtotals).reduce((a, b) => a + b, 0) || 1;
   let allOrders = await getAllOrders();
-  let newOrderId = allOrders[allOrders.length - 1].Id + 1;
-  let orderToAdd = new Order(                   
-                    newOrderId,
-                    order.Subtotal,
-                    order.DeliveryPrice,
-                    order.Vats,
-                    order.Saving,
-                    order.TotalPrice,
-                    order.UserId,
-                    order.Items,
-                    order.Address,
-                    order.PaymentMethod,
-                    order.Status,
-                    order.Timestamp
-                  );
-  return await fetch(`${BASE_URL}/orders/${newOrderId}.json`,
-    {
+  let nextId = allOrders.length > 0 ? allOrders[allOrders.length - 1].Id + 1 : 5001;
+  for (let seller of sellers) {
+    let ratio = sellerSubtotals[seller] / grandSubtotal;
+    let sellerOrder = new Order(
+      nextId,
+      sellerSubtotals[seller],
+      order.DeliveryPrice * ratio,
+      order.Vats * ratio,
+      order.Saving * ratio,
+      sellerSubtotals[seller] + order.DeliveryPrice * ratio + order.Vats * ratio - order.Saving * ratio,
+      order.UserId,
+      itemsBySeller[seller],
+      order.Address,
+      order.PaymentMethod,
+      order.Status,
+      order.Timestamp
+    );
+    await fetch(`${BASE_URL}/orders/${nextId}.json`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderToAdd)
-    }).then(response =>
-        {
-          if (response.ok) {
-            return true;
-          } else{
-            return false;
-          }
-        }
-      ).catch(() => {return false;});
+      body: JSON.stringify(sellerOrder)
+    })
+    nextId++;
+  }
+  return true;
 }
 
 // update order -> returns true if order was updated successfully, false otherwise
