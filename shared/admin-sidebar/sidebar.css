@@ -1,0 +1,339 @@
+/* Colors*/
+:root {
+    --body-font-family: 'Poppins', sans-serif;
+    --theme-default: #8C593B;
+    --secondary: #222;
+    --theme-default-2: #267D92;
+    --background-color: #f7f7f7;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #EEEEEE;
+}
+
+.main-font {
+    font-family: var(--body-font-family);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background-color: #fff;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+    z-index: 1000;
+}
+
+.fa-screwdriver-wrench{
+    color: var(--theme-default);
+}
+
+.sidebar.collapsed {
+    width: 72px;
+}
+
+.sidebar.collapsed .sidebar-brand-name,
+.sidebar.collapsed .sidebar-section-title,
+.sidebar.collapsed .sidebar-link span,
+.sidebar.collapsed .sidebar-arrow,
+.sidebar.collapsed .sidebar-submenu {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-link {
+    justify-content: center;
+}
+
+.sidebar.collapsed:hover {
+    width: 260px;
+}
+
+.sidebar.collapsed:hover .sidebar-brand-name,
+.sidebar.collapsed:hover .sidebar-section-title,
+.sidebar.collapsed:hover .sidebar-link span,
+.sidebar.collapsed:hover .sidebar-arrow,
+.sidebar.collapsed:hover .sidebar-submenu {
+    display: revert;
+}
+
+.sidebar.collapsed:hover .sidebar-link {
+    justify-content: flex-start;
+}
+
+body:has(.sidebar.collapsed:hover) .sidebar-collapse-btn {
+    left: 246px;
+}
+
+.sidebar-collapse-btn {
+    position: fixed;
+    top: 22px;
+    left: 246px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+    color: #6b7280;
+    font-size: 11px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
+    transition: background 0.2s, left 0.3s ease;
+}
+
+body:has(.sidebar.collapsed) .sidebar-collapse-btn {
+    left: 58px;
+}
+
+.sidebar-collapse-btn:hover {
+    background: var(--theme-default);
+    color: #fff;
+    border-color: var(--theme-default);
+}
+
+.sidebar-collapse-btn i {
+    transition: transform 0.3s ease;
+}
+
+body:has(.sidebar.collapsed) .sidebar-collapse-btn i {
+    transform: rotate(180deg);
+}
+
+.sidebar-header {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.brand-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sidebar-brand-icon {
+    color: #fff;
+    font-size: 18px;
+}
+
+.sidebar-brand-name {
+    font-family: var(--body-font-family);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--secondary);
+    white-space: nowrap;
+}
+
+.sidebar-body {
+    padding: 12px 12px;
+    flex: 1;
+}
+
+.sidebar-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #9ca3af;
+    margin: 8px 4px 6px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 2px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.18s, color 0.18s;
+    white-space: nowrap;
+}
+
+.sidebar-link i:first-child {
+    width: 18px;
+    text-align: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(38, 125, 146, 0.1);
+    color: var(--theme-default);
+}
+
+.sidebar-link.active {
+    background-color: var(--theme-default);
+    color: #fff;
+}
+
+.sidebar-arrow {
+    font-size: 11px;
+    transition: transform 0.25s ease;
+    color: inherit;
+}
+
+.sidebar-link-dropdown:not(.collapsed) .sidebar-arrow {
+    transform: rotate(0deg);
+}
+
+.sidebar-link-dropdown.collapsed .sidebar-arrow {
+    transform: rotate(0deg);
+}
+
+.sidebar-link-dropdown:not(.collapsed) {
+    background-color: var(--theme-default);
+    color: #fff;
+}
+.sidebar-submenu {
+    list-style: none;
+    padding: 4px 0 4px 40px;
+    margin: 0;
+}
+
+.sidebar-sublink {
+    display: block;
+    padding: 8px 10px;
+    font-size: 13.5px;
+    color: #4b5563;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+}
+
+.sidebar-sublink:hover {
+    color: var(--theme-default);
+    background-color: rgba(38, 125, 146, 0.07);
+}
+
+.sidebar-sublink.active {
+    color: var(--theme-default);
+    font-weight: 600;
+}
+
+
+.mobile-topbar {
+    display: none;
+}
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-backdrop.active {
+    display: block;
+    opacity: 1;
+}
+
+
+@media (max-width: 768px) {
+
+    .sidebar-collapse-btn {
+        display: none;
+    }
+
+    .sidebar {
+        left: -260px;
+        width: 260px;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+
+    .sidebar.mobile-open {
+        left: 0;
+    }
+    .sidebar .sidebar-brand-name,
+    .sidebar .sidebar-section-title,
+    .sidebar .sidebar-link span,
+    .sidebar .sidebar-arrow {
+        display: revert;
+    }
+
+    .sidebar .sidebar-link {
+        justify-content: flex-start;
+    }
+
+    .mobile-topbar {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 10vh;
+        background-color: var(--theme-default);
+        padding: 0;
+        z-index: 998;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .mobile-hamburger {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: background 0.2s;
+        line-height: 1;
+    }
+
+    .mobile-hamburger:hover {
+        background: rgba(255,255,255,0.15);
+    }
+
+    .mobile-brand {
+        font-family: var(--body-font-family);
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0.02em;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding-top: calc(56px + 16px);
+    }
+}
