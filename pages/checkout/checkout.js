@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showToast("Your order has been placed successfully 🎉", { title: "Checkout", duration: 3000 });
 
         setTimeout(() => {
-            window.location.href = "/pages/home/home.html";
+            window.location.href = "index.html";
         }, 1500);
     });
 
