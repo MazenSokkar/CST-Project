@@ -237,6 +237,7 @@ body:has(.sidebar.collapsed) .main-content {
     color: #ef4444;
 }
 
+/* stats cards */
 .stat-icon {
     width: 52px;
     height: 52px;
@@ -260,6 +261,8 @@ body:has(.sidebar.collapsed) .main-content {
     color: #dc2626 !important;
 }
 
+
+/* mobile */
 @media (max-width: 768px) {
     .main-content {
         margin-left: 0;

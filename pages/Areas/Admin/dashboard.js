@@ -72,9 +72,29 @@ function getTotalRevenue() {
     });
     return totalRevenue;
 }
+// get total revenue by seller name
+function getTotalRevenueBySellerName(sellerName){
+    let totalRevenue = 0;
+    allOrders.forEach(order => {
+        if (order.SellerName == sellerName) {
+            totalRevenue += order.TotalPrice;
+        }
+    });
+    return totalRevenue;
+}
 // get total orders
 function getTotalOrdersCount() {
     return allOrders.length;
+}
+// get total orders by seller name
+function getTotalOrdersCountBySellerName(sellerName){
+    let totalOrders = 0;
+    allOrders.forEach(order => {
+        if (order.SellerName == sellerName) {
+            totalOrders++;
+        }
+    });
+    return totalOrders;
 }
 // get total products
 function getTotalProductsCount() {
