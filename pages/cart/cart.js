@@ -7,7 +7,7 @@ import {
     isAuthenticated,
     getCurrentUser
 } from "../../shared/js/local-storage-management.js";
-import { showToast } from "../../shared/js/toaster.js";
+import { showToast } from "../../shared/js/toast.js";
 
 let emptyMessage = document.getElementById("emptyMessage");
 let cartContainer = document.getElementById("cartContainer");

@@ -1,0 +1,13 @@
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+h4 {
+    font-weight: 600;
+}
+
+.btn-danger {
+    height: 50px;
+    font-weight: 500;
+}
