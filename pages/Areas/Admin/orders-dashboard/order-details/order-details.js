@@ -10,54 +10,52 @@ const params = new URLSearchParams(window.location.search);
 const orderId = params.get("id");
 
 if (!orderId) {
-    window.location.href = "list-orders.html";
+  window.location.href = "list-orders.html";
 }
 
 // Load data
 const allOrders = await OrderService.getAllOrders();
-const allUsers  = await UserService.getAllUsers();
+const allUsers = await UserService.getAllUsers();
 
-const order = allOrders.find(o => String(o.Id) === String(orderId));
+const order = allOrders.find((o) => String(o.Id) === String(orderId));
 
 if (!order) {
-    document.querySelector(".container").innerHTML = `
+  document.querySelector(".container").innerHTML = `
         <div class="alert alert-danger mt-4">Order not found.</div>
     `;
 } else {
-    renderOrderDetails(order);
+  renderOrderDetails(order);
 }
 
 function renderOrderDetails(order) {
-    // Order ID & Timestamp
-    document.getElementById("orderId").textContent = `#${order.Id}`;
-    document.getElementById("orderTimestamp").textContent = new Date(order.Timestamp).toLocaleDateString();
+  // Order ID & Timestamp
+  document.getElementById("orderId").textContent = `#${order.Id}`;
+  document.getElementById("orderTimestamp").textContent = new Date(order.Timestamp).toLocaleDateString();
 
-    // Status Badge
-    const badge = document.getElementById("orderStatusBadge");
-    badge.textContent = order.Status;
-    badge.className = `badge status-badge status-${order.Status?.toLowerCase()}`;
+  // Status Badge
+  const badge = document.getElementById("orderStatusBadge");
+  badge.textContent = order.Status;
+  badge.className = `badge status-badge status-${order.Status?.toLowerCase()}`;
 
-    // Customer
-    const user = allUsers.find(u => String(u.Id) === String(order.UserId));
-    document.getElementById("customerName").textContent = user?.Name || `User #${order.UserId}`;
+  // Customer
+  const user = allUsers.find((u) => String(u.Id) === String(order.UserId));
+  document.getElementById("customerName").textContent = user?.Name || `User #${order.UserId}`;
 
-    // Summary Total
-    document.getElementById("summaryTotalRight").textContent = `$${order.TotalPrice?.toFixed(2) ?? "0.00"}`;
+  // Summary Total
+  document.getElementById("summaryTotalRight").textContent = `$${order.TotalPrice?.toFixed(2) ?? "0.00"}`;
 
-    // Order Items
-    const tbody = document.getElementById("orderItemsBody");
-    tbody.innerHTML = "";
+  // Order Items
+  const tbody = document.getElementById("orderItemsBody");
+  tbody.innerHTML = "";
 
-    order.Items.forEach(product => {
-        const finalPrice = product.Discount
-            ? (product.Price * (1 - product.Discount / 100)).toFixed(2)
-            : product.Price?.toFixed(2);
+  order.Items.forEach((product) => {
+    const finalPrice = product.Discount
+      ? (product.Price * (1 - product.Discount / 100)).toFixed(2)
+      : product.Price?.toFixed(2);
 
-        const imgSrc = product.ImageUrl?.[0]
-            ? `../../../assets/${product.ImageUrl[0]}`
-            : "../../../assets/images/1.png";
+    const imgSrc = product.ImageUrl?.[0] ? `../../../assets/${product.ImageUrl[0]}` : "../../../assets/images/1.png";
 
-        tbody.innerHTML += `
+    tbody.innerHTML += `
             <tr>
                 <td>
                     <div class="d-flex align-items-center gap-2">
@@ -67,7 +65,8 @@ function renderOrderDetails(order) {
                 </td>
                 <td>${product.Quantity ?? "—"}</td>
                 <td>
-                    ${product.Discount
+                    ${
+                      product.Discount
                         ? `<span class="text-decoration-line-through text-muted me-1">$${product.Price?.toFixed(2)}</span>
                            <span class="fw-bold text-success">$${finalPrice}</span>`
                         : `<span class="fw-bold">$${finalPrice}</span>`
@@ -76,12 +75,12 @@ function renderOrderDetails(order) {
                 <td>${product.SellerName || "—"}</td>
             </tr>
         `;
-    });
+  });
 
-    // Cart Totals
-    document.getElementById("summarySubtotal").textContent = order.Subtotal?.toFixed(2)      ?? "0.00";
-    document.getElementById("summaryDelivery").textContent = order.DeliveryPrice?.toFixed(2)  ?? "0.00";
-    document.getElementById("summaryVat").textContent      = order.Vats?.toFixed(2)           ?? "0.00";
-    document.getElementById("summarySaving").textContent   = order.Saving?.toFixed(2)         ?? "0.00";
-    document.getElementById("summaryTotal").textContent    = order.TotalPrice?.toFixed(2)     ?? "0.00";
+  // Cart Totals
+  document.getElementById("summarySubtotal").textContent = order.Subtotal?.toFixed(2) ?? "0.00";
+  document.getElementById("summaryDelivery").textContent = order.DeliveryPrice?.toFixed(2) ?? "0.00";
+  document.getElementById("summaryVat").textContent = order.Vats?.toFixed(2) ?? "0.00";
+  document.getElementById("summarySaving").textContent = order.Saving?.toFixed(2) ?? "0.00";
+  document.getElementById("summaryTotal").textContent = order.TotalPrice?.toFixed(2) ?? "0.00";
 }
