@@ -1,0 +1,64 @@
+<div class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+        <a href="./dashboard.html" class="sidebar-brand">
+            <div class="brand-logo">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+            <span class="sidebar-brand-name">FurniShop Admin</span>
+        </a>
+    </div>
+
+    <div class="sidebar-body">
+        <p class="sidebar-section-title">Menu</p>
+        <ul class="sidebar-menu nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link sidebar-link active" href="./dashboard.html">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link sidebar-link sidebar-link-dropdown collapsed" href="" data-bs-toggle="collapse"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-list"></i>
+                    <span>Category</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link sidebar-link sidebar-link-dropdown collapsed" href="#productsMenu"
+                    data-bs-toggle="collapse" aria-expanded="false">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                    <span>Products</span>
+                    <i class="fa-solid fa-chevron-down sidebar-arrow ms-auto"></i>
+                </a>
+                <ul class="collapse sidebar-submenu" id="productsMenu">
+                    <li><a class="sidebar-sublink" href="">Add</a></li>
+                    <li><a class="sidebar-sublink" href="">List</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link sidebar-link sidebar-link-dropdown collapsed" href="#orderMenu"
+                    data-bs-toggle="collapse" aria-expanded="false">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span>Order</span>
+                    <i class="fa-solid fa-chevron-down sidebar-arrow ms-auto"></i>
+                </a>
+                <ul class="collapse sidebar-submenu" id="orderMenu">
+                    <li><a class="sidebar-sublink" href="#">List</a></li>
+                    <li><a class="sidebar-sublink" href="#">Details</a></li>
+                    <li><a class="sidebar-sublink" href="#">Invoice</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link sidebar-link" href="#">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Collapse sidebar">
+    <i class="fa-solid fa-chevron-left" id="collapseIcon"></i>
+</button>
