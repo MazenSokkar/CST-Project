@@ -2,13 +2,17 @@ import {
     getFromLocalStorage,
     saveToLocalStorage
 } from "../../../shared/js/local-storage-management.js";
-
+import {
+    loadSidebar
+} from "../../../shared/admin-sidebar/sidebar.js";
 import {
     getAllUsers,
     deleteUser as deleteUserFromAPI,
     updateUser,
     AddUser
 } from "../../../services/users.service.js";
+
+await loadSidebar("Customers");
 
 const tableBody = document.getElementById("userTable");
 const searchInput = document.getElementById("searchInput");
