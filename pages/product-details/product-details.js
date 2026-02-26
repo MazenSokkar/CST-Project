@@ -80,12 +80,12 @@ async function loadProduct(id) {
     <!-- Price -->
     <div class="mb-3">
         <span class="fs-3 fw-bold">
-            ${product.Price.toLocaleString()} EGP
+            ${product.Price.toLocaleString()} $
         </span>
 
         ${product.Discount > 0 ? `
             <span class="text-muted text-decoration-line-through ms-2">
-                ${(product.Price + (product.Price * product.Discount / 100)).toLocaleString()} EGP
+                ${(product.Price + (product.Price * product.Discount / 100)).toLocaleString()} $
             </span>
             <span class="text-danger ms-2">
                 ${product.Discount}% Off
