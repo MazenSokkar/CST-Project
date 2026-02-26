@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="../../../shared/admin-sidebar/sidebar.css">
+
+    <style>
+     .main-content {
+    margin-left: 260px;
+    margin-top: 0;
+    padding: 0;
+    margin-bottom: 2rem;
+    transition: margin-left 0.3s ease;
+}
+
+body:has(.sidebar.collapsed) .main-content {
+    margin-left: 72px;
+}
+
+.action-bar {
+    background: #8C593B;
+    padding: 20px 30px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.search-box {
+    background: #f4f6f9;
+    border-radius: 10px;
+    padding: 8px 14px;
+    flex: 1;
+    max-width: 300px;
+    color: #8C593B;
+}
+
+.search-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #8C593B;
+}
+
+table tbody tr {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.1s;
+}
+
+table tbody tr:hover {
+    transform: scale(1.01);
+}
+
+.btn {
+    background: #f4f6f9;
+    color: #8C593B;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+    </style>
+</head>
+
+<body>
+
+    <div id="sidebar-placeholder"></div>
+
+    <!-- mobile topbar -->
+    <div class="mobile-topbar p-3" id="mobileTopbar">
+        <button class="mobile-hamburger" id="mobileHamburger" title="Open menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="main-content">
+
+        <!-- ACTION BAR -->
+        <div class="action-bar mb-3">
+            <h5 class="category bg-white p-3 rounded m-0">Product List</h5>
+
+            <button class="btn ms-auto" id="addProductBtn">
+                <i class="fa fa-plus me-1"></i>Add Product
+            </button>
+
+            <div class="search-box d-flex align-items-center">
+                <i class="fa fa-search me-2"></i>
+                <input type="text" id="searchInput" placeholder="Search product">
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="container my-4">
+            <div class="card p-4 shadow-sm">
+                <h5 class="mb-3">Products</h5>
+
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NAME</th>
+                            <th>PRICE</th>
+                            <th>CATEGORY</th>
+                            <th>QUANTITY</th>
+                            <th>RATE</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="productTable"></tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between mt-3 align-items-center">
+                <p id="paginationInfo" class="mb-0"></p>
+                <ul class="pagination mb-0" id="pagination"></ul>
+            </div>
+        </div>
+
+    </div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="modal fade" id="addProductModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add Product</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-2">
+                    <input type="text" id="addName" class="form-control" placeholder="Product Name">
+                    <small class="text-danger" id="errorName"></small>
+                </div>
+
+                <div class="mb-2">
+                    <input type="text" id="addPrice" class="form-control" placeholder="Price">
+                    <small class="text-danger" id="errorPrice"></small>
+                </div>
+
+                <div class="mb-2">
+                    <input type="text" id="addQuantity" class="form-control" placeholder="Quantity">
+                    <small class="text-danger" id="errorQuantity"></small>
+                </div>
+
+                <div class="mb-2">
+                    <input type="text" id="addCategory" class="form-control" placeholder="Category">
+                    <small class="text-danger" id="errorCategory"></small>
+                </div>
+
+                <div class="mb-2">
+                    <input type="text" id="addColor" class="form-control" placeholder="Color">
+                    <small class="text-danger" id="errorColor"></small>
+                </div>
+
+                <div class="mb-2">
+                    <input type="text" id="addSellerName" class="form-control" placeholder="Seller Name">
+                    <small class="text-danger" id="errorSellerName"></small>
+                </div>
+
+                <div class="mb-2">
+                    <input type="text" id="addDiscount" class="form-control" placeholder="Discount %">
+                    <small class="text-danger" id="errorDiscount"></small>
+                </div>
+
+                <div class="mb-2">
+                    <input type="text" id="addRate" class="form-control" placeholder="Rate (0-5)">
+                    <small class="text-danger" id="errorRate"></small>
+                </div>
+
+                <div class="mb-2">
+                    <textarea id="addDescription" class="form-control" placeholder="Description"></textarea>
+                    <small class="text-danger" id="errorDescription"></small>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn" id="saveAddProduct">Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+   <!-- EDIT PRODUCT MODAL -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Product</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="text" id="editName" class="form-control mb-1" placeholder="Product Name">
+                <div id="errorEditName" class="text-danger small mb-2"></div>
+
+                <input type="number" id="editPrice" class="form-control mb-1" placeholder="Price">
+                <div id="errorEditPrice" class="text-danger small mb-2"></div>
+
+                <input type="number" id="editQuantity" class="form-control mb-1" placeholder="Quantity">
+                <div id="errorEditQuantity" class="text-danger small mb-2"></div>
+
+                <input type="text" id="editCategory" class="form-control mb-1" placeholder="Category">
+                <div id="errorEditCategory" class="text-danger small mb-2"></div>
+
+                <input type="text" id="editColor" class="form-control mb-1" placeholder="Color">
+                <div id="errorEditColor" class="text-danger small mb-2"></div>
+
+                <input type="text" id="editSellerName" class="form-control mb-1" placeholder="Seller Name">
+                <div id="errorEditSellerName" class="text-danger small mb-2"></div>
+
+                <input type="number" id="editDiscount" class="form-control mb-1" placeholder="Discount %">
+                <div id="errorEditDiscount" class="text-danger small mb-2"></div>
+
+                <input type="number" id="editRate" class="form-control mb-1" placeholder="Rate (0-5)">
+                <div id="errorEditRate" class="text-danger small mb-2"></div>
+
+                <textarea id="editDescription" class="form-control mb-1" placeholder="Description"></textarea>
+                <div id="errorEditDescription" class="text-danger small mb-2"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn" id="saveEdit">Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS FILE -->
+    <script type="module" src="./product-list.js"></script>
+
+</body>
+</html>

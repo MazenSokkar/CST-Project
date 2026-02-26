@@ -1,4 +1,5 @@
 import { GetProductById } from "../../services/product.service.js";
+import { addToCart, buyNow } from '../../shared/js/local-storage-management.js';
 
 const container = document.getElementById("productContainer");
 const params = new URLSearchParams(window.location.search);
@@ -145,8 +146,130 @@ async function loadProduct(id) {
     </button>
 
 </div>
-        `;
+ <section class="mt-50">
+                <div class="container">
+                    <div class="product-detail-review">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="nav nav-pills nav-lb-tab" id="myTab" role="tablist">
+                                    <!-- nav item -->
+                                    <li class="nav-item" role="presentation">
+                                        <!-- btn -->
+                                        <button class="nav-link active" id="product-tab" data-bs-toggle="tab"
+                                            data-bs-target="#product-tab-pane" type="button" role="tab"
+                                            aria-controls="product-tab-pane" aria-selected="true">
+                                            Product Details
+                                        </button>
+                                    </li>
+                                    <!-- nav item -->
+                                    <li class="nav-item" role="presentation">
+                                        <!-- btn -->
+                                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab"
+                                            data-bs-target="#reviews-tab-pane" type="button" role="tab"
+                                            aria-controls="reviews-tab-pane" aria-selected="false" tabindex="-1">
+                                            Reviews
+                                        </button>
+                                    </li>
+                                </ul>
+                                <!-- tab content -->
+                                <div class="tab-content" id="myTabContent">
+                                    <!-- tab pane -->
+                                    <div class="tab-pane fade show active" id="product-tab-pane" role="tabpanel"
+                                        aria-labelledby="product-tab" tabindex="0">
+                                        <div class="my-4">
+                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio quo assumenda asperiores atque nisi ipsa deleniti similique? Neque esse voluptate ipsa, sunt quas delectus amet vitae dignissimos incidunt nisi asperiores vel placeat cum quidem. Quasi voluptatem, recusandae quod eos deserunt animi libero optio totam labore officiis minus illo nemo maxime, sequi, magni voluptate nostrum aspernatur aperiam amet tempora possimus. Nisi aut, consectetur soluta culpa quos eius nostrum inventore. Officia quaerat cupiditate molestiae nihil. Eos sequi consectetur sapiente officiis sed. Minus, nostrum sequi? Id quaerat explicabo voluptatibus dolorum accusamus quis ipsam animi nostrum similique. Nobis, temporibus possimus laboriosam repellendus in excepturi?</p>
+                                            <h4><strong>Unordered List</strong></h4>
+                                            <ul class="m-0 ps-3">
+                                                <li>Lorem ipsum dolor sit amet.</li>
+                                                <li>Lorem ipsum dolor sit amet.</li>
+                                                <li>Lorem ipsum dolor sit amet.</li>
+                                                <li>Lorem ipsum dolor sit amet.</li>
+                                            </ul>
+                                            <h4 class="mt-3"><strong>Ordered Lista</strong></h4>
+                                            <ol class="m-0 ps-3">
+                                                <li>Lorem ipsum dolor sit amet.</li>
+                                                <li>Lorem ipsum dolor sit amet.</li>
+                                                <li>Lorem ipsum dolor sit amet.</li>
+                                                <li>Lorem ipsum dolor sit amet.</li>
+                                            </ol>
+                                        </div>
+                                    </div>
 
+                                    <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel"
+                                        aria-labelledby="reviews-tab" tabindex="0">
+                                        <div class="my-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="mb-5">
+                                                        <div class="d-flex border-bottom pb-2 mb-2">
+                                                            <div>
+                                                                <h6 class="mb-1">Devid1</h6>
+                                                                <p class="small">
+                                                                    <span class="text-muted">01 January 2000</span>
+                                                                    <span class="verified-badge">Verified</span>
+                                                                </p>
+                                                                <div class="mb-2">
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                </div>
+                                                                <p>
+                                                                    Nice Product
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-0">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-1">Devid2</h6>
+                                                                <p class="small">
+                                                                    <span class="text-muted">01 January 2000</span>
+                                                                    <span class="verified-badge">Verified</span>
+                                                                </p>
+                                                                <div class="mb-2">
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                                    <i class="bi bi-star-half text-warning"></i>
+                                                                </div>
+                                                                <p>
+                                                                    Nice Product
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ </section>
+        `;
+        
+        // بعد container.innerHTML ...
+const addCartBtn = document.querySelector(".add-cart-btn");
+const buyNowBtn = document.querySelector(".buy-now-btn");
+const qtyInput = document.getElementById("qty");
+
+addCartBtn.addEventListener("click", () => {
+    const quantity = parseInt(qtyInput.value);
+    addToCart({ ...product, quantity });
+});
+
+buyNowBtn.addEventListener("click", () => {
+    const quantity = parseInt(qtyInput.value);
+    buyNow({ ...product, quantity });
+});
         const thumbnails = document.querySelectorAll(".thumbnail-img");
         const mainImage = document.querySelector(".product-img");
 
