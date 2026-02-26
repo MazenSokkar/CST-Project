@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function calculateTotals(cart) {
         let subtotal = 0;
-        cart.forEach(item => subtotal += item.product.Price * item.quantity);
+        cart.forEach(item => subtotal += ((item.product.Price) - (item.product.Price * item.product.Discount / 100)) * item.quantity);
         const vatRate = 0.14;
         const vatAmount = subtotal * vatRate;
         const total = subtotal + vatAmount;
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cart.forEach(item => {
             const div = document.createElement("div");
             div.className = "d-flex justify-content-between mb-2";
-            div.innerHTML = `<span>${item.product.Name} x ${item.quantity}</span> <strong>$${(item.product.Price * item.quantity).toFixed(2)}</strong>`;
+            div.innerHTML = `<span>${item.product.Name} x ${item.quantity}</span> <strong>$${(((item.product.Price) - (item.product.Price * item.product.Discount / 100)) * item.quantity).toFixed(2)}</strong>`;
             orderSummary.appendChild(div);
         });
 
