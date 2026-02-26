@@ -1,5 +1,5 @@
 import { getAllProducts } from "../../services/product.service.js";
-import { addToWishlist , removeFromWishlist, addToCart, removeFromCart, buyNow} from "../../shared/js/local-storage-management.js";
+import { addToWishlist , removeFromWishlist, addToCart, removeFromCart, buyNow, getWishlistItems, isAuthenticated} from "../../shared/js/local-storage-management.js";
 let allProducts = [];
 let filteredProducts = [];
 let currentPage = 1;
@@ -180,6 +180,8 @@ function renderProducts() {
   container.innerHTML = pageProducts.map((product) => createProductCard(product)).join("");
   setupCardHover();
   pageProducts.forEach((product) => updateCartControl(product.Id, product.Quantity));
+  syncWishlistIcons();
+  updateWishlistCount();
 }
 function createProductCard(product) {
   const discountedPrice = product.Discount
@@ -286,7 +288,17 @@ window.increaseInCart = function(productId, maxQuantity) {
 window.decreaseFromCart = function(productId, maxQuantity) {
     const product = allProducts.find(p => p.Id === productId);
     if (!product) return;
-    removeFromCart(productId);
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
+    const item = cart.find(i => i.product.Id === productId);
+    if (!item) return;
+    if (item.quantity > 1) {
+        item.quantity -= 1;
+        localStorage.setItem(`cart_${user.Id}`, JSON.stringify(cart));
+        window.dispatchEvent(new Event("cartUpdated"));
+    } else {
+        removeFromCart(productId);
+    }
     updateCartControl(productId, maxQuantity);
 };
 window.updateCartControl = function(productId, maxQuantity) {
@@ -368,4 +380,50 @@ window.handleWishlist = function(productId, btn) {
         btn.style.backgroundColor = 'white';
         btn.style.color = '#8A593D';
     }
+    updateWishlistCount();
 };
+
+// Sync wishlist heart icons with localStorage on render
+function syncWishlistIcons() {
+    if (!isAuthenticated()) return;
+    const wishlist = getWishlistItems();
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+        const onclickAttr = btn.getAttribute('onclick');
+        const match = onclickAttr?.match(/handleWishlist\((\d+)/);
+        if (!match) return;
+        const productId = parseInt(match[1]);
+        const icon = btn.querySelector('i');
+        if (wishlist.includes(productId)) {
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+            btn.style.backgroundColor = 'white';
+            btn.style.color = '#8A593D';
+        } else {
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+            btn.style.backgroundColor = '';
+            btn.style.color = '';
+        }
+    });
+}
+
+// Update wishlist count in navbar
+function updateWishlistCount() {
+    let badge = document.getElementById('wishlist-count');
+    // Dynamically inject the badge if it doesn't exist in the navbar
+    if (!badge) {
+        const wishlistLink = document.querySelector('.navbar-icons a[href*="wishlist"]');
+        if (!wishlistLink) return;
+        wishlistLink.style.position = 'relative';
+        badge = document.createElement('span');
+        badge.id = 'wishlist-count';
+        badge.className = 'badge position-absolute top-0 start-100 translate-middle rounded-pill';
+        wishlistLink.appendChild(badge);
+    }
+    if (!isAuthenticated()) {
+        badge.textContent = '0';
+        return;
+    }
+    const wishlist = getWishlistItems();
+    badge.textContent = wishlist.length;
+}
