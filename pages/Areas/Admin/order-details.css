@@ -43,10 +43,7 @@ body:has(.sidebar.collapsed) .main-content {
   transition: all 0.3s;
 }
 
-.btn-back:hover {
-  background-color: var(--theme-default);
-  color: #fff;
-}
+
 
 /* Cards */
 .card {
@@ -82,9 +79,7 @@ body:has(.sidebar.collapsed) .main-content {
   color: #374151;
 }
 
-.table tbody tr:hover {
-  background-color: #f9fafb;
-}
+
 
 .product-img {
   width: 50px;
@@ -134,10 +129,12 @@ body:has(.sidebar.collapsed) .main-content {
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
-    margin-top: 40px;
+    margin-top: calc(10vh + 20px);
   }
 }
 
-.col-lg-5 .card {
-  margin-left: 1rem;
+@media (min-width: 992px) {
+  .col-lg-5 .card {
+    margin-left: 1rem;
+  }
 }

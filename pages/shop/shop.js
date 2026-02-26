@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadProducts() {
   try {
     allProducts = await getAllProducts();
+    console.log(allProducts.filter((p) => p.Name === "Luxury Velvet Sofa"));
     filteredProducts = [...allProducts];
     if (allProducts.length > 0) {
       maxProductPrice = Math.ceil(
@@ -153,7 +154,10 @@ function applyFilters() {
   );
   filteredProducts = allProducts.filter((product) => {
     if (product.Price < minPrice || product.Price > maxPrice) return false;
-    if (selectedColors.length > 0 && !selectedColors.some((c) => product.Color.includes(c))) return false;
+    
+    // Ensure product.Color is an array to prevent "includes is not a function" error
+    const productColors = Array.isArray(product.Color) ? product.Color : (product.Color ? [product.Color] : []);
+    if (selectedColors.length > 0 && !selectedColors.some((c) => productColors.includes(c))) return false;
     if (selectedSizes.length > 0 && !selectedSizes.includes(getProductSize(product.Size))) return false;
     if (selectedRatings.length > 0 && !selectedRatings.includes(Math.round(product.Rate || 0))) return false;
     return true;

@@ -65,10 +65,7 @@ body:has(.sidebar.collapsed) .main-content {
     box-shadow 0.2s;
 }
 
-.table tbody tr:hover {
-  transform: scale(1.005);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-}
+
 
 .table tbody td {
   padding: 14px 16px;
@@ -120,11 +117,7 @@ body:has(.sidebar.collapsed) .main-content {
   transition: all 0.2s;
 }
 
-.action-dropdown .btn:hover {
-  background-color: var(--theme-default);
-  color: #fff;
-  border-color: var(--theme-default);
-}
+
 
 .action-dropdown .dropdown-menu {
   border-radius: 10px;
@@ -142,10 +135,7 @@ body:has(.sidebar.collapsed) .main-content {
   transition: background 0.15s;
 }
 
-.action-dropdown .dropdown-item:hover {
-  background-color: rgba(140, 89, 59, 0.1);
-  color: var(--theme-default);
-}
+
 
 .action-dropdown .dropdown-item i {
   width: 18px;
@@ -163,9 +153,7 @@ body:has(.sidebar.collapsed) .main-content {
   transition: color 0.2s;
 }
 
-.more-menu .btn:hover {
-  color: var(--theme-default);
-}
+
 
 .more-menu .dropdown-menu {
   border-radius: 10px;
@@ -183,10 +171,7 @@ body:has(.sidebar.collapsed) .main-content {
   transition: background 0.15s;
 }
 
-.more-menu .dropdown-item:hover {
-  background-color: rgba(140, 89, 59, 0.1);
-  color: var(--theme-default);
-}
+
 
 .more-menu .dropdown-item i {
   width: 18px;
@@ -204,10 +189,7 @@ body:has(.sidebar.collapsed) .main-content {
   transition: all 0.2s;
 }
 
-.pagination .page-link:hover {
-  background-color: rgba(140, 89, 59, 0.15);
-  color: var(--theme-default);
-}
+
 
 .pagination .page-link.active {
   background: var(--theme-default);
@@ -224,6 +206,6 @@ body:has(.sidebar.collapsed) .main-content {
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
-    margin-top: 40px;
+    margin-top: calc(10vh + 20px);
   }
 }
