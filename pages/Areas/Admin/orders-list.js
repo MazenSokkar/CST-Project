@@ -1,4 +1,4 @@
-import { loadSidebar } from "../../../../shared/admin-sidebar/sidebar.js";
+import { loadSidebar } from "../../../shared/admin-sidebar/sidebar.js";
 import { getCurrentUser } from "../../../../shared/js/local-storage-management.js";
 import { getAllOrders, updateOrder } from "../../../../services/orders.service.js";
 import { getAllUsers } from "../../../../services/users.service.js";
@@ -130,9 +130,9 @@ function renderTable() {
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item view-order" href="../order-details/order-details.html?id=${order.Id}">
+                        <li><a class="dropdown-item view-order" href="../Admin/order-details.html?id=${order.Id}">
                             <i class="fa-solid fa-eye text-primary"></i>View</a></li>
-                        <li><a class="dropdown-item invoice-order" href="../order-invoice/order-invoice.html?id=${order.Id}">
+                        <li><a class="dropdown-item invoice-order" href="../Admin/invoice.html?id=${order.Id}">
                             <i class="fa-solid fa-file-invoice text-success"></i>Invoice</a></li>
                     </ul>
                 </div>

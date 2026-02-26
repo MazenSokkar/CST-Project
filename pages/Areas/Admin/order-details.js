@@ -10,7 +10,7 @@ const params = new URLSearchParams(window.location.search);
 const orderId = params.get("id");
 
 if (!orderId) {
-    window.location.href = "list-orders.html";
+    window.location.href = "orders-list.html";
 }
 
 // Load data
