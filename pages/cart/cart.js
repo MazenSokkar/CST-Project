@@ -72,7 +72,7 @@ card.innerHTML = `
             </div>
 
             <div class="col-md-2 text-center">
-                <button class="btn btn-danger btn-sm mt-3 mt-md-0" onclick="removeItem(${index})">
+                <button class="btn btn-danger btn-sm p-2 border border-0 rounded-3" style="background-color: #8C593B" onclick="removeItem(${index})">
                     Remove 🗑️
                 </button>
             </div>
@@ -131,7 +131,7 @@ card.innerHTML = `
     const checkoutbtn = document.createElement("div");
     checkoutbtn.innerHTML = `
     <div class="d-flex justify-content-end mt-2">
-    <button class="btn btn-danger btn-sm" onclick="checkout()">Check Out</button>
+    <button class="btn btn-danger btn-sm p-2 border border-0 rounded-3" style="background-color: #8C593B" onclick="checkout()">Check Out</button>
     </div>
     `;
 
