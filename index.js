@@ -25,19 +25,75 @@ fetch('/Shared/Navbar/navbar.html')
 
         // Update cart count on page load
         updateCartCount();
+
+        // get elements
+        const searchForm = document.querySelector(".navbar-search");
+        const searchInput = searchForm.querySelector("input");
+
+        // create a container for search results
+        const resultsContainer = document.createElement("div");
+        resultsContainer.classList.add("search-results");
+        searchForm.appendChild(resultsContainer);
+
+        // search as you type
+        searchInput.addEventListener("input", async () => {
+            const query = searchInput.value.trim().toLowerCase();
+            resultsContainer.innerHTML = ""; // clear previous results
+
+            if (!query) return;
+
+            const products = await getAllProducts();
+            const filteredProducts = products.filter(p => p.Name.toLowerCase().includes(query));
+
+            if (filteredProducts.length === 0) {
+                const noResult = document.createElement("div");
+                noResult.textContent = "No products found";
+                noResult.style.cursor = "default";
+                resultsContainer.appendChild(noResult);
+                return;
+            }
+
+            filteredProducts.forEach(product => {
+                const item = document.createElement("div");
+                item.textContent = product.Name;
+                item.addEventListener("click", () => {
+                    window.location.href = `/pages/product-details/product-details.html?id=${product.Id}`;
+                });
+                resultsContainer.appendChild(item);
+            });
+        });
+
+        // search on form submit (not really needed with search as you type, but good for accessibility and users who expect it)
+        searchForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) return;
+
+            const products = await getAllProducts();
+            const filteredProducts = products.filter(p => p.Name.toLowerCase().includes(query));
+
+            if (filteredProducts.length > 0) {
+                window.location.href = `/pages/product-details/product-details.html?id=${filteredProducts[0].Id}`;
+            } else {
+                alert("No products found!");
+            }
+        });
     })
     .catch(err => console.error("Error loading Navbar:", err));
 
 // Load Footer
 fetch('/Shared/Footer/footer.html')   // absolute path from root
-  .then(res => res.text())
-  .then(html => document.getElementById('footer-container').innerHTML = html)
-  .catch(err => console.error("Error loading Footer:", err));
+    .then(res => res.text())
+    .then(html => document.getElementById('footer-container').innerHTML = html)
+    .catch(err => console.error("Error loading Footer:", err));
 
-  // Listen for cart updates to refresh the cart count in the navbar after the page has loaded
-  window.addEventListener("cartUpdated", () => {
+// Listen for cart updates to refresh the cart count in the navbar after the page has loaded
+window.addEventListener("cartUpdated", () => {
     updateCartCount();
 });
+
+
+
 
 // get elements
 let prevCatBtn = document.getElementById('prevCatBtn');
@@ -48,6 +104,8 @@ let nextNewArrivalsBtn = document.getElementById('nextNewArrivalsBtn');
 let prevNewArrivalsBtn = document.getElementById('prevNewArrivalsBtn');
 let nextLatestBlogBtn = document.getElementById('nextLatestBlogBtn');
 let prevLatestBlogBtn = document.getElementById('prevLatestBlogBtn');
+
+
 
 // add event listeners
 prevCatBtn.addEventListener('click', prevCatSlide);
