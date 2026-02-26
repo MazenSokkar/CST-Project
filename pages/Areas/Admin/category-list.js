@@ -2,7 +2,7 @@ import { getAllProducts, UpdateProduct } from "../../../services/product.service
 import { saveToLocalStorage, getFromLocalStorage } from "../../../shared/js/local-storage-management.js";
 import { loadSidebar } from "../../../shared/admin-sidebar/sidebar.js";
 
-await loadSidebar("category");
+await loadSidebar("Category");
 
 const tableBody = document.getElementById("categoryTable");
 const searchInput = document.getElementById("searchInput");
