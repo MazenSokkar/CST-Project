@@ -59,7 +59,7 @@ card.innerHTML = `
             <div class="col-md-6">
                 <p class="mb-1"><strong>Name:</strong> ${item.product.Name}</p>
                 <p class="mb-1"><strong>Description:</strong> ${item.product.Description}</p>
-                <p class="mb-0"><strong>Price:</strong> $${item.product.Price * item.quantity}</p>
+                <p class="mb-0"><strong>Price:</strong> $${((item.product.Price) - (item.product.Price * item.product.Discount / 100)) * item.quantity}</p>
             </div>
 
             <div class="col-md-2 text-center">
@@ -142,7 +142,7 @@ function calculateTotals(cart) {
     let subtotal = 0;
 
     cart.forEach(item => {
-        subtotal += item.product.Price * item.quantity;
+        subtotal += ((item.product.Price) - (item.product.Price * item.product.Discount / 100)) * item.quantity;
     });
 
     const vatRate = 0.14; // 14%
