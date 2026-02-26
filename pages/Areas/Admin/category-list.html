@@ -8,11 +8,23 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
+    <link rel="stylesheet" href="../../../shared/admin-sidebar/sidebar.css">
     <style>
         body {
             background: #f4f6f9;
             font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            margin-top: 0;
+            padding: 0;
+            margin-bottom: 2rem;
+            transition: margin-left 0.3s ease;
+        }
+
+        body:has(.sidebar.collapsed) .main-content {
+            margin-left: 72px;
         }
 
         .action-bar {
@@ -87,45 +99,57 @@
 </head>
 
 <body>
+    <div id="sidebar-placeholder"></div>
 
-    <div class="action-bar">
-        <h5 class="category bg-white p-3 rounded m-0">Category List</h5>
-
-        <button class="btn btn-main ms-auto" id="addCategoryBtn">
-            <i class="fa fa-plus me-1"></i> Add Category
+    <!-- mobile topbar -->
+    <div class="mobile-topbar p-3" id="mobileTopbar">
+        <button class="mobile-hamburger" id="mobileHamburger" title="Open menu">
+            <i class="fa-solid fa-bars"></i>
         </button>
-
-        <div class="search-box d-flex align-items-center">
-            <i class="fa fa-search me-2"></i>
-            <input type="text" id="searchInput" placeholder="Search category">
-        </div>
     </div>
 
-    <div class="container">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-        <div class="card p-4 shadow-sm">
-            <h5>All Categories</h5>
+    <div id="main-content" class="main-content mt-5 mt-md-0">
+        <div class="action-bar">
+            <h5 class="category bg-white p-3 rounded m-0">Category List</h5>
 
-            <table class="table align-middle">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Category Name</th>
-                        <th>Products Count</th>
-                        <th>Created Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+            <button class="btn btn-main ms-auto" id="addCategoryBtn">
+                <i class="fa fa-plus me-1"></i> Add Category
+            </button>
 
-                <tbody id="categoryTable"></tbody>
-            </table>
+            <div class="search-box d-flex align-items-center">
+                <i class="fa fa-search me-2"></i>
+                <input type="text" id="searchInput" placeholder="Search category">
+            </div>
         </div>
 
-        <div class="d-flex justify-content-between mt-3 align-items-center">
-            <p id="paginationInfo"></p>
-            <ul class="pagination" id="pagination"></ul>
-        </div>
+        <div class="container">
 
+            <div class="card p-4 shadow-sm">
+                <h5>All Categories</h5>
+
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Category Name</th>
+                            <th>Products Count</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="categoryTable"></tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between mt-3 align-items-center">
+                <p id="paginationInfo"></p>
+                <ul class="pagination" id="pagination"></ul>
+            </div>
+
+        </div>
     </div>
 
     <!-- ADD MODAL -->
