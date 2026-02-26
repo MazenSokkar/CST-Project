@@ -7,6 +7,7 @@ import {
 } from "../../shared/js/local-storage-management.js";
 
 import { GetProductById } from "../../services/product.service.js"; 
+import { showToast } from "../../shared/js/toast.js";
 
 
 let emptyMessage;
@@ -21,10 +22,10 @@ export function addToWishlist(productId) {
     if (!wishlist.includes(productId)) {
         wishlist.push(productId);
         saveToLocalStorage(key, wishlist);
-        alert("Product added to wishlist ✅");
+        showToast("product added to wishlist successfully");
         renderWishlist(); // تحديث العرض بعد الإضافة
     } else {
-        alert("Product already in wishlist");
+        showToast("Product already in wishlist");
     }
 }
 
@@ -110,7 +111,6 @@ async function addWishlistItemToCart(index) {
     // saveToLocalStorage(cartKey, cart);
 
     await removeFromWishlistUI(index);
-    alert("Added to cart ✅");
 }
 
 // جعل الدوال متاحة للزرار
