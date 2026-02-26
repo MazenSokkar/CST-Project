@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
             showToast("Order placed successfully 🎉", { title: "Checkout" });
 
             setTimeout(() => {
-                window.location.href = "index.html";
+                window.location.href = "/pages/cart/cart.html";
             }, 1500);
 
         } catch (err) {
