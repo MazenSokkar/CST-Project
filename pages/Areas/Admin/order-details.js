@@ -13,6 +13,12 @@ if (!orderId) {
     window.location.href = "orders-list.html";
 }
 
+// Ensure the user is authenticated and authorized (Admin/Seller)
+const currentUser = LSManager.getCurrentUser();
+if (!currentUser || (currentUser.Role !== "Admin" && currentUser.Role !== "Seller")) {
+    window.location.replace("../../../../index.html");
+}
+
 // Load data
 const allOrders = await OrderService.getAllOrders();
 const allUsers = await UserService.getAllUsers();

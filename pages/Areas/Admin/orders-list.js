@@ -24,11 +24,17 @@ async function init() {
   allUsers = await getAllUsers();
 
   if (!currentUser) {
-    showEmpty();
+    window.location.replace("../../../../index.html");
     return;
   }
 
   const role = currentUser.Role; // "Admin" or "Seller"
+
+  // Strict RBAC: Kick out unauthorized users
+  if (role !== "Admin" && role !== "Seller") {
+    window.location.replace("../../../../index.html");
+    return;
+  }
 
   if (role === "Admin") {
     // Admin sees all orders as-is
