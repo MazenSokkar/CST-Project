@@ -1,3 +1,5 @@
+// orders.js - Handles the Orders page for customers, displaying their order history and details.
+
 import { getCurrentUser } from "../../shared/js/local-storage-management.js";
 import { getOrdersByUserId } from "../../services/orders.service.js";
 
