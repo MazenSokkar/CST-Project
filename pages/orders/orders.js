@@ -10,30 +10,36 @@ async function init() {
     const currentUser = getCurrentUser();
 
     if (!currentUser) {
-        window.location.replace("../../../../index.html");
+        window.location.replace("../auth/login.html");
         return;
     }
 
-    if (currentUser.Role !== "Customer") {
+    // Handle roles
+    if (currentUser.Role === "Customer") {
+        // Load customer orders
+        try {
+            const myOrders = await getOrdersByUserId(currentUser.Id);
+
+            displayOrders = myOrders.map(order => ({
+                ...order,
+                _displayAmount: order.TotalPrice
+            }));
+
+            renderTable();
+        } catch (error) {
+            console.error("Error loading orders:", error);
+            showErrorState();
+        }
+    } else if (currentUser.Role === "Admin" || currentUser.Role === "Seller") {
+        // Redirect admin or seller to dashboard orders list
+        window.location.replace("../Areas/Admin/orders-list.html");
+        return;
+    } else {
+        // Unknown role, redirect to homepage
         window.location.replace("../../../../index.html");
         return;
-    }
-
-    try {
-        const myOrders = await getOrdersByUserId(currentUser.Id);
-
-        displayOrders = myOrders.map(order => ({
-            ...order,
-            _displayAmount: order.TotalPrice
-        }));
-
-        renderTable();
-    } catch (error) {
-        console.error("Error loading orders:", error);
-        showErrorState();
     }
 }
-
 const pageSize = 5; // عدد الطلبات لكل صفحة
 let currentPage = 1;
 
