@@ -91,5 +91,5 @@ function renderOrderDetails(order) {
   document.getElementById("summaryTotal").textContent = order.TotalPrice?.toFixed(2) ?? "0.00";
 
   // Payment Method
-  document.getElementById("paymentMethod").textContent = order.PaymentMethod || "Cash on Delivery";
+  document.getElementById("paymentMethod").textContent = order.PaymentMethod === "cod" ? "Cash on Delivery" : order.PaymentMethod;
 }
