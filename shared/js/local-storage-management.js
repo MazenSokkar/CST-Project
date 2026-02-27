@@ -181,7 +181,11 @@ export function buyNow(product) {
     if (isAuthenticated()) {
         clearCart();
         addToCart(product);
-        window.location.href = 'pages/checkout/checkout.html';
+        if (window.location.pathname.includes('/pages/')) {
+            window.location.href = '../checkout/checkout.html';
+        } else {
+            window.location.href = 'pages/checkout/checkout.html';
+        }
     } else {
         showToast('Please log in to purchase items.');
     }
