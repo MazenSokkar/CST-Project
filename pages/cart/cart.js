@@ -48,7 +48,7 @@ function renderCart() {
         let card = document.createElement("div");
         card.className = "card p-3 mb-3";
 
-card.innerHTML = `
+        card.innerHTML = `
     <div class="card p-3 mb-3 border">
         <div class="row align-items-center">
 
@@ -82,12 +82,12 @@ card.innerHTML = `
 `;
         cartContainer.appendChild(card);
     });
-        const totals = calculateTotals(cart);
+    const totals = calculateTotals(cart);
 
-        const summarySection = document.createElement("div");
-        summarySection.className = "card p-3 mt-3";
+    const summarySection = document.createElement("div");
+    summarySection.className = "card p-3 mt-3";
 
-        summarySection.innerHTML = `
+    summarySection.innerHTML = `
         <div class="d-flex justify-content-between">
         <span>Subtotal:</span>
         <strong>$${totals.subtotal.toFixed(2)}</strong>
@@ -158,6 +158,8 @@ function increaseQty(index) {
     cart[index].quantity++;
     saveCart(cart);
     renderCart();
+    // Dispatch a custom event to notify navbar of the application about the cart update
+    window.dispatchEvent(new Event("cartUpdated"));
 }
 
 // Decrease quantity
@@ -167,6 +169,8 @@ function decreaseQty(index) {
         cart[index].quantity--;
         saveCart(cart);
         renderCart();
+        // Dispatch a custom event to notify navbar of the application about the cart update
+        window.dispatchEvent(new Event("cartUpdated"));
     }
 }
 
@@ -176,6 +180,8 @@ function removeItem(index) {
     cart.splice(index, 1);
     saveCart(cart);
     renderCart();
+    // Dispatch a custom event to notify navbar of the application about the cart update
+    window.dispatchEvent(new Event("cartUpdated"));
 }
 
 // check out
@@ -195,7 +201,7 @@ function checkout() {
 }
 //ده يخليهم متاحين للـ 
 window.increaseQty = increaseQty;
-window.decreaseQty = decreaseQty; 
-window.removeItem = removeItem; 
+window.decreaseQty = decreaseQty;
+window.removeItem = removeItem;
 window.checkout = checkout;
 renderCart();
