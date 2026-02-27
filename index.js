@@ -17,6 +17,20 @@ function updateCartCount() {
 
     cartCountElement.textContent = totalQuantity;
 }
+
+// Function to set the active link in the navbar based on the current page
+function setActiveNavLink() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll(".navbar .nav-link");
+
+    navLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+
+        if (currentPath === linkPath) {
+            link.classList.add("active-link");
+        }
+    });
+}
 // Load Navbar
 fetch('/Shared/Navbar/navbar.html')
     .then(res => res.text())
@@ -25,6 +39,9 @@ fetch('/Shared/Navbar/navbar.html')
 
         // Update cart count on page load
         updateCartCount();
+
+        // Set active link in navbar
+        setActiveNavLink();
 
         // get elements
         const searchForm = document.querySelector(".navbar-search");
