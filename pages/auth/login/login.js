@@ -1,10 +1,6 @@
 import { getAllUsers } from "../../../services/users.service.js";
-import { saveToLocalStorage, getFromLocalStorage ,isAuthenticated} from "../../../shared/js/local-storage-management.js";
+import { saveToLocalStorage, getFromLocalStorage, isAuthenticated } from "../../../shared/js/local-storage-management.js";
 
-// If already logged in, redirect to home page
-if (isAuthenticated()) {
-    window.location.replace("../../../index.html");
-}
 
 const form = document.getElementById("loginForm");
 const emailInput = document.getElementById("email");
@@ -71,7 +67,13 @@ form.addEventListener("submit", async (e) => {
             saveToLocalStorage("isLoggedIn", true);
             saveToLocalStorage("currentUser", user);
 
-            window.location.href = "../../../index.html";
+            // Redirect based on role
+            if (user.Role === "Admin" || user.Role === "Seller") {
+                window.location.replace("../../Areas/Admin/dashboard.html");
+            } else if (user.Role === "Customer") {
+                window.location.replace("../../../index.html");
+            }
+
         } else {
             loginError.textContent = "Invalid Username or Password ❌";
             loginError.style.display = "block";
