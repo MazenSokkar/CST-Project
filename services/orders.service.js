@@ -158,3 +158,14 @@ export async function getOrderById(id) {
         return null;
     }
 }
+
+// Get orders by user id -> returns an array of Order objects for the specified user
+export async function getOrdersByUserId(userId) {
+  const response = await fetch(`${BASE_URL}/orders.json`);
+  const data = await response.json();
+  if (!data) return [];
+
+  return Object.values(data).filter(
+    order => String(order.UserId) === String(userId)
+  );
+}
