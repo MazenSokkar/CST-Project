@@ -30,6 +30,23 @@ body {
 .navbar-nav .nav-link:hover {
     color: #333;
 }
+/* Active Navbar Link */
+.navbar .nav-link.active-link {
+  color: var(--theme-default) !important;   
+  position: relative;
+  font-weight: 600;
+}
+
+.navbar .nav-link.active-link::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--theme-default) !important;  
+  border-radius: 2px;
+}
 
 /* Dropdown hover for desktop */
 @media (min-width: 992px) {
