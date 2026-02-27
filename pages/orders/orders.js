@@ -34,10 +34,15 @@ async function init() {
     }
 }
 
+const pageSize = 5; // عدد الطلبات لكل صفحة
+let currentPage = 1;
+
 //render orders table
 function renderTable() {
     const tableBody = document.getElementById("ordersTableBody");
     const emptyState = document.getElementById("emptyState");
+    const pagination = document.getElementById("pagination");
+    const paginationInfo = document.getElementById("paginationInfo");
 
     if (!tableBody) return;
 
@@ -45,34 +50,66 @@ function renderTable() {
 
     if (displayOrders.length === 0) {
         emptyState.classList.remove("d-none");
+        pagination.innerHTML = "";
+        paginationInfo.textContent = "";
         return;
     }
 
     emptyState.classList.add("d-none");
 
-    displayOrders.forEach(order => {
+    // حساب الطلبات للصفحة الحالية
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    const pageOrders = displayOrders.slice(start, end);
+
+    pageOrders.forEach(order => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
-      <td>#${order.Id}</td>
-      <td>${order.PaymentMethod || "-"}</td>
-      <td>${order._displayAmount} EGP</td>
-      <td>${formatDate(order.Timestamp)}</td>
-      <td>${getStatusBadge(order.Status)}</td>
-      <td>
-        <button class="btn btn-sm btn-outline-primary view-btn" data-id="${order.Id}">
-          <i class="bi bi-eye"></i> View
-        </button>
-      </td>
-      <td></td>
-    `;
-
+            <td>#${order.Id}</td>
+            <td>${order.PaymentMethod || "-"}</td>
+            <td>${order._displayAmount} EGP</td>
+            <td>${formatDate(order.Timestamp)}</td>
+            <td>${getStatusBadge(order.Status)}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary view-btn" data-id="${order.Id}">
+                  <i class="bi bi-eye"></i> View
+                </button>
+            </td>
+            <td></td>
+        `;
         tableBody.appendChild(row);
     });
 
     attachViewEvents();
+
+    // تحديث pagination info
+    const totalPages = Math.ceil(displayOrders.length / pageSize);
+    paginationInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+
+    // تحديث pagination controls
+    renderPagination(totalPages);
 }
 
+// Render pagination controls based on total pages
+function renderPagination(totalPages) {
+    const pagination = document.getElementById("pagination");
+    if (!pagination) return;
+
+    pagination.innerHTML = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+        const li = document.createElement("li");
+        li.className = `page-item ${i === currentPage ? "active" : ""}`;
+        li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+        li.addEventListener("click", (e) => {
+            e.preventDefault();
+            currentPage = i;
+            renderTable();
+        });
+        pagination.appendChild(li);
+    }
+}
 // Attach click events to view buttons
 function attachViewEvents() {
     document.querySelectorAll(".view-btn").forEach(btn => {

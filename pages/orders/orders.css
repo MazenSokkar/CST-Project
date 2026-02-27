@@ -125,4 +125,5 @@
  .pagination .page-item.active .page-link {
      background-color: var(--theme-default);
      border-color: var(--theme-default);
+     color: #fff;
  }
