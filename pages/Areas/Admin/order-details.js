@@ -89,4 +89,7 @@ function renderOrderDetails(order) {
   document.getElementById("summaryVat").textContent = order.Vats?.toFixed(2) ?? "0.00";
   document.getElementById("summarySaving").textContent = order.Saving?.toFixed(2) ?? "0.00";
   document.getElementById("summaryTotal").textContent = order.TotalPrice?.toFixed(2) ?? "0.00";
+
+  // Payment Method
+  document.getElementById("paymentMethod").textContent = order.PaymentMethod || "Cash on Delivery";
 }
