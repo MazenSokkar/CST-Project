@@ -43,6 +43,20 @@ fetch('/Shared/Navbar/navbar.html')
         // Set active link in navbar
         setActiveNavLink();
 
+        // Handle My Orders click if user not logged in
+        const myOrdersLink = document.querySelector('a[href="/pages/orders/orders.html"]');
+
+        if (myOrdersLink) {
+            myOrdersLink.addEventListener("click", (e) => {
+                const currentUser = LSManager.getCurrentUser();
+
+                if (!currentUser) {
+                    e.preventDefault(); // prevent normal navigation
+                    window.location.href = "/pages/profile/profile.html";
+                }
+            });
+        }
+
         // get elements
         const searchForm = document.querySelector(".navbar-search");
         const searchInput = searchForm.querySelector("input");
