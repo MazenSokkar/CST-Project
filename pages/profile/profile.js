@@ -46,3 +46,10 @@ logoutBtn.addEventListener("click", () => {
     localStorage.setItem("isLoggedIn", "false");
     window.location.replace("../auth/login/login.html");
 });
+
+// Forget Password
+const forgetPasswordBtn = document.getElementById("forgetPasswordBtn");
+
+forgetPasswordBtn.addEventListener("click", () => {
+    window.location.href = "../auth/forgot-password/forgot-password.html";
+});

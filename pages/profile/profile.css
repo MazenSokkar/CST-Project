@@ -57,9 +57,10 @@
     padding: 10px 20px;
 }
 
-.btn-theme:hover {
-    background: #5a3e2b;
-    color: #fff;
+.btn-theme:hover{
+    background: #fff;
+    border: 2px solid var(--theme-default);
+    color: var(--theme-default);
 }
 
 .btn-outline-theme {
