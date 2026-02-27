@@ -30,6 +30,17 @@ function setActiveNavLink() {
             link.classList.add("active-link");
         }
     });
+
+    // active for navbar icons (Cart, Wishlist, Profile)
+    const iconLinks = document.querySelectorAll(".navbar-icons a");
+
+    iconLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+
+        if (currentPath === linkPath) {
+            link.classList.add("active-icon");
+        }
+    });
 }
 // Load Navbar
 fetch('/Shared/Navbar/navbar.html')
