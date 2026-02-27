@@ -113,9 +113,14 @@ fetch('/Shared/Navbar/navbar.html')
     .catch(err => console.error("Error loading Navbar:", err));
 
 // Load Footer
-fetch('/Shared/Footer/footer.html')   // absolute path from root
+fetch('/Shared/Footer/footer.html')
     .then(res => res.text())
-    .then(html => document.getElementById('footer-container').innerHTML = html)
+    .then(html => {
+        const footerContainer = document.getElementById('footer-container');
+        if (footerContainer) {
+            footerContainer.innerHTML = html;
+        }
+    })
     .catch(err => console.error("Error loading Footer:", err));
 
 // Listen for cart updates to refresh the cart count in the navbar after the page has loaded
@@ -139,32 +144,34 @@ let prevLatestBlogBtn = document.getElementById('prevLatestBlogBtn');
 
 
 // add event listeners
-prevCatBtn.addEventListener('click', prevCatSlide);
-nextCatBtn.addEventListener('click', nextCatSlide);
-shopNowBtns.forEach(btn => {
+if (prevCatBtn) prevCatBtn.addEventListener('click', prevCatSlide);
+if (nextCatBtn) nextCatBtn.addEventListener('click', nextCatSlide);
+if (shopNowBtns) shopNowBtns.forEach(btn => {
     btn.addEventListener('click', goToShop);
 });
-ourProductTitles.addEventListener('click', (e) => {
-    if (e.target.id == 'latest') {
-        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
-        e.target.style.color = 'var(--theme-default)';
-        buildProductCards(latestProducts, 'our-products-container');
-    }
-    if (e.target.id == 'featured') {
-        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
-        e.target.style.color = 'var(--theme-default)';
-        buildProductCards(featuredProducts, 'our-products-container');
-    }
-    if (e.target.id == 'best-selling') {
-        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
-        e.target.style.color = 'var(--theme-default)';
-        buildProductCards(bestSellingAndNotFeaturedProducts, 'our-products-container');
-    }
-});
-nextNewArrivalsBtn.addEventListener('click', nextNewArrivalsSlide);
-prevNewArrivalsBtn.addEventListener('click', prevNewArrivalsSlide);
-nextLatestBlogBtn.addEventListener('click', nextLatestBlogsSlide);
-prevLatestBlogBtn.addEventListener('click', prevLatestBlogsSlide);
+if (ourProductTitles) {
+    ourProductTitles.addEventListener('click', (e) => {
+        if (e.target.id == 'latest') {
+            Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+            e.target.style.color = 'var(--theme-default)';
+            buildProductCards(latestProducts, 'our-products-container');
+        }
+        if (e.target.id == 'featured') {
+            Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+            e.target.style.color = 'var(--theme-default)';
+            buildProductCards(featuredProducts, 'our-products-container');
+        }
+        if (e.target.id == 'best-selling') {
+            Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+            e.target.style.color = 'var(--theme-default)';
+            buildProductCards(bestSellingAndNotFeaturedProducts, 'our-products-container');
+        }
+    });
+}
+if (nextNewArrivalsBtn) nextNewArrivalsBtn.addEventListener('click', nextNewArrivalsSlide);
+if (prevNewArrivalsBtn) prevNewArrivalsBtn.addEventListener('click', prevNewArrivalsSlide);
+if (nextLatestBlogBtn) nextLatestBlogBtn.addEventListener('click', nextLatestBlogsSlide);
+if (prevLatestBlogBtn) prevLatestBlogBtn.addEventListener('click', prevLatestBlogsSlide);
 
 // cat data
 let categories = [
@@ -288,6 +295,8 @@ function getRandomImageUrl(product) {
 // product cards builder function
 function buildProductCards(products, containerId) {
     let container = document.getElementById(containerId);
+    if (!container) return; // if container not found, exit the function
+
     container.innerHTML = '';
     products.forEach(product => {
         const productCard = document.createElement('div');
@@ -355,6 +364,8 @@ function buildProductCards(products, containerId) {
 // build categories cards in categories section
 function buildCategoryCards(categories, containerId) {
     let container = document.getElementById(containerId);
+    if (!container) return; // if container not found, exit the function
+
     container.innerHTML = '';
     categories[0].forEach(cat => {
         let catCard = document.createElement('div');
@@ -376,6 +387,8 @@ function buildCategoryCards(categories, containerId) {
 // build blog cards in latest blog section
 function buildLatestBlogCards(blogs, containerId) {
     let container = document.getElementById(containerId);
+    if (!container) return; // if container not found, exit the function
+
     container.innerHTML = '';
     blogs[0].forEach(blog => {
         let blogCard = document.createElement('div');
