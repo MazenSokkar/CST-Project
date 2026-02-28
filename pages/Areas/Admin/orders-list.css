@@ -65,44 +65,66 @@ body:has(.sidebar.collapsed) .main-content {
     box-shadow 0.2s;
 }
 
-
-
 .table tbody td {
-  padding: 14px 16px;
+  padding: 15px;
   vertical-align: middle;
   font-size: 14px;
   color: #374151;
   border-top: none !important;
   white-space: nowrap;
+  height: 75px; /* Fixed height for 5-record stability */
 }
 
-/* Status Badge */
+/* Remove all break lines/borders for empty rows */
+.empty-row-placeholder,
+.empty-row-placeholder td {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Empty row placeholders shouldn't have hover effects */
+.empty-row-placeholder {
+  pointer-events: none;
+}
+
+/* Status Badge - Unified with Customer Pages */
 .status-badge {
-  padding: 5px 14px;
+  padding: 6px 14px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   display: inline-block;
+  min-width: 110px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .status-pending {
-  background-color: #fef3c7 !important;
-  color: #d97706 !important;
+  background-color: #ffc107 !important;
+  color: #000 !important;
 }
 
 .status-processing {
-  background-color: #dbeafe !important;
-  color: #2563eb !important;
+  background-color: #3b82f6 !important;
+  color: #fff !important;
 }
 
 .status-delivered {
-  background-color: #dcfce7 !important;
-  color: #16a34a !important;
+  background-color: #22c55e !important;
+  color: #fff !important;
 }
 
 .status-cancelled {
-  background-color: #fee2e2 !important;
-  color: #dc2626 !important;
+  background-color: #ef4444 !important;
+  color: #fff !important;
+}
+
+.status-shipped {
+  background-color: #0ea5e9 !important;
+  color: #fff !important;
 }
 
 /* Action Dropdown Button */
@@ -116,8 +138,6 @@ body:has(.sidebar.collapsed) .main-content {
   font-weight: 500;
   transition: all 0.2s;
 }
-
-
 
 .action-dropdown .dropdown-menu {
   border-radius: 10px;
@@ -135,8 +155,6 @@ body:has(.sidebar.collapsed) .main-content {
   transition: background 0.15s;
 }
 
-
-
 .action-dropdown .dropdown-item i {
   width: 18px;
   margin-right: 8px;
@@ -152,8 +170,6 @@ body:has(.sidebar.collapsed) .main-content {
   font-size: 16px;
   transition: color 0.2s;
 }
-
-
 
 .more-menu .dropdown-menu {
   border-radius: 10px;
@@ -171,8 +187,6 @@ body:has(.sidebar.collapsed) .main-content {
   transition: background 0.15s;
 }
 
-
-
 .more-menu .dropdown-item i {
   width: 18px;
   margin-right: 8px;
@@ -188,8 +202,6 @@ body:has(.sidebar.collapsed) .main-content {
   font-weight: 500;
   transition: all 0.2s;
 }
-
-
 
 .pagination .page-link.active {
   background: var(--theme-default);

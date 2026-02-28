@@ -116,28 +116,52 @@ body {
 
 /* ===== Pagination ===== */
 .pagination .page-link {
-  width: 38px;
-  height: 38px;
+  border-radius: 8px !important;
+  margin: 0 4px;
+  border: none;
+  color: #374151;
+  font-weight: 500;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50% !important;
-  margin: 0 4px;
-  font-size: 14px;
-  color: var(--theme-default);
-  border: 1px solid #dee2e6;
-  transition: none;
+  padding: 8px 16px;
+  min-width: 38px;
+  height: 38px;
 }
 
 .pagination .page-link:hover {
-  background-color: transparent;
+  background-color: #f3f4f6;
   color: var(--theme-default);
 }
 
-.pagination .page-item.active .page-link {
-  background-color: var(--theme-default);
-  border-color: var(--theme-default);
-  color: #fff;
+.pagination .page-link.active {
+  background-color: var(--theme-default) !important;
+  border-color: var(--theme-default) !important;
+  color: #fff !important;
+}
+
+/* ===== Table Rows - Fixed Height & Polish ===== */
+.table tbody td {
+  font-size: 16px;
+  color: #555;
+  vertical-align: middle;
+  padding: 15px;
+  height: 75px; /* Fixed height for stability */
+}
+
+/* Remove all break lines/borders for empty rows */
+.empty-row-placeholder,
+.empty-row-placeholder td {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.empty-row-placeholder {
+  pointer-events: none;
 }
 
 /* ===== Badges ===== */

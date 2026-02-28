@@ -87,11 +87,27 @@ function renderTable() {
     tableBody.appendChild(row);
   });
 
+  // Always fill until pageSize (5) to maintain fixed height
+  for (let i = pageOrders.length; i < pageSize; i++) {
+    const emptyRow = document.createElement("tr");
+    emptyRow.classList.add("empty-row-placeholder");
+    emptyRow.innerHTML = `
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        `;
+    tableBody.appendChild(emptyRow);
+  }
+
   attachViewEvents();
 
   // تحديث pagination info
-  const totalPages = Math.ceil(displayOrders.length / pageSize);
-  paginationInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+  const totalPages = Math.ceil(displayOrders.length / pageSize) || 1;
+  paginationInfo.textContent = `Showing ${start + 1} - ${Math.min(end, displayOrders.length)} of ${displayOrders.length}`;
 
   // تحديث pagination controls
   renderPagination(totalPages);
@@ -104,17 +120,56 @@ function renderPagination(totalPages) {
 
   pagination.innerHTML = "";
 
+  // Previous button
+  const prevLi = document.createElement("li");
+  prevLi.className = "page-item";
+  const prevA = document.createElement("a");
+  prevA.href = "#";
+  prevA.className = `page-link ${currentPage === 1 ? "disabled" : ""}`;
+  prevA.innerHTML = `<i class="fa-solid fa-chevron-left"></i>`;
+  prevA.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentPage > 1) {
+      currentPage--;
+      renderTable();
+    }
+  });
+  prevLi.appendChild(prevA);
+  pagination.appendChild(prevLi);
+
+  // Page numbers
   for (let i = 1; i <= totalPages; i++) {
     const li = document.createElement("li");
-    li.className = `page-item ${i === currentPage ? "active" : ""}`;
-    li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-    li.addEventListener("click", (e) => {
+    li.className = "page-item";
+    const a = document.createElement("a");
+    a.href = "#";
+    a.className = `page-link ${i === currentPage ? "active" : ""}`;
+    a.textContent = i;
+    a.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = i;
       renderTable();
     });
+    li.appendChild(a);
     pagination.appendChild(li);
   }
+
+  // Next button
+  const nextLi = document.createElement("li");
+  nextLi.className = "page-item";
+  const nextA = document.createElement("a");
+  nextA.href = "#";
+  nextA.className = `page-link ${currentPage === totalPages ? "disabled" : ""}`;
+  nextA.innerHTML = `<i class="fa-solid fa-chevron-right"></i>`;
+  nextA.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderTable();
+    }
+  });
+  nextLi.appendChild(nextA);
+  pagination.appendChild(nextLi);
 }
 // Attach click events to view buttons
 function attachViewEvents() {

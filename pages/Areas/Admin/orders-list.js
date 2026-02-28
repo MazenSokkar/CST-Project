@@ -146,6 +146,23 @@ function renderTable() {
     tableBody.appendChild(row);
   });
 
+  // Always fill until rowsPerPage (5) to maintain fixed height
+  for (let i = paginated.length; i < rowsPerPage; i++) {
+    const emptyRow = document.createElement("tr");
+    emptyRow.classList.add("empty-row-placeholder");
+    emptyRow.innerHTML = `
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        `;
+    tableBody.appendChild(emptyRow);
+  }
+
   renderPagination();
 }
 
