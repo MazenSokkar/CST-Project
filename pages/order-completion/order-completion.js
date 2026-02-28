@@ -38,23 +38,66 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (latestOrders.length > 0) {
     if (orderIdEl) {
-      orderIdEl.textContent = `Order ID: #${latestOrders.map((o) => o.Id).join(", #")}`;
+      if (latestOrders.length > 1) {
+        orderIdEl.style.display = "none";
+      } else {
+        orderIdEl.style.display = "block";
+        orderIdEl.textContent = `Order ID: #${latestOrders[0].Id}`;
+      }
     }
 
     if (deliveryMessageEl) {
-      const latestOrder = latestOrders[0];
-      const status = latestOrder.Status ? latestOrder.Status.toLowerCase() : "";
+      if (latestOrders.length === 1) {
+        const latestOrder = latestOrders[0];
+        const status = latestOrder.Status ? latestOrder.Status.toLowerCase() : "";
 
-      if (status === "canceled" || status === "cancelled") {
-        deliveryMessageEl.textContent = "Order canceled";
-        deliveryMessageEl.classList.remove("text-muted");
-        deliveryMessageEl.classList.add("text-danger");
-      } else if (status === "delivered") {
-        deliveryMessageEl.textContent = "Order delivered";
-        deliveryMessageEl.classList.remove("text-muted");
-        deliveryMessageEl.classList.add("text-success");
+        if (status === "canceled" || status === "cancelled") {
+          deliveryMessageEl.textContent = "Order canceled";
+          deliveryMessageEl.classList.remove("text-muted");
+          deliveryMessageEl.classList.add("text-danger");
+        } else if (status === "delivered") {
+          deliveryMessageEl.textContent = "Order delivered";
+          deliveryMessageEl.classList.remove("text-muted");
+          deliveryMessageEl.classList.add("text-success");
+        } else {
+          deliveryMessageEl.textContent = "Your order will be delivered within 3-5 business days.";
+        }
       } else {
-        deliveryMessageEl.textContent = "Your order will be delivered within 3-5 business days.";
+        // Handle multiple orders status display with grouping
+        const pendingOrders = latestOrders.filter((o) => {
+          const s = (o.Status || "Pending").toLowerCase();
+          return s === "pending" || s === "processing";
+        });
+        const otherOrders = latestOrders.filter((o) => {
+          const s = (o.Status || "Pending").toLowerCase();
+          return s !== "pending" && s !== "processing";
+        });
+
+        let finalMessages = [];
+
+        // 1. Grouped Pending/Processing
+        if (pendingOrders.length > 0) {
+          const ids = pendingOrders.map((o) => `#${o.Id}`).join(" - ");
+          const msg = pendingOrders.length > 1 ? "These orders will be" : "This order will be";
+          finalMessages.push(
+            `Order ${ids}: <span class="text-muted">${msg} delivered within 3-5 business days.</span>`,
+          );
+        }
+
+        // 2. Individual Others (Canceled, Delivered, etc.)
+        otherOrders.forEach((o) => {
+          const status = o.Status || "Pending";
+          let colorClass = "text-muted";
+          const lowerStatus = status.toLowerCase();
+          if (lowerStatus === "delivered") colorClass = "text-success";
+          else if (lowerStatus === "canceled" || lowerStatus === "cancelled") colorClass = "text-danger";
+
+          finalMessages.push(`Order #<strong>${o.Id}</strong>: <span class="${colorClass}">${status}</span>`);
+        });
+
+        deliveryMessageEl.innerHTML = finalMessages.join("<br>");
+        deliveryMessageEl.classList.remove("text-muted");
+        deliveryMessageEl.style.fontWeight = "500";
       }
     }
   }
