@@ -34,8 +34,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Display the first matching order ID (or a combined string) in the UI
   const orderIdEl = document.getElementById("order-id");
-  if (orderIdEl && latestOrders.length > 0) {
-    orderIdEl.textContent = `Order ID: #${latestOrders.map((o) => o.Id).join(", #")}`;
+  const deliveryMessageEl = document.getElementById("delivery-message");
+
+  if (latestOrders.length > 0) {
+    if (orderIdEl) {
+      orderIdEl.textContent = `Order ID: #${latestOrders.map((o) => o.Id).join(", #")}`;
+    }
+
+    if (deliveryMessageEl) {
+      const latestOrder = latestOrders[0];
+      const status = latestOrder.Status ? latestOrder.Status.toLowerCase() : "";
+
+      if (status === "canceled" || status === "cancelled") {
+        deliveryMessageEl.textContent = "Order canceled";
+        deliveryMessageEl.classList.remove("text-muted");
+        deliveryMessageEl.classList.add("text-danger");
+      } else if (status === "delivered") {
+        deliveryMessageEl.textContent = "Order delivered";
+        deliveryMessageEl.classList.remove("text-muted");
+        deliveryMessageEl.classList.add("text-success");
+      } else {
+        deliveryMessageEl.textContent = "Your order will be delivered within 3-5 business days.";
+      }
+    }
   }
 
   // Create the Dribbble-style order summary box
