@@ -44,7 +44,7 @@ body:has(.sidebar.collapsed) .main-content {
   background-color: var(--theme-default);
   color: #fff;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 16px;
   padding: 14px 16px;
   border: none;
   white-space: nowrap;
@@ -68,7 +68,7 @@ body:has(.sidebar.collapsed) .main-content {
 .table tbody td {
   padding: 15px;
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 16px;
   color: #374151;
   border-top: none !important;
   white-space: nowrap;
@@ -94,7 +94,7 @@ body:has(.sidebar.collapsed) .main-content {
 .status-badge {
   padding: 6px 14px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   display: inline-block;
   min-width: 110px;
@@ -211,7 +211,7 @@ body:has(.sidebar.collapsed) .main-content {
 #paginationInfo {
   font-weight: 500;
   color: #6b7280;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* Mobile */
