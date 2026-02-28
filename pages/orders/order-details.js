@@ -28,16 +28,40 @@ async function init() {
   renderOrder(order);
 }
 
+function getStatusBadge(status) {
+  let badgeClass = "secondary";
+
+  switch (status) {
+    case "Pending":
+      badgeClass = "warning";
+      break;
+    case "Processing":
+      badgeClass = "primary";
+      break;
+    case "Shipped":
+      badgeClass = "info";
+      break;
+    case "Delivered":
+      badgeClass = "success";
+      break;
+    case "Cancelled":
+      badgeClass = "danger";
+      break;
+  }
+
+  return `<span class="badge status-badge bg-${badgeClass} rounded-pill px-3 py-2">${status || "Unknown"}</span>`;
+}
+
 function renderOrder(order) {
   document.getElementById("orderId").textContent = `#${order.Id}`;
   document.getElementById("orderDate").textContent = new Date(order.Timestamp).toLocaleDateString("en-GB");
 
-  document.getElementById("orderStatus").innerHTML = `<span class="badge bg-secondary">${order.Status}</span>`;
+  document.getElementById("orderStatus").innerHTML = getStatusBadge(order.Status);
 
-  document.getElementById("subtotal").textContent = order.Subtotal.toFixed(2) + " EGP";
-  document.getElementById("delivery").textContent = order.DeliveryPrice.toFixed(2) + " EGP";
-  document.getElementById("vat").textContent = order.Vats.toFixed(2) + " EGP";
-  document.getElementById("total").textContent = order.TotalPrice.toFixed(2) + " EGP";
+  document.getElementById("subtotal").textContent = "$" + order.Subtotal.toFixed(2);
+  document.getElementById("delivery").textContent = "$" + order.DeliveryPrice.toFixed(2);
+  document.getElementById("vat").textContent = "$" + order.Vats.toFixed(2);
+  document.getElementById("total").textContent = "$" + order.TotalPrice.toFixed(2);
 
   const tbody = document.getElementById("orderItemsBody");
   tbody.innerHTML = "";
@@ -49,8 +73,8 @@ function renderOrder(order) {
       <tr>
         <td>${item.Name}</td>
         <td>${item.Quantity}</td>
-        <td>${item.Price.toFixed(2)} EGP</td>
-        <td>${total.toFixed(2)} EGP</td>
+        <td>$${item.Price.toFixed(2)}</td>
+        <td>$${total.toFixed(2)}</td>
       </tr>
     `;
   });

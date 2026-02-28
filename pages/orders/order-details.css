@@ -1,63 +1,85 @@
 :root {
-    --theme-default: #8c593b;
-    --theme-dark: #6f452e;
-    --theme-light: #b27a58;
+  --theme-default: #8c593b;
+  --theme-dark: #6f452e;
+  --theme-light: #b27a58;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background: #f6f3f1;
-    overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
+  background: #f6f3f1;
+  overflow-x: hidden;
 }
 
 /* Topbar */
 .desktop-topbar {
-    background: linear-gradient(135deg, var(--theme-dark), var(--theme-default), var(--theme-light));
-    border-radius: 0 0 35px 35px;
-    padding: 40px 20px;
+  background: linear-gradient(135deg, var(--theme-dark), var(--theme-default), var(--theme-light));
+  border-radius: 0 0 35px 35px;
+  padding: 40px 20px;
 }
 
 /* Card */
 .card {
-    border: none;
-    border-radius: 25px;
-    box-shadow: 0 15px 35px rgba(140, 89, 59, 0.15);
+  border: none;
+  border-radius: 25px;
+  box-shadow: 0 15px 35px rgba(140, 89, 59, 0.15);
 }
 
 /* Table */
 .table thead th {
-    background-color: var(--theme-default);
-    color: #fff;
-    padding: 15px;
+  background-color: var(--theme-default);
+  color: #fff;
+  padding: 15px;
 }
 
 .table tbody td {
-    padding: 15px;
-}
-
-.table tbody tr:hover {
-    background-color: #f9f4f1;
+  padding: 15px;
 }
 
 /* Summary */
 .summary-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .summary-row.total {
-    font-weight: bold;
-    font-size: 18px;
-    color: var(--theme-dark);
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--theme-dark);
 }
 
 .btn-back {
-    background-color: var(--theme-default);
-    color: #fff;
-    border-radius: 30px;
+  background-color: var(--theme-default);
+  color: #fff;
+  border-radius: 30px;
 }
 
-.btn-back:hover {
-    background-color: var(--theme-dark);
+.status-badge {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  min-width: 110px;
+  display: inline-block;
+  text-align: center;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.bg-primary {
+  background-color: #3b82f6 !important;
+}
+
+.bg-info {
+  background-color: #0ea5e9 !important;
+}
+
+.bg-success {
+  background-color: #22c55e !important;
+}
+
+.bg-danger {
+  background-color: #ef4444 !important;
 }
