@@ -1,6 +1,7 @@
 import {
     getFromLocalStorage,
-    saveToLocalStorage
+    saveToLocalStorage,
+    getCurrentUser 
 } from "../../../shared/js/local-storage-management.js";
 
 import {
@@ -13,6 +14,18 @@ import {
     updateUser,
     AddUser
 } from "../../../services/users.service.js";
+
+// Get current user (for role-based access)
+const currentUser = getCurrentUser();
+
+if (!currentUser) {
+    // if no user is logged in, redirect to home/login page
+    window.location.replace("../auth/login.html");
+} else if (currentUser.Role !== "Admin") {
+    // if logged in user is not an admin, show alert and redirect to home page
+    alert("Access denied: Only admins can view this page.");
+    window.location.replace("./dashboard.html");
+}
 
 await loadSidebar("Customers");
 
@@ -152,34 +165,58 @@ function updatePaginationInfo() {
 function renderPagination(pageCount) {
     pagination.innerHTML = "";
 
-    const createPageItem = (label, page, disabled = false, active = false) => {
+    // Previous button
+    if (currentPage > 1) {
         const li = document.createElement("li");
-        li.className = `page-item ${disabled ? "disabled" : ""}`;
-
+        li.className = "page-item";
         const a = document.createElement("a");
         a.href = "#";
-        a.className = `page-link ${active ? "active" : ""}`;
-        a.textContent = label;
+        a.className = "page-link";
+        a.textContent = "Previous";
+        a.addEventListener("click", (e) => {
+            e.preventDefault();
+            currentPage--;
+            renderTable();
+        });
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
 
-        if (!disabled) {
+    // Page numbers
+    for (let i = 1; i <= pageCount; i++) {
+        const li = document.createElement("li");
+        li.className = `page-item ${i === currentPage ? "active" : ""}`;
+        const a = document.createElement("a");
+        a.href = "#";
+        a.className = "page-link";
+        a.textContent = i;
+        if (i !== currentPage) {
             a.addEventListener("click", (e) => {
                 e.preventDefault();
-                currentPage = page;
+                currentPage = i;
                 renderTable();
             });
         }
-
         li.appendChild(a);
         pagination.appendChild(li);
-    };
-
-    createPageItem("«", currentPage - 1, currentPage === 1);
-
-    for (let i = 1; i <= pageCount; i++) {
-        createPageItem(i, i, false, i === currentPage);
     }
 
-    createPageItem("»", currentPage + 1, currentPage === pageCount);
+    // Next button
+    if (currentPage < pageCount) {
+        const li = document.createElement("li");
+        li.className = "page-item";
+        const a = document.createElement("a");
+        a.href = "#";
+        a.className = "page-link";
+        a.textContent = "Next";
+        a.addEventListener("click", (e) => {
+            e.preventDefault();
+            currentPage++;
+            renderTable();
+        });
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
 }
 
 /* ------------------ Search ------------------ */

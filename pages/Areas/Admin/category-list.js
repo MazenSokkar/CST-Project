@@ -1,6 +1,19 @@
 import { getAllProducts, UpdateProduct } from "../../../services/product.service.js";
-import { saveToLocalStorage, getFromLocalStorage } from "../../../shared/js/local-storage-management.js";
+import { saveToLocalStorage, getFromLocalStorage, getCurrentUser } from "../../../shared/js/local-storage-management.js";
 import { loadSidebar } from "../../../shared/admin-sidebar/sidebar.js";
+
+
+const currentUser = getCurrentUser();
+
+if (!currentUser) {
+    // if no user is logged in, redirect to home/login page
+    window.location.replace("../auth/login.html");
+} else if (currentUser.Role !== "Admin") {
+    // if logged in user is not an admin, show alert and redirect to home page
+    alert("Access denied: Only admins can view this page.");
+    window.location.replace("./dashboard.html");
+}
+
 
 await loadSidebar("Category");
 
@@ -59,41 +72,93 @@ function renderTable() {
             <td>${cat.count}</td>
             <td>${new Date(cat.createdAt).toLocaleDateString()}</td>
             <td>
-                <button class="btn btn-sm btn-outline-primary edit-btn" data-name="${cat.name}">
+                <button class="btn btn-sm edit-btn" data-name="${cat.name}">
                     <i class="fa fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-danger delete-btn" data-name="${cat.name}">
+                <button class="btn btn-sm  delete-btn" data-name="${cat.name}">
                     <i class="fa fa-trash"></i>
                 </button>
             </td>
         </tr>`;
     });
 
-    renderPagination();
-}
-
-// Render pagination controls
-function renderPagination() {
-    pagination.innerHTML = "";
+    // calculate total pages for pagination
     const pageCount = Math.ceil(filteredCategories.length / rowsPerPage);
 
-    for (let i = 1; i <= pageCount; i++) {
-        pagination.innerHTML += `
-        <li class="page-item">
-            <a class="page-link ${i === currentPage ? "active" : ""}" href="#">${i}</a>
-        </li>`;
+    updatePaginationInfo();
+    renderPagination(pageCount);
+}
+
+/* ------------------ Pagination Info ------------------ */
+function updatePaginationInfo() {
+    const total = filteredCategories.length;
+    if (!total) {
+        paginationInfo.textContent = "No categories found";
+        return;
     }
 
-    pagination.querySelectorAll(".page-link").forEach((link, index) => {
-        link.addEventListener("click", (e) => {
+    const start = (currentPage - 1) * rowsPerPage + 1;
+    const end = Math.min(currentPage * rowsPerPage, total);
+
+    paginationInfo.textContent = `Showing ${start} - ${end} of ${total}`;
+}
+
+/* ------------------ Pagination ------------------ */
+function renderPagination(pageCount) {
+    pagination.innerHTML = "";
+
+    // Previous button
+    if (currentPage > 1) {
+        const li = document.createElement("li");
+        li.className = "page-item";
+        const a = document.createElement("a");
+        a.href = "#";
+        a.className = "page-link";
+        a.textContent = "Previous";
+        a.addEventListener("click", (e) => {
             e.preventDefault();
-            currentPage = index + 1;
+            currentPage--;
             renderTable();
         });
-    });
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
 
-    paginationInfo.innerText =
-        `Showing ${(currentPage - 1) * rowsPerPage + 1} - ${Math.min(currentPage * rowsPerPage, filteredCategories.length)} of ${filteredCategories.length}`;
+    // Page numbers
+    for (let i = 1; i <= pageCount; i++) {
+        const li = document.createElement("li");
+        li.className = `page-item ${i === currentPage ? "active" : ""}`;
+        const a = document.createElement("a");
+        a.href = "#";
+        a.className = "page-link";
+        a.textContent = i;
+        if (i !== currentPage) {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+                currentPage = i;
+                renderTable();
+            });
+        }
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
+
+    // Next button
+    if (currentPage < pageCount) {
+        const li = document.createElement("li");
+        li.className = "page-item";
+        const a = document.createElement("a");
+        a.href = "#";
+        a.className = "page-link";
+        a.textContent = "Next";
+        a.addEventListener("click", (e) => {
+            e.preventDefault();
+            currentPage++;
+            renderTable();
+        });
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
 }
 
 // Search functionality
@@ -106,31 +171,31 @@ searchInput.addEventListener("input", () => {
     renderTable();
 });
 
-//Add category
-document.getElementById("addCategoryBtn").addEventListener("click", () => {
-    document.getElementById("addCategoryName").value = "";
-    addModal.show();
-});
+// //Add category
+// document.getElementById("addCategoryBtn").addEventListener("click", () => {
+//     document.getElementById("addCategoryName").value = "";
+//     addModal.show();
+// });
 
-document.getElementById("saveAddCategory").addEventListener("click", () => {
-    const name = document.getElementById("addCategoryName").value.trim();
-    if (!name) return alert("Category name required");
+// document.getElementById("saveAddCategory").addEventListener("click", () => {
+//     const name = document.getElementById("addCategoryName").value.trim();
+//     if (!name) return alert("Category name required");
 
-    if (categories.some(c => c.name.toLowerCase() === name.toLowerCase()))
-        return alert("Category already exists");
+//     if (categories.some(c => c.name.toLowerCase() === name.toLowerCase()))
+//         return alert("Category already exists");
 
-    categories.push({
-        id: categories.length + 1,
-        name,
-        count: 0,
-        createdAt: new Date().toISOString()
-    });
+//     categories.push({
+//         id: categories.length + 1,
+//         name,
+//         count: 0,
+//         createdAt: new Date().toISOString()
+//     });
 
-    filteredCategories = [...categories];
-    saveToLocalStorage("categories", categories);
-    addModal.hide();
-    renderTable();
-});
+//     filteredCategories = [...categories];
+//     saveToLocalStorage("categories", categories);
+//     addModal.hide();
+//     renderTable();
+// });
 
 // Edit & Delete category
 tableBody.addEventListener("click", async (e) => {
