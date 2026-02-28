@@ -131,18 +131,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Clear any existing buttons to prevent duplicates
   buttonsContainer.innerHTML = "";
 
-  // 1) View Order Details button
+  // 1) View Order Details / My Orders button
   const viewDetailsBtn = document.createElement("button");
   viewDetailsBtn.className = "btn fw-bold px-4 py-2 custom-btn";
-  viewDetailsBtn.textContent = "View Order Details";
-  viewDetailsBtn.onclick = () => {
-    // Navigate to the order-details page and pass the first order's ID in the query string
-    if (latestOrders && latestOrders.length > 0) {
-      window.location.href = `../orders/order-details.html?id=${latestOrders[0].Id}`;
-    } else {
-      window.location.href = "../orders/order-details.html";
-    }
-  };
+
+  if (latestOrders.length > 1) {
+    viewDetailsBtn.textContent = "My Orders";
+    viewDetailsBtn.onclick = () => {
+      window.location.href = "../orders/orders.html";
+    };
+  } else {
+    viewDetailsBtn.textContent = "View Order Details";
+    viewDetailsBtn.onclick = () => {
+      // Navigate to the order-details page and pass the first order's ID in the query string
+      if (latestOrders && latestOrders.length > 0) {
+        window.location.href = `../orders/order-details.html?id=${latestOrders[0].Id}`;
+      } else {
+        window.location.href = "../orders/order-details.html";
+      }
+    };
+  }
   buttonsContainer.appendChild(viewDetailsBtn);
 
   // 2) Continue Shopping button
