@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const items = cart.map((item) => ({
         Id: item.product.Id,
         Name: item.product.Name,
-        Price: item.product.Price,
+        Price: item.product.Price - (item.product.Price * (item.product.Discount / 100)),
         Quantity: item.quantity,
         SellerName: item.product.SellerName || "Default Seller",
     }));

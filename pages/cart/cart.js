@@ -145,9 +145,11 @@ function calculateTotals(cart) {
         subtotal += ((item.product.Price) - (item.product.Price * item.product.Discount / 100)) * item.quantity;
     });
 
+    const currentUser = getCurrentUser();
+    const discountedTotal = getFromLocalStorage(`discountedTotal_${currentUser.Id}`) || 0;
     const vatRate = 0.14; // 14%
     const vatAmount = subtotal * vatRate;
-    const total = subtotal + vatAmount;
+    const total = discountedTotal || (subtotal + vatAmount);
 
     return { subtotal, vatAmount, total };
 }
