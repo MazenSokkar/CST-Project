@@ -20,6 +20,9 @@ async function init() {
     try {
       const myOrders = await getOrdersByUserId(currentUser.Id);
 
+      // Sort by Id descending (most recent first)
+      myOrders.sort((a, b) => (b.Id || 0) - (a.Id || 0));
+
       displayOrders = myOrders.map((order) => ({
         ...order,
         _displayAmount: order.TotalPrice,
@@ -68,7 +71,7 @@ function renderTable() {
   const end = start + pageSize;
   const pageOrders = displayOrders.slice(start, end);
 
-  for (let i = pageOrders.length - 1; i >= 0; i--) {
+  for (let i = 0; i < pageOrders.length; i++) {
     const row = document.createElement("tr");
     row.innerHTML = `
             <td>#${pageOrders[i]?.Id || "-"}</td>

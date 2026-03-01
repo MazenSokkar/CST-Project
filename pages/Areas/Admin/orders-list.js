@@ -23,6 +23,9 @@ async function init() {
   allOrders = await getAllOrders();
   allUsers = await getAllUsers();
 
+  // Sort by Id descending (most recent first)
+  allOrders.sort((a, b) => (b.Id || 0) - (a.Id || 0));
+
   if (!currentUser) {
     window.location.replace("../../../../index.html");
     return;
