@@ -1,6 +1,6 @@
 import { loadSidebar } from "../../../shared/admin-sidebar/sidebar.js";
 import * as LSManager from "../../../shared/js/local-storage-management.js";
-import { getOrdersByUserId } from "../../../services/orders.service.js";
+import { getOrderById, getOrdersByUserId } from "../../../services/orders.service.js";
 import { getCurrentUser } from "../../../shared/js/local-storage-management.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -19,9 +19,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    const latestOrder = orders.sort((a, b) => b.Timestamp - a.Timestamp)[0];
+    //const latestOrder = orders.sort((a, b) => b.Timestamp - a.Timestamp)[0];
 
-    renderInvoice(latestOrder);
+    const orderId = new URLSearchParams(window.location.search).get("id");
+
+    const order = await getOrderById(orderId);
+
+    renderInvoice(order);
 });
 
 function renderInvoice(order) {
