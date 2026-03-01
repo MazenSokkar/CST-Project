@@ -321,7 +321,7 @@ function buildProductCards(products, containerId) {
         productCard.innerHTML = `
             <div class="card product-card h-100">
                 <div class="product-card-img">
-                    <span class="bg-danger p-1 px-2 text-white fw-lighter">${product.Discount}% OFF</span>
+                    <span class="bg-danger p-1 px-2 text-white fw-lighter ${product.Discount > 0 ? 'd-block' : 'd-none'}">${product.Discount}% OFF</span>
                     <span class="p-2 shadow add-to-wishlist-btn"><i class="bi bi-heart"></i></span>
                     <img src="${getRandomImageUrl(product)}" alt="${product.Name}">
                 </div>
@@ -330,7 +330,7 @@ function buildProductCards(products, containerId) {
                     <div class="mb-auto">
                         <div class="mb-2 text-warning">${starsHtml}</div>
                         <span class="fw-bold fs-5">$${product.Price - (product.Price * product.Discount / 100)}</span>
-                        <span class="text-decoration-line-through text-muted me-2">$${product.Price}</span>
+                        <span class="text-decoration-line-through text-muted me-2 ${product.Discount > 0 ? 'd-block' : 'd-none'}">$${product.Price}</span>
                     </div>
                     <div class="d-flex flex-wrap flex-xl-nowrap justify-content-between mt-3 gap-2">
                         <button class="btn btn-primary flex-grow-1 add-to-cart-btn" type="button">Add To Cart</button>
