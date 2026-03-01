@@ -1,49 +1,49 @@
 import { loadSidebar } from "../../../shared/admin-sidebar/sidebar.js";
 import * as LSManager from "../../../shared/js/local-storage-management.js";
-import { getOrderById } from "../../../services/orders.service.js";
-const params = new URLSearchParams(window.location.search);
-const orderId = params.get("id");
+import { getOrdersByUserId } from "../../../services/orders.service.js";
+import { getCurrentUser } from "../../../shared/js/local-storage-management.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadSidebar("dashboard");
-    if (!orderId) {
+
+    const user = getCurrentUser();
+    if (!user) {
         showNoInvoice();
         return;
     }
 
-    const order = await getOrderById(orderId);
-    if (!order) {
+    const orders = await getOrdersByUserId(user.Id);
+
+    if (!orders.length) {
         showNoInvoice();
         return;
     }
 
-    renderInvoice(order);
+    const latestOrder = orders.sort((a, b) => b.Timestamp - a.Timestamp)[0];
+
+    renderInvoice(latestOrder);
 });
-function renderInvoice(order) {
 
+function renderInvoice(order) {
     const tableBody = document.getElementById("invoiceItems");
     const customerInfo = document.getElementById("customerInfo");
 
     tableBody.innerHTML = "";
-    const details = order.shippingDetails || {};
 
     customerInfo.innerHTML = `
-        ${details.fullName || ""} <br>
-        ${details.email || ""} <br>
-        ${details.address || ""}
+        Address : ${order.Address || ""} <br>
+        Payment Method : ${order.PaymentMethod || ""}
     `;
 
-    order.cart.forEach(item => {
-
-        const product = item.product;
-        const qty = item.quantity;
-        const price = product.Price;
+    order.Items.forEach(item => {
+        const qty = item.Quantity;
+        const price = item.Price;
         const total = price * qty;
 
         const row = `
             <tr>
-                <td>${product.Id}</td>
-                <td>${product.Name}</td>
+                <td>${item.Id}</td>
+                <td>${item.Name}</td>
                 <td>${qty}</td>
                 <td>$${price.toFixed(2)}</td>
                 <td>14%</td>
@@ -54,16 +54,16 @@ function renderInvoice(order) {
         tableBody.innerHTML += row;
     });
 
-    document.getElementById("subtotal").textContent =
-        `$${order.totals.subtotal.toFixed(2)}`;
+    const subtotal = order.Subtotal || 0;
+    const vat = order.Vats || 0;
+    const total = order.TotalPrice || 0;
 
-    document.getElementById("vat").textContent =
-        `$${order.totals.vatAmount.toFixed(2)}`;
-
-    document.getElementById("total").textContent =
-        `$${order.totals.total.toFixed(2)}`;
+    document.getElementById("subtotal").textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById("vat").textContent = `$${vat.toFixed(2)}`;
+    document.getElementById("total").textContent = `$${total.toFixed(2)}`;
 }
-// Fallback if no order found
+
+// fallback
 function showNoInvoice() {
     document.getElementById("invoiceItems").innerHTML =
         `<tr><td colspan="6" class="text-center text-muted">
@@ -71,22 +71,21 @@ function showNoInvoice() {
         </td></tr>`;
 }
 
-
-
-// topbar panel toggle (bell + profile)
+// topbar toggle
 const pairs = [
-    ["desktopBellBtn",    "desktopBellPanel"],
+    ["desktopBellBtn", "desktopBellPanel"],
     ["desktopProfileBtn", "desktopProfilePanel"],
-    ["mobileBellBtn",     "mobileBellPanel"],
-    ["mobileProfileBtn",  "mobileProfilePanel"],
+    ["mobileBellBtn", "mobileBellPanel"],
+    ["mobileProfileBtn", "mobileProfilePanel"],
 ];
 
 const allPanels = pairs.map(([, pid]) => document.getElementById(pid)).filter(Boolean);
 
 pairs.forEach(([btnId, panelId]) => {
-    const btn   = document.getElementById(btnId);
+    const btn = document.getElementById(btnId);
     const panel = document.getElementById(panelId);
     if (!btn || !panel) return;
+
     btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const isOpen = panel.classList.contains("show");

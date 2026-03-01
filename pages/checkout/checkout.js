@@ -36,7 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function calculateTotals(cart) {
     let subtotal = 0;
     cart.forEach(
-      (item) => (subtotal += (item.product.Price - (item.product.Price * item.product.Discount) / 100) * item.quantity),
+      (item) =>
+        (subtotal +=
+          (item.product.Price - (item.product.Price * item.product.Discount) / 100) *
+          item.quantity)
     );
     const vatRate = 0.14;
     const vatAmount = subtotal * vatRate;
@@ -58,7 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
     cart.forEach((item) => {
       const div = document.createElement("div");
       div.className = "d-flex justify-content-between mb-2";
-      div.innerHTML = `<span>${item.product.Name} x ${item.quantity}</span> <strong>$${((item.product.Price - (item.product.Price * item.product.Discount) / 100) * item.quantity).toFixed(2)}</strong>`;
+      div.innerHTML = `<span>${item.product.Name} x ${item.quantity}</span> <strong>$${(
+        (item.product.Price - (item.product.Price * item.product.Discount) / 100) *
+        item.quantity
+      ).toFixed(2)}</strong>`;
       orderSummary.appendChild(div);
     });
 
@@ -67,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     vatEl.textContent = `$${totals.vatAmount.toFixed(2)}`;
     totalEl.textContent = `$${totals.total.toFixed(2)}`;
   }
+
   placeOrderBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
@@ -97,12 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
 
     const apiOrder = {
-      Items: items,
-      DeliveryPrice: 50,
+      Subtotal: totals.subtotal,
       Vats: totals.vatAmount,
       Saving: 0,
+      TotalPrice: totals.total , 
       UserId: getCurrentUser().Id,
-      Address: shippingDetails.address,
+      Items: items,
+      Address: shippingDetails.address || "",
       PaymentMethod: paymentMethodSelect.value,
       Status: "Pending",
       Timestamp: Date.now(),
@@ -115,9 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderOrder();
       showToast("Order placed successfully 🎉", { title: "Checkout" });
 
-      // Adding a timeout so the toast acts properly.
       setTimeout(() => {
-        // I modified the redirect here from /index.html to the order-completion.html page
         window.location.href = "../order-completion/order-completion.html";
       }, 1500);
     } catch (err) {
