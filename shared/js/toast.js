@@ -1,7 +1,7 @@
 export function showToast(message, options = {}) {
     let {
         title = 'Furnishop',
-        icon = 'assets/images/bell-regular-full.svg',
+        icon = '/assets/images/bell-regular-full.svg',
         duration = 2000
     } = options;
     let toastContainer = document.getElementById('toast-container');
