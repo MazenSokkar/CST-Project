@@ -10,13 +10,13 @@ const params = new URLSearchParams(window.location.search);
 const orderId = params.get("id");
 
 if (!orderId) {
-    window.location.href = "orders-list.html";
+  window.location.href = "orders-list.html";
 }
 
 // Ensure the user is authenticated and authorized (Admin/Seller)
 const currentUser = LSManager.getCurrentUser();
 if (!currentUser || (currentUser.Role !== "Admin" && currentUser.Role !== "Seller")) {
-    window.location.replace("../../../../index.html");
+  window.location.replace("../../../../index.html");
 }
 
 // Load data
@@ -87,9 +87,9 @@ function renderOrderDetails(order) {
   document.getElementById("summarySubtotal").textContent = order.Subtotal?.toFixed(2) ?? "0.00";
   document.getElementById("summaryDelivery").textContent = order.DeliveryPrice?.toFixed(2) ?? "0.00";
   document.getElementById("summaryVat").textContent = order.Vats?.toFixed(2) ?? "0.00";
-  document.getElementById("summarySaving").textContent = order.Saving?.toFixed(2) ?? "0.00";
   document.getElementById("summaryTotal").textContent = order.TotalPrice?.toFixed(2) ?? "0.00";
 
   // Payment Method
-  document.getElementById("paymentMethod").textContent = order.PaymentMethod === "cod" ? "Cash on Delivery" : order.PaymentMethod;
+  document.getElementById("paymentMethod").textContent =
+    order.PaymentMethod === "cod" ? "Cash on Delivery" : order.PaymentMethod;
 }
