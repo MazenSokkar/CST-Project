@@ -1,5 +1,6 @@
 import { getFromLocalStorage, saveToLocalStorage, getAllKeysFromLocalStorage, isAuthenticated, getCurrentUser } from "../../shared/js/local-storage-management.js";
 import { showToast } from "../../shared/js/toast.js";
+import { addOrder } from "../../../services/orders.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -13,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const paymentMethodSelect = document.getElementById("paymentMethodSelect");
     const checkoutForm = document.getElementById("checkoutForm");
 
-    // Load cart for current user
     function loadCart() {
         if (!isAuthenticated()) return [];
         const user = getCurrentUser();
@@ -23,13 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return getFromLocalStorage(cartKey) || [];
     }
 
-    // Save cart
     function saveCart(cart) {
         const user = getCurrentUser();
         saveToLocalStorage(`cart_${user.Id}`, cart);
     }
 
-    // Calculate totals
     function calculateTotals(cart) {
         let subtotal = 0;
         cart.forEach(item => subtotal += item.product.Price * item.quantity);
@@ -39,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return { subtotal, vatAmount, total };
     }
 
-    // Render order summary
     function renderOrder() {
         const cart = loadCart();
         orderSummary.innerHTML = "";
@@ -63,20 +60,18 @@ document.addEventListener("DOMContentLoaded", () => {
         vatEl.textContent = `$${totals.vatAmount.toFixed(2)}`;
         totalEl.textContent = `$${totals.total.toFixed(2)}`;
     }
-
-    // Place order
-    placeOrderBtn.addEventListener("click", (e) => {
+    placeOrderBtn.addEventListener("click", async (e) => {
         e.preventDefault();
 
         if (!checkoutForm.checkValidity()) {
-            showToast("Please fill in all required fields.", { title: "Checkout", duration: 3000 });
+            showToast("Please fill in all required fields.", { title: "Checkout" });
             checkoutForm.reportValidity();
             return;
         }
 
         const cart = loadCart();
         if (cart.length === 0) {
-            showToast("Your cart is empty!", { title: "Cart", duration: 3000 });
+            showToast("Your cart is empty!", { title: "Cart" });
             return;
         }
 
@@ -84,27 +79,43 @@ document.addEventListener("DOMContentLoaded", () => {
         const shippingDetails = {};
         formData.forEach((value, key) => shippingDetails[key] = value);
 
-        const order = {
-            userId: getCurrentUser().Id,
-            cart,
-            totals: calculateTotals(cart),
-            shippingMethod: shippingMethodSelect.value,
-            paymentMethod: paymentMethodSelect.value,
-            shippingDetails
+        const totals = calculateTotals(cart);
+
+        const items = cart.map(item => ({
+            Id: item.product.Id,
+            Name: item.product.Name,
+            Price: item.product.Price,
+            Quantity: item.quantity,
+            SellerName: item.product.SellerName || "Default Seller"
+        }));
+
+        const apiOrder = {
+            Items: items,
+            DeliveryPrice: 50,
+            Vats: totals.vatAmount,
+            Saving: 0,
+            UserId: getCurrentUser().Id,
+            Address: shippingDetails.address,
+            PaymentMethod: paymentMethodSelect.value,
+            Status: "Pending",
+            Timestamp: Date.now()
         };
 
-        const orders = getFromLocalStorage("orders") || [];
-        orders.push(order);
-        saveToLocalStorage("orders", orders);
+        try {
+            await addOrder(apiOrder);
 
-        saveCart([]); 
-        renderOrder();
+            saveCart([]);
+            renderOrder();
+            showToast("Order placed successfully 🎉", { title: "Checkout" });
 
-        showToast("Your order has been placed successfully 🎉", { title: "Checkout", duration: 3000 });
+            setTimeout(() => {
+                window.location.href = "/index.html";
+            }, 1500);
 
-        setTimeout(() => {
-            window.location.href = "index.html";
-        }, 1500);
+        } catch (err) {
+            console.error(err);
+            showToast("Error placing order", { title: "Error" });
+        }
     });
 
     renderOrder();

@@ -2,9 +2,11 @@ import {
     getFromLocalStorage,
     saveToLocalStorage
 } from "../../../shared/js/local-storage-management.js";
+
 import {
     loadSidebar
 } from "../../../shared/admin-sidebar/sidebar.js";
+
 import {
     getAllUsers,
     deleteUser as deleteUserFromAPI,
@@ -18,135 +20,230 @@ const tableBody = document.getElementById("userTable");
 const searchInput = document.getElementById("searchInput");
 const pagination = document.getElementById("pagination");
 const paginationInfo = document.getElementById("paginationInfo");
-const editModal = new bootstrap.Modal(document.getElementById("editModal"));
-const addUserModal = new bootstrap.Modal(document.getElementById("addUserModal"));
+
+const editModalEl = document.getElementById("editModal");
+const addUserModalEl = document.getElementById("addUserModal");
+const confirmModalEl = document.getElementById("confirmModal");
+
+const editModal = new bootstrap.Modal(editModalEl);
+const addUserModal = new bootstrap.Modal(addUserModalEl);
+const confirmModal = new bootstrap.Modal(confirmModalEl);
+
+const addUserBtn = document.getElementById("addUserBtn");
+const saveAddUserBtn = document.getElementById("saveAddUser");
+const saveEditBtn = document.getElementById("saveEdit");
+const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
 
 let users = [];
 let filteredUsers = [];
 let currentPage = 1;
 const rowsPerPage = 5;
-let selectedUserId = null;
 
-//load users from API or localStorage
+let selectedUserId = null;
+let userToDelete = null;
+
+/* ------------------ Debounce ------------------ */
+function debounce(fn, delay = 300) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+    };
+}
+
+/* ------------------ Load Users ------------------ */
 async function loadUsers() {
     try {
         const apiUsers = await getAllUsers();
-        if (apiUsers.length > 0) {
+
+        if (apiUsers?.length) {
             users = apiUsers.map(u => ({
-                id: u.Id.toString(),
-                name: u.Name,
-                email: u.Username,
-                phone: u.Address || "",
-                role: u.Role || "Customer",
-                date: new Date(u.CreatedAt).toLocaleDateString()
+                id: String(u.Id),
+                name: u.Name ?? "",
+                email: u.Username ?? "",
+                phone: u.Address ?? "",
+                role: u.Role ?? "Customer",
+                date: u.CreatedAt
+                    ? new Date(u.CreatedAt).toLocaleDateString()
+                    : "-"
             }));
+
             saveToLocalStorage("users", users);
         } else {
-            users = getFromLocalStorage("users") || [];
+            users = getFromLocalStorage("users") ?? [];
         }
-    } catch (error) {
-        users = getFromLocalStorage("users") || [];
+    } catch {
+        users = getFromLocalStorage("users") ?? [];
     }
 
     filteredUsers = [...users];
+    currentPage = 1;
     renderTable();
 }
 
-// Render table based on current page and filtered users
+/* ------------------ Create Row (Safe) ------------------ */
+function createRow(user) {
+    const tr = document.createElement("tr");
+    tr.dataset.id = user.id;
+
+    const cells = [
+        `#${user.id}`,
+        user.name,
+        user.email,
+        user.phone,
+        user.role,
+        user.date
+    ];
+
+    cells.forEach(text => {
+        const td = document.createElement("td");
+        td.textContent = text;
+        tr.appendChild(td);
+    });
+
+    const actionTd = document.createElement("td");
+    actionTd.innerHTML = `
+        <button class="btn btn-sm btn-outline-primary edit-btn">
+            <i class="fa fa-edit"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-danger delete-btn">
+            <i class="fa fa-trash"></i>
+        </button>
+    `;
+    tr.appendChild(actionTd);
+
+    return tr;
+}
+
+/* ------------------ Render Table ------------------ */
 function renderTable() {
     tableBody.innerHTML = "";
+
+    const pageCount = Math.max(1, Math.ceil(filteredUsers.length / rowsPerPage));
+    if (currentPage > pageCount) currentPage = pageCount;
 
     const start = (currentPage - 1) * rowsPerPage;
     const paginated = filteredUsers.slice(start, start + rowsPerPage);
 
-    paginated.forEach(user => {
-        tableBody.innerHTML += `
-            <tr data-id="${user.id}">
-                <td>#${user.id}</td>
-                <td>${user.name}</td>
-                <td>${user.email}</td>
-                <td>${user.phone}</td>
-                <td>${user.role}</td>
-                <td>${user.date}</td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary edit-btn">
-                        <i class="fa fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger delete-btn">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
+    const fragment = document.createDocumentFragment();
+    paginated.forEach(user => fragment.appendChild(createRow(user)));
 
-    renderPagination();
+    tableBody.appendChild(fragment);
+
+    updatePaginationInfo();
+    renderPagination(pageCount);
 }
 
-// Render pagination controls
-function renderPagination() {
+/* ------------------ Pagination Info ------------------ */
+function updatePaginationInfo() {
+    const total = filteredUsers.length;
+    if (!total) {
+        paginationInfo.textContent = "No users found";
+        return;
+    }
+
+    const start = (currentPage - 1) * rowsPerPage + 1;
+    const end = Math.min(currentPage * rowsPerPage, total);
+
+    paginationInfo.textContent = `Showing ${start} - ${end} of ${total}`;
+}
+
+/* ------------------ Pagination ------------------ */
+function renderPagination(pageCount) {
     pagination.innerHTML = "";
 
-    const pageCount = Math.ceil(filteredUsers.length / rowsPerPage) || 1;
-    const start = (currentPage - 1) * rowsPerPage + 1;
-    const end = Math.min(currentPage * rowsPerPage, filteredUsers.length);
-
-    paginationInfo.innerText = `Showing ${start} - ${end} of ${filteredUsers.length}`;
-
-    for (let i = 1; i <= pageCount; i++) {
+    const createPageItem = (label, page, disabled = false, active = false) => {
         const li = document.createElement("li");
-        li.className = "page-item";
+        li.className = `page-item ${disabled ? "disabled" : ""}`;
+
         const a = document.createElement("a");
         a.href = "#";
-        a.className = `page-link ${i === currentPage ? "active" : ""}`;
-        a.dataset.page = i;
-        a.innerText = i;
-        a.addEventListener("click", (e) => {
-            e.preventDefault(); // منع refresh
-            currentPage = Number(a.dataset.page);
-            renderTable();
-        });
+        a.className = `page-link ${active ? "active" : ""}`;
+        a.textContent = label;
+
+        if (!disabled) {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+                currentPage = page;
+                renderTable();
+            });
+        }
+
         li.appendChild(a);
         pagination.appendChild(li);
+    };
+
+    createPageItem("«", currentPage - 1, currentPage === 1);
+
+    for (let i = 1; i <= pageCount; i++) {
+        createPageItem(i, i, false, i === currentPage);
     }
+
+    createPageItem("»", currentPage + 1, currentPage === pageCount);
 }
 
-//FORCE CLEAR SEARCH INPUT ON LOAD
+/* ------------------ Search ------------------ */
+const handleSearch = debounce(() => {
+    const value = searchInput.value.trim().toLowerCase();
 
-window.addEventListener("DOMContentLoaded", () => {
-    // delete any existing value in the search input
-    searchInput.value = "";
+    filteredUsers = !value
+        ? [...users]
+        : users.filter(user =>
+            user.name.toLowerCase().includes(value) ||
+            user.role.toLowerCase().includes(value)
+        );
 
-    // disable autocomplete and autocorrect to prevent browser from filling the input
-    searchInput.setAttribute("autocomplete", "off");
-    searchInput.setAttribute("autocorrect", "off");
-    searchInput.setAttribute("autocapitalize", "off");
-    searchInput.setAttribute("spellcheck", "false");
-
-    // in case some browsers still autofill, clear the input after a short delay
-    setTimeout(() => searchInput.value = "", 50);
-});
-
-// Search functionality
-// remove search on page load to prevent autofill issues
-window.addEventListener("DOMContentLoaded", () => {
-    searchInput.value = "";
-});
-
-searchInput.addEventListener("input", () => {
-    const value = searchInput.value.toLowerCase();
-    filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(value) ||
-        user.email.toLowerCase().includes(value) ||
-        user.phone.toLowerCase().includes(value) ||
-        user.role.toLowerCase().includes(value)
-    );
     currentPage = 1;
     renderTable();
+}, 300);
+
+searchInput.addEventListener("input", handleSearch);
+
+/* ------------------ Add User ------------------ */
+addUserBtn.addEventListener("click", () => {
+    addUserModal.show();
 });
 
-//event delegation for edit and delete buttons because they are dynamically generated
-tableBody.addEventListener("click", async (e) => {
+saveAddUserBtn.addEventListener("click", async () => {
+    saveAddUserBtn.disabled = true;
+
+    const name = document.getElementById("addName").value.trim();
+    const email = document.getElementById("addEmail").value.trim();
+    const address = document.getElementById("addAddress").value.trim();
+    const password = document.getElementById("addPassword").value.trim();
+    const role = document.getElementById("addRole").value;
+
+    if (!name || !email || !password) {
+        alert("Please fill required fields");
+        saveAddUserBtn.disabled = false;
+        return;
+    }
+
+    const result = await AddUser({
+        Name: name,
+        Username: email,
+        Password: password,
+        Address: address,
+        Role: role
+    });
+
+    saveAddUserBtn.disabled = false;
+
+    if (result) {
+        addUserModal.hide();
+        clearAddModal();
+        await loadUsers();
+    } else {
+        alert("Failed to add user");
+    }
+});
+
+function clearAddModal() {
+    addUserModalEl.querySelectorAll("input").forEach(i => i.value = "");
+}
+
+/* ------------------ Edit/Delete (Event Delegation) ------------------ */
+tableBody.addEventListener("click", (e) => {
     const row = e.target.closest("tr");
     if (!row) return;
 
@@ -154,112 +251,67 @@ tableBody.addEventListener("click", async (e) => {
     const user = users.find(u => u.id === id);
     if (!user) return;
 
-    // EDIT
     if (e.target.closest(".edit-btn")) {
         selectedUserId = id;
+
         document.getElementById("editName").value = user.name;
         document.getElementById("editEmail").value = user.email;
         document.getElementById("editAddress").value = user.phone;
         document.getElementById("editRole").value = user.role;
+
         editModal.show();
     }
 
-    // DELETE
     if (e.target.closest(".delete-btn")) {
-        if (!confirm("Delete this user?")) return;
-
-        const success = await deleteUserFromAPI(id);
-        if (success) {
-            users = users.filter(u => u.id !== id);
-            filteredUsers = filteredUsers.filter(u => u.id !== id);
-            saveToLocalStorage("users", users);
-
-            if ((currentPage - 1) * rowsPerPage >= filteredUsers.length) {
-                currentPage = Math.max(1, currentPage - 1);
-            }
-
-            renderTable();
-        } else {
-            alert("Delete failed");
-        }
+        userToDelete = id;
+        confirmModal.show();
     }
 });
 
-// Save edited user details to API and update local state and localStorage on success
-document.getElementById("saveEdit").addEventListener("click", async () => {
-    const Name = document.getElementById("editName").value.trim();
-    const Username = document.getElementById("editEmail").value.trim();
-    const Address = document.getElementById("editAddress").value.trim();
-    const Role = document.getElementById("editRole").value.trim();
+/* ------------------ Save Edit ------------------ */
+saveEditBtn.addEventListener("click", async () => {
+    saveEditBtn.disabled = true;
 
-    if (!Name || !Username) {
-        alert("Name and Email are required!");
-        return;
-    }
+    const updatedUser = {
+        Id: selectedUserId,
+        Name: document.getElementById("editName").value,
+        Username: document.getElementById("editEmail").value,
+        Address: document.getElementById("editAddress").value,
+        Role: document.getElementById("editRole").value
+    };
 
-    const updated = await updateUser(selectedUserId, { Name, Username, Address, Role });
-    if (updated) {
-        users = users.map(u => u.id === selectedUserId ? {
-            ...u,
-            name: Name,
-            email: Username,
-            phone: Address,
-            role: Role
-        } : u);
-        filteredUsers = [...users];
-        saveToLocalStorage("users", users);
+    const { Id, ...data } = updatedUser;
+    const success = await updateUser(Id, data);
 
+    saveEditBtn.disabled = false;
+
+    if (success) {
         editModal.hide();
-        renderTable();
+        await loadUsers();
     } else {
         alert("Update failed");
     }
 });
 
-// Show add user modal with empty fields
-document.getElementById("addUserBtn").addEventListener("click", () => {
-    document.getElementById("addName").value = "";
-    document.getElementById("addEmail").value = "";
-    document.getElementById("addAddress").value = "";
-    document.getElementById("addPassword").value = "";
-    document.getElementById("addRole").value = "Customer";
+/* ------------------ Delete ------------------ */
+confirmDeleteBtn.addEventListener("click", async () => {
+    if (!userToDelete) return;
 
-    addUserModal.show();
-});
+    confirmDeleteBtn.disabled = true;
 
-// Save new user to API and update local state and localStorage on success
-document.getElementById("saveAddUser").addEventListener("click", async () => {
-    const Name = document.getElementById("addName").value.trim();
-    const Username = document.getElementById("addEmail").value.trim();
-    const Address = document.getElementById("addAddress").value.trim();
-    const Password = document.getElementById("addPassword").value.trim();
-    const Role = document.getElementById("addRole").value.trim();
-    const CreatedAt = new Date().toISOString();
+    const success = await deleteUserFromAPI(userToDelete);
 
-    if (!Name || !Username || !Password) {
-        alert("Name, Email, and Password are required!");
-        return;
-    }
+    confirmDeleteBtn.disabled = false;
 
-    const newUser = await AddUser({ Name, Username, Address, Password, Role, CreatedAt });
-    if (newUser) {
-        users.push({
-            id: newUser.Id.toString(),
-            name: newUser.Name,
-            email: newUser.Username,
-            phone: newUser.Address || "",
-            role: newUser.Role,
-            date: new Date(newUser.CreatedAt).toLocaleDateString()
-        });
-
-        filteredUsers = [...users];
-        saveToLocalStorage("users", users);
-        addUserModal.hide();
-        renderTable();
+    if (success) {
+        confirmModal.hide();
+        await loadUsers();
     } else {
-        alert("Failed to add user. Username might already exist.");
+        alert("Delete failed");
     }
+
+    userToDelete = null;
 });
 
-// Initial load
+/* ------------------ Init ------------------ */
 loadUsers();

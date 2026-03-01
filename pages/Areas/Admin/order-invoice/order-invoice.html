@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../../shared/admin-sidebar/sidebar.css" />
+    <link rel="stylesheet" href="order-invoice.css" />
+  </head>
+
+  <body>
+    <div id="sidebar-placeholder"></div>
+
+    <!-- mobile topbar -->
+    <div class="mobile-topbar p-3" id="mobileTopbar">
+      <button class="mobile-hamburger" id="mobileHamburger" title="Open menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div id="main-content" class="main-content mt-5 mt-md-0">
+      <!-- desktop topbar -->
+      <div class="desktop-topbar d-none d-md-flex m-0 p-4">
+        <h1 class="main-font mb-0 text-white fw-bold w-100 text-center">Invoice</h1>
+      </div>
+
+      <div class="container my-4">
+        <!-- Back Button -->
+        <div class="mb-3">
+          <button class="btn btn-back" onclick="window.location.href = '../orders-list/orders-list.html'">
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Orders
+          </button>
+        </div>
+
+        <!-- Invoice Card -->
+        <div class="card invoice-card shadow-sm p-4">
+          <!-- Invoice Header -->
+          <div class="invoice-header d-flex justify-content-between align-items-start mb-4">
+            <div>
+              <h2 class="fw-bold mb-1">INVOICE</h2>
+              <p class="text-muted mb-0">
+                Invoice No:
+                <strong id="invoiceNo">#—</strong>
+              </p>
+              <p class="text-muted mb-0">
+                Date:
+                <span id="invoiceDate">—</span>
+              </p>
+            </div>
+            <div class="text-end">
+              <span class="badge status-badge" id="invoiceStatus">—</span>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Customer & Payment Info -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h6 class="fw-bold text-muted mb-2">Bill To:</h6>
+              <p class="mb-1 fw-semibold" id="customerName">—</p>
+              <p class="mb-0 text-muted" id="customerAddress">—</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+              <h6 class="fw-bold text-muted mb-2">Payment Method:</h6>
+              <p class="mb-0 fw-semibold" id="paymentMethod">—</p>
+            </div>
+          </div>
+
+          <!-- Items Table -->
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product</th>
+                  <th class="text-center">Qty</th>
+                  <th class="text-end">Unit Price</th>
+                  <th class="text-end">Discount</th>
+                  <th class="text-end">Total</th>
+                </tr>
+              </thead>
+              <tbody id="invoiceItemsBody"></tbody>
+            </table>
+          </div>
+
+          <hr />
+
+          <!-- Totals -->
+          <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+              <div class="totals-section">
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-muted">Subtotal:</span>
+                  <strong id="subtotal">$0.00</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-muted">Delivery:</span>
+                  <strong id="delivery">$0.00</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-muted">VAT:</span>
+                  <strong id="vat">$0.00</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-success">Saving:</span>
+                  <strong class="text-success" id="saving">- $0.00</strong>
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between">
+                  <span class="fw-bold fs-5">Total:</span>
+                  <strong class="fw-bold fs-5 text-danger" id="total">$0.00</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Print Button -->
+          <div class="text-center mt-4">
+            <button class="btn btn-print" onclick="window.print()">
+              <i class="fa-solid fa-print me-2"></i>
+              Print Invoice
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"></script>
+    <script type="module" src="order-invoice.js"></script>
+  </body>
+</html>

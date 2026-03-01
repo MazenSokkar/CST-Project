@@ -12,6 +12,15 @@ const editModal = new bootstrap.Modal(document.getElementById("editModal"));
 const addModal = new bootstrap.Modal(document.getElementById("addProductModal"));
 const addProductBtn = document.getElementById("addProductBtn");
 
+const defaultImages = [
+    "images/1.png",
+    "images/2.png",
+    "images/3.png",
+    "images/4.png",
+    "images/5.png",
+    "images/6.png"
+];
+
 addProductBtn.addEventListener("click", () => {
     ["addName","addPrice","addQuantity","addCategory","addColor","addSellerName","addDiscount","addRate","addDescription"]
     .forEach(id => document.getElementById(id).value = "");
@@ -173,6 +182,7 @@ document.getElementById("saveEdit").addEventListener("click", async () => {
     if(success) { editModal.hide(); renderTable(); }
 });
 
+
 // Save add
 document.getElementById("saveAddProduct").addEventListener("click", async () => {
     const Name = document.getElementById("addName").value.trim();
@@ -203,7 +213,21 @@ document.getElementById("saveAddProduct").addEventListener("click", async () => 
 
     if(hasError) return;
 
-    const newProduct = { Name, Price, Quantity, Category, Color, SellerName, Discount, Rate, Description, ImageUrl: [], IsBestSeller: false, IsFeatured: false, CreatedAt: new Date().toISOString() };
+    const newProduct = { 
+        Name, 
+        Price, 
+        Quantity, 
+        Category,
+        Color, 
+        SellerName, 
+        Discount, 
+        Rate, 
+        Description, 
+        ImageUrl: defaultImages, 
+        IsBestSeller: false, 
+        IsFeatured: false, 
+        CreatedAt: new Date().toISOString()
+    };
 
     try {
         await addProduct(newProduct);

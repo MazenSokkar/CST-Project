@@ -189,6 +189,12 @@ function goToProductDetails(productId) {
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+// get random image url
+function getRandomImageUrl(product) {
+    if (!product.ImageUrl) return './assets/images/no-image-icon-23489.png';
+    if (product.ImageUrl.length === 0) return './assets/images/no-image-icon-23489.png';
+    return `./assets/${product.ImageUrl[getRandomInt(0, product.ImageUrl.length - 1)]}`;
+}
 
 // product cards builder function
 function buildProductCards(products, containerId) {
@@ -208,7 +214,7 @@ function buildProductCards(products, containerId) {
                 <div class="product-card-img">
                     <span class="bg-danger p-1 px-2 text-white fw-lighter">${product.Discount}% OFF</span>
                     <span class="p-2 shadow add-to-wishlist-btn"><i class="bi bi-heart"></i></span>
-                    <img src="assets/${product.ImageUrl[getRandomInt(0, product.ImageUrl.length - 1)]}" alt="${product.Name}">
+                    <img src="${getRandomImageUrl(product)}" alt="${product.Name}">
                 </div>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title fw-semibold mb-2">${product.Name}</h5>

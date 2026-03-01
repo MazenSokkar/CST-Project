@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Details</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../shared/admin-sidebar/sidebar.css" />
+    <link rel="stylesheet" href="order-details.css" />
+  </head>
+
+  <body>
+    <div id="sidebar-placeholder"></div>
+
+    <!-- mobile topbar -->
+    <div class="mobile-topbar p-3" id="mobileTopbar">
+      <button class="mobile-hamburger" id="mobileHamburger" title="Open menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <span class="mobile-brand position-absolute top-50 start-50 translate-middle m-0 p-0 text-center w-auto">Order Details</span>
+    </div>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div id="main-content" class="main-content">
+      <!-- desktop topbar -->
+      <div class="desktop-topbar d-none d-md-flex m-0 p-4">
+        <h1 class="main-font mb-0 text-white fw-bold w-100 text-center">Order Details</h1>
+      </div>
+
+      <div class="container my-4">
+        <!-- Back Button -->
+        <div class="mb-3">
+          <button class="btn btn-back" onclick="window.location.href = '../Admin/orders-list.html'">
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Orders
+          </button>
+        </div>
+
+        <div class="row g-4">
+          <!-- LEFT COLUMN -->
+          <div class="col-lg-7">
+            <!-- All Items -->
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-header">
+                <h5 class="mb-0 fw-bold">All Items</h5>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table align-middle mb-0">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Seller</th>
+                      </tr>
+                    </thead>
+                    <tbody id="orderItemsBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart Totals -->
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-header">
+                <h5 class="mb-0 fw-bold">Cart Totals</h5>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                      <tr>
+                        <td>Subtotal</td>
+                        <td>
+                          $
+                          <span id="summarySubtotal">0</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Delivery</td>
+                        <td>
+                          $
+                          <span id="summaryDelivery">0</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>VAT</td>
+                        <td>
+                          $
+                          <span id="summaryVat">0</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-success">Saving</td>
+                        <td class="text-success">
+                          - $
+                          <span id="summarySaving">0</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Total</th>
+                        <td class="text-danger fw-bold">
+                          $
+                          <span id="summaryTotal">0</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="col-lg-5">
+            <!-- Summary -->
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-header">
+                <h5 class="mb-0 fw-bold">Summary</h5>
+              </div>
+              <div class="card-body">
+                <table class="w-100 summary-table">
+                  <tr>
+                    <td>Order ID:</td>
+                    <td><b id="orderId">—</b></td>
+                  </tr>
+                  <tr>
+                    <td>Date:</td>
+                    <td><b id="orderTimestamp">—</b></td>
+                  </tr>
+                  <tr>
+                    <td>Status:</td>
+                    <td><span class="badge status-badge" id="orderStatusBadge">—</span></td>
+                  </tr>
+                  <tr>
+                    <td>Customer:</td>
+                    <td><b id="customerName">—</b></td>
+                  </tr>
+                  <tr>
+                    <td>Total:</td>
+                    <td><b class="text-danger" id="summaryTotalRight">—</b></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- Shipping Address -->
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-header">
+                <h5 class="mb-0 fw-bold">Shipping Address</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0">15 Tahrir Square, Downtown Cairo, Cairo Governorate, Egypt</p>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-header">
+                <h5 class="mb-0 fw-bold">Payment Method</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0">Cash on Delivery</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"></script>
+    <script type="module" src="order-details.js"></script>
+  </body>
+</html>

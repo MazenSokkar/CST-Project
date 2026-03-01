@@ -1,7 +1,77 @@
 import { loadSidebar } from "../../../shared/admin-sidebar/sidebar.js";
 import * as LSManager from "../../../shared/js/local-storage-management.js";
+import { getOrderById } from "../../../services/orders.service.js";
+const params = new URLSearchParams(window.location.search);
+const orderId = params.get("id");
 
-await loadSidebar("dashboard");
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadSidebar("dashboard");
+    if (!orderId) {
+        showNoInvoice();
+        return;
+    }
+
+    const order = await getOrderById(orderId);
+    if (!order) {
+        showNoInvoice();
+        return;
+    }
+
+    renderInvoice(order);
+});
+function renderInvoice(order) {
+
+    const tableBody = document.getElementById("invoiceItems");
+    const customerInfo = document.getElementById("customerInfo");
+
+    tableBody.innerHTML = "";
+    const details = order.shippingDetails || {};
+
+    customerInfo.innerHTML = `
+        ${details.fullName || ""} <br>
+        ${details.email || ""} <br>
+        ${details.address || ""}
+    `;
+
+    order.cart.forEach(item => {
+
+        const product = item.product;
+        const qty = item.quantity;
+        const price = product.Price;
+        const total = price * qty;
+
+        const row = `
+            <tr>
+                <td>${product.Id}</td>
+                <td>${product.Name}</td>
+                <td>${qty}</td>
+                <td>$${price.toFixed(2)}</td>
+                <td>14%</td>
+                <td>$${total.toFixed(2)}</td>
+            </tr>
+        `;
+
+        tableBody.innerHTML += row;
+    });
+
+    document.getElementById("subtotal").textContent =
+        `$${order.totals.subtotal.toFixed(2)}`;
+
+    document.getElementById("vat").textContent =
+        `$${order.totals.vatAmount.toFixed(2)}`;
+
+    document.getElementById("total").textContent =
+        `$${order.totals.total.toFixed(2)}`;
+}
+// Fallback if no order found
+function showNoInvoice() {
+    document.getElementById("invoiceItems").innerHTML =
+        `<tr><td colspan="6" class="text-center text-muted">
+            Invoice not found
+        </td></tr>`;
+}
+
+
 
 // topbar panel toggle (bell + profile)
 const pairs = [
