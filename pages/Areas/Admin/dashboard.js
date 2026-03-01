@@ -47,9 +47,7 @@ logoutBtns.forEach(btn => {
 
 initTopbarPanels();
 
-window.addEventListener("load", () => {
-    renderDashboard();
-});
+renderDashboard();
 
 initFilterSortListeners();
 
