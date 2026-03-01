@@ -68,6 +68,8 @@ function renderDashboard() {
         renderAdminDashboard();
     } else if (getRole() == "Seller") {
         renderSellerDashboard();
+    } else {
+        window.location.href = "/pages/auth/login/login.html";
     }
 }
 
