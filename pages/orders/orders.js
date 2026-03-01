@@ -68,24 +68,23 @@ function renderTable() {
   const end = start + pageSize;
   const pageOrders = displayOrders.slice(start, end);
 
-  pageOrders.forEach((order) => {
+  for (let i = pageOrders.length - 1; i >= 0; i--) {
     const row = document.createElement("tr");
-
     row.innerHTML = `
-            <td>#${order.Id}</td>
-            <td>${order.PaymentMethod || "-"}</td>
-            <td>$${order._displayAmount.toFixed(2)}</td>
-            <td>${formatDate(order.Timestamp)}</td>
-            <td>${getStatusBadge(order.Status)}</td>
+            <td>#${pageOrders[i]?.Id || "-"}</td>
+            <td>${pageOrders[i]?.PaymentMethod || "-"}</td>
+            <td>$${pageOrders[i]?._displayAmount.toFixed(2) || "0.00"}</td>
+            <td>${formatDate(pageOrders[i]?.Timestamp)}</td>
+            <td>${getStatusBadge(pageOrders[i]?.Status)}</td>
             <td>
-                <button class="btn btn-sm view-btn" data-id="${order.Id}">
+                <button class="btn btn-sm view-btn" data-id="${pageOrders[i]?.Id}">
                   <i class="bi bi-eye"></i> View
                 </button>
             </td>
             <td></td>
         `;
     tableBody.appendChild(row);
-  });
+  }
 
   // Always fill until pageSize (5) to maintain fixed height
   for (let i = pageOrders.length; i < pageSize; i++) {
