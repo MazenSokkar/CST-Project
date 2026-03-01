@@ -94,7 +94,7 @@ function getTotalRevenue() {
     allOrders.forEach(order => {
         totalRevenue += order.TotalPrice;
     });
-    return totalRevenue;
+    return Math.round(totalRevenue);
 }
 // get total revenue by seller name
 function getTotalRevenueBySellerName(sellerName){
