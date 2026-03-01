@@ -120,7 +120,7 @@ function renderCart() {
         <div class="collapse mt-2" id="couponCollapse">
             <div class="card card-body p-2">
                 <span class="mb-2">If you have a coupon code, please apply it below</span>
-                <input type="text" class="form-control mb-2" placeholder="Enter coupon code" id="couponInput">
+                <input type="text" class="form-control mb-2" placeholder="Enter Your Name To Get Discount" id="couponInput">
                 <button class="btn btn-danger btn-sm" onclick="applyCoupon()">Apply</button>
             </div>
         </div>
@@ -199,9 +199,60 @@ function checkout() {
 
     window.location.href = "/pages/checkout/checkout.html";
 }
+function applyCoupon() {
+    const couponInput = document.getElementById("couponInput");
+    if (!couponInput) return;
+
+    const couponValue = couponInput.value.trim();
+    let cart = loadCart();
+    if (cart.length === 0) return;
+
+    let discountRate = 0;
+
+    const currentUser = getCurrentUser();
+
+    if (couponValue.toLowerCase() === currentUser.Name.toLowerCase()) {
+        discountRate = 0.10; 
+        showToast(`Coupon applied! You get 10% off 🎉`, { title: "Coupon" });
+    } else {
+        showToast(`Invalid coupon`, { title: "Coupon" });
+    }
+
+    const totals = calculateTotals(cart);
+    const subtotalAfterDiscount = totals.subtotal * (1 - discountRate);
+    const vatAfterDiscount = subtotalAfterDiscount * 0.14;
+    const totalAfterDiscount = subtotalAfterDiscount + vatAfterDiscount;
+
+    // عدل نفس summary card
+    const summarySection = cartContainer.querySelector(".card.p-3.mt-3");
+    if (summarySection) {
+        summarySection.innerHTML = `
+            <div class="d-flex justify-content-between">
+                <span>Subtotal:</span>
+                <strong>$${subtotalAfterDiscount.toFixed(2)}</strong>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span>VAT (14%):</span>
+                <strong>$${vatAfterDiscount.toFixed(2)}</strong>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span>Discount:</span>
+                <strong>-${(totals.subtotal * discountRate).toFixed(2)}</strong>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between">
+                <span class="fw-bold">Total:</span>
+                <strong class="text-danger">$${totalAfterDiscount.toFixed(2)}</strong>
+            </div>
+        `;
+    }
+     saveToLocalStorage(`discount_${currentUser.Id}`, discountRate);
+    saveToLocalStorage(`discountedTotal_${currentUser.Id}`, totalAfterDiscount);
+}
 //ده يخليهم متاحين للـ 
 window.increaseQty = increaseQty;
 window.decreaseQty = decreaseQty;
 window.removeItem = removeItem;
 window.checkout = checkout;
+window.applyCoupon = applyCoupon;
 renderCart();
