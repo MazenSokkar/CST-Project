@@ -58,10 +58,10 @@ function renderOrder(order) {
 
   document.getElementById("orderStatus").innerHTML = getStatusBadge(order.Status);
 
-  document.getElementById("subtotal").textContent = "$" + order.Subtotal.toFixed(2);
-  document.getElementById("delivery").textContent = "$" + order.DeliveryPrice.toFixed(2);
-  document.getElementById("vat").textContent = "$" + order.Vats.toFixed(2);
-  document.getElementById("total").textContent = "$" + order.TotalPrice.toFixed(2);
+  document.getElementById("subtotal").textContent = "$" + Math.round(order.Subtotal); 
+  document.getElementById("delivery").textContent = "$" + Math.round(order.DeliveryPrice);
+  document.getElementById("vat").textContent = "$" + Math.round(order.Vats);
+  document.getElementById("total").textContent = "$" + Math.round( order.TotalPrice);
 
   const tbody = document.getElementById("orderItemsBody");
   tbody.innerHTML = "";
@@ -73,8 +73,8 @@ function renderOrder(order) {
       <tr>
         <td>${item.Name}</td>
         <td>${item.Quantity}</td>
-        <td>$${item.Price.toFixed(2)}</td>
-        <td>$${total.toFixed(2)}</td>
+        <td>$${Math.round(item.Price)}</td>
+        <td>$${Math.round(total)}</td>
       </tr>
     `;
   });
