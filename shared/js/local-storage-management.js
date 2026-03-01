@@ -98,13 +98,9 @@ export function getCartItems() {
         let user = getCurrentUser();
         let allKeys = getAllKeysFromLocalStorage();
         let userCartKey = allKeys.find(key => key.startsWith(`cart_${user.Id}`));
-        if (!userCartKey) {
-            showToast('Your cart is empty.');
-            return [];
-        }
+
         return userCartKey ? getFromLocalStorage(userCartKey) : [];
     } else {
-        showToast('Please log in to view your cart.');
         return [];
     }
 }
@@ -166,13 +162,9 @@ export function getWishlistItems() {
         let user = getCurrentUser();
         let allKeys = getAllKeysFromLocalStorage();
         let userWishlistKey = allKeys.find(key => key.startsWith(`wishlist_${user.Id}`));
-        if (!userWishlistKey) {
-            showToast('Your wishlist is empty.');
-            return [];
-        }
+
         return userWishlistKey ? getFromLocalStorage(userWishlistKey) : [];
     } else {
-        showToast('Please log in to view your wishlist.');
         return [];
     }
 }
@@ -181,7 +173,11 @@ export function buyNow(product) {
     if (isAuthenticated()) {
         clearCart();
         addToCart(product);
-        window.location.href = 'pages/checkout/checkout.html';
+        if (window.location.pathname.includes('/pages/')) {
+            window.location.href = '../checkout/checkout.html';
+        } else {
+            window.location.href = 'pages/checkout/checkout.html';
+        }
     } else {
         showToast('Please log in to purchase items.');
     }

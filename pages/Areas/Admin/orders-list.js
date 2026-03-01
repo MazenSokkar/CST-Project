@@ -3,7 +3,7 @@ import { getCurrentUser } from "../../../../shared/js/local-storage-management.j
 import { getAllOrders, updateOrder } from "../../../../services/orders.service.js";
 import { getAllUsers } from "../../../../services/users.service.js";
 
-await loadSidebar("Orders");
+await loadSidebar("Order");
 
 // --- State ---
 let allOrders = [];
@@ -145,6 +145,23 @@ function renderTable() {
         `;
     tableBody.appendChild(row);
   });
+
+  // Always fill until rowsPerPage (5) to maintain fixed height
+  for (let i = paginated.length; i < rowsPerPage; i++) {
+    const emptyRow = document.createElement("tr");
+    emptyRow.classList.add("empty-row-placeholder");
+    emptyRow.innerHTML = `
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        `;
+    tableBody.appendChild(emptyRow);
+  }
 
   renderPagination();
 }

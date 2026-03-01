@@ -17,6 +17,31 @@ function updateCartCount() {
 
     cartCountElement.textContent = totalQuantity;
 }
+
+// Function to set the active link in the navbar based on the current page
+function setActiveNavLink() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll(".navbar .nav-link");
+
+    navLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+
+        if (currentPath === linkPath) {
+            link.classList.add("active-link");
+        }
+    });
+
+    // active for navbar icons (Cart, Wishlist, Profile)
+    const iconLinks = document.querySelectorAll(".navbar-icons a");
+
+    iconLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+
+        if (currentPath === linkPath) {
+            link.classList.add("active-icon");
+        }
+    });
+}
 // Load Navbar
 fetch('/Shared/Navbar/navbar.html')
     .then(res => res.text())
@@ -25,19 +50,97 @@ fetch('/Shared/Navbar/navbar.html')
 
         // Update cart count on page load
         updateCartCount();
+
+        // Set active link in navbar
+        setActiveNavLink();
+
+        // Handle My Orders click if user not logged in
+        const myOrdersLink = document.querySelector('a[href="/pages/orders/orders.html"]');
+
+        if (myOrdersLink) {
+            myOrdersLink.addEventListener("click", (e) => {
+                const currentUser = LSManager.getCurrentUser();
+
+                if (!currentUser) {
+                    e.preventDefault(); // prevent normal navigation
+                    window.location.href = "/pages/profile/profile.html";
+                }
+            });
+        }
+
+        // get elements
+        const searchForm = document.querySelector(".navbar-search");
+        const searchInput = searchForm.querySelector("input");
+
+        // create a container for search results
+        const resultsContainer = document.createElement("div");
+        resultsContainer.classList.add("search-results");
+        searchForm.appendChild(resultsContainer);
+
+        // search as you type
+        searchInput.addEventListener("input", async () => {
+            const query = searchInput.value.trim().toLowerCase();
+            resultsContainer.innerHTML = ""; // clear previous results
+
+            if (!query) return;
+
+            const products = await getAllProducts();
+            const filteredProducts = products.filter(p => p.Name.toLowerCase().includes(query));
+
+            if (filteredProducts.length === 0) {
+                const noResult = document.createElement("div");
+                noResult.textContent = "No products found";
+                noResult.style.cursor = "default";
+                resultsContainer.appendChild(noResult);
+                return;
+            }
+
+            filteredProducts.forEach(product => {
+                const item = document.createElement("div");
+                item.textContent = product.Name;
+                item.addEventListener("click", () => {
+                    window.location.href = `/pages/product-details/product-details.html?id=${product.Id}`;
+                });
+                resultsContainer.appendChild(item);
+            });
+        });
+
+        // search on form submit (not really needed with search as you type, but good for accessibility and users who expect it)
+        searchForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) return;
+
+            const products = await getAllProducts();
+            const filteredProducts = products.filter(p => p.Name.toLowerCase().includes(query));
+
+            if (filteredProducts.length > 0) {
+                window.location.href = `/pages/product-details/product-details.html?id=${filteredProducts[0].Id}`;
+            } else {
+                alert("No products found!");
+            }
+        });
     })
     .catch(err => console.error("Error loading Navbar:", err));
 
 // Load Footer
-fetch('/Shared/Footer/footer.html')   // absolute path from root
-  .then(res => res.text())
-  .then(html => document.getElementById('footer-container').innerHTML = html)
-  .catch(err => console.error("Error loading Footer:", err));
+fetch('/Shared/Footer/footer.html')
+    .then(res => res.text())
+    .then(html => {
+        const footerContainer = document.getElementById('footer-container');
+        if (footerContainer) {
+            footerContainer.innerHTML = html;
+        }
+    })
+    .catch(err => console.error("Error loading Footer:", err));
 
-  // Listen for cart updates to refresh the cart count in the navbar after the page has loaded
-  window.addEventListener("cartUpdated", () => {
+// Listen for cart updates to refresh the cart count in the navbar after the page has loaded
+window.addEventListener("cartUpdated", () => {
     updateCartCount();
 });
+
+
+
 
 // get elements
 let prevCatBtn = document.getElementById('prevCatBtn');
@@ -49,33 +152,37 @@ let prevNewArrivalsBtn = document.getElementById('prevNewArrivalsBtn');
 let nextLatestBlogBtn = document.getElementById('nextLatestBlogBtn');
 let prevLatestBlogBtn = document.getElementById('prevLatestBlogBtn');
 
+
+
 // add event listeners
-prevCatBtn.addEventListener('click', prevCatSlide);
-nextCatBtn.addEventListener('click', nextCatSlide);
-shopNowBtns.forEach(btn => {
+if (prevCatBtn) prevCatBtn.addEventListener('click', prevCatSlide);
+if (nextCatBtn) nextCatBtn.addEventListener('click', nextCatSlide);
+if (shopNowBtns) shopNowBtns.forEach(btn => {
     btn.addEventListener('click', goToShop);
 });
-ourProductTitles.addEventListener('click', (e) => {
-    if (e.target.id == 'latest') {
-        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
-        e.target.style.color = 'var(--theme-default)';
-        buildProductCards(latestProducts, 'our-products-container');
-    }
-    if (e.target.id == 'featured') {
-        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
-        e.target.style.color = 'var(--theme-default)';
-        buildProductCards(featuredProducts, 'our-products-container');
-    }
-    if (e.target.id == 'best-selling') {
-        Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
-        e.target.style.color = 'var(--theme-default)';
-        buildProductCards(bestSellingAndNotFeaturedProducts, 'our-products-container');
-    }
-});
-nextNewArrivalsBtn.addEventListener('click', nextNewArrivalsSlide);
-prevNewArrivalsBtn.addEventListener('click', prevNewArrivalsSlide);
-nextLatestBlogBtn.addEventListener('click', nextLatestBlogsSlide);
-prevLatestBlogBtn.addEventListener('click', prevLatestBlogsSlide);
+if (ourProductTitles) {
+    ourProductTitles.addEventListener('click', (e) => {
+        if (e.target.id == 'latest') {
+            Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+            e.target.style.color = 'var(--theme-default)';
+            buildProductCards(latestProducts, 'our-products-container');
+        }
+        if (e.target.id == 'featured') {
+            Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+            e.target.style.color = 'var(--theme-default)';
+            buildProductCards(featuredProducts, 'our-products-container');
+        }
+        if (e.target.id == 'best-selling') {
+            Array.from(ourProductTitles.children).forEach(title => title.style.color = 'black');
+            e.target.style.color = 'var(--theme-default)';
+            buildProductCards(bestSellingAndNotFeaturedProducts, 'our-products-container');
+        }
+    });
+}
+if (nextNewArrivalsBtn) nextNewArrivalsBtn.addEventListener('click', nextNewArrivalsSlide);
+if (prevNewArrivalsBtn) prevNewArrivalsBtn.addEventListener('click', prevNewArrivalsSlide);
+if (nextLatestBlogBtn) nextLatestBlogBtn.addEventListener('click', nextLatestBlogsSlide);
+if (prevLatestBlogBtn) prevLatestBlogBtn.addEventListener('click', prevLatestBlogsSlide);
 
 // cat data
 let categories = [
@@ -199,6 +306,8 @@ function getRandomImageUrl(product) {
 // product cards builder function
 function buildProductCards(products, containerId) {
     let container = document.getElementById(containerId);
+    if (!container) return; // if container not found, exit the function
+
     container.innerHTML = '';
     products.forEach(product => {
         const productCard = document.createElement('div');
@@ -212,7 +321,7 @@ function buildProductCards(products, containerId) {
         productCard.innerHTML = `
             <div class="card product-card h-100">
                 <div class="product-card-img">
-                    <span class="bg-danger p-1 px-2 text-white fw-lighter">${product.Discount}% OFF</span>
+                    <span class="bg-danger p-1 px-2 text-white fw-lighter ${product.Discount > 0 ? 'd-block' : 'd-none'}">${product.Discount}% OFF</span>
                     <span class="p-2 shadow add-to-wishlist-btn"><i class="bi bi-heart"></i></span>
                     <img src="${getRandomImageUrl(product)}" alt="${product.Name}">
                 </div>
@@ -221,7 +330,7 @@ function buildProductCards(products, containerId) {
                     <div class="mb-auto">
                         <div class="mb-2 text-warning">${starsHtml}</div>
                         <span class="fw-bold fs-5">$${product.Price - (product.Price * product.Discount / 100)}</span>
-                        <span class="text-decoration-line-through text-muted me-2">$${product.Price}</span>
+                        <span class="text-decoration-line-through text-muted me-2 ${product.Discount > 0 ? 'd-block' : 'd-none'}">$${product.Price}</span>
                     </div>
                     <div class="d-flex flex-wrap flex-xl-nowrap justify-content-between mt-3 gap-2">
                         <button class="btn btn-primary flex-grow-1 add-to-cart-btn" type="button">Add To Cart</button>
@@ -266,6 +375,8 @@ function buildProductCards(products, containerId) {
 // build categories cards in categories section
 function buildCategoryCards(categories, containerId) {
     let container = document.getElementById(containerId);
+    if (!container) return; // if container not found, exit the function
+
     container.innerHTML = '';
     categories[0].forEach(cat => {
         let catCard = document.createElement('div');
@@ -287,6 +398,8 @@ function buildCategoryCards(categories, containerId) {
 // build blog cards in latest blog section
 function buildLatestBlogCards(blogs, containerId) {
     let container = document.getElementById(containerId);
+    if (!container) return; // if container not found, exit the function
+
     container.innerHTML = '';
     blogs[0].forEach(blog => {
         let blogCard = document.createElement('div');

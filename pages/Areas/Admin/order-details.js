@@ -3,7 +3,7 @@ import * as LSManager from "../../../shared/js/local-storage-management.js";
 import * as OrderService from "../../../services/orders.service.js";
 import * as UserService from "../../../services/users.service.js";
 
-await loadSidebar("Orders");
+await loadSidebar("Order");
 
 // Get order ID from URL
 const params = new URLSearchParams(window.location.search);
@@ -89,4 +89,7 @@ function renderOrderDetails(order) {
   document.getElementById("summaryVat").textContent = order.Vats?.toFixed(2) ?? "0.00";
   document.getElementById("summarySaving").textContent = order.Saving?.toFixed(2) ?? "0.00";
   document.getElementById("summaryTotal").textContent = order.TotalPrice?.toFixed(2) ?? "0.00";
+
+  // Payment Method
+  document.getElementById("paymentMethod").textContent = order.PaymentMethod === "cod" ? "Cash on Delivery" : order.PaymentMethod;
 }

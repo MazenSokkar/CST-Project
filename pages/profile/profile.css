@@ -1,34 +1,76 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f3f4f6;
+/* Hero Section */
+.profile-hero {
+    background: var(--theme-default);
 }
 
+/* Profile Card */
 .profile-card {
-    border-radius: 1rem;
-    background: #fff;
+    border-radius: 20px;
+    transition: 0.3s;
 }
 
-.profile-img img {
+.profile-card:hover {
+    transform: translateY(-8px);
+}
+
+/* Profile Image */
+.profile-img-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: -100px;
+}
+
+.profile-img {
     width: 120px;
     height: 120px;
     object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid var(--theme-default);
 }
 
-h3 {
-    font-weight: 600;
+/* Info Items */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.text-muted {
-    font-weight: 400;
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #f8f9fa;
 }
 
-.list-group-item {
-    font-size: 15px;
-    border: none;
-    padding-left: 0;
+.info-item i {
+    font-size: 20px;
+    color: var(--theme-default);
 }
 
-.btn-danger {
-    font-weight: 500;
-    border-radius: 0.5rem;
+/* Theme Buttons */
+.btn-theme {
+    background: var(--theme-default);
+    color: #fff;
+    border-radius: 30px;
+    padding: 10px 20px;
+}
+
+.btn-theme:hover{
+    background: #fff;
+    border: 2px solid var(--theme-default);
+    color: var(--theme-default);
+}
+
+.btn-outline-theme {
+    border: 2px solid var(--theme-default);
+    color: var(--theme-default);
+    border-radius: 30px;
+    padding: 10px 20px;
+}
+
+.btn-outline-theme:hover {
+    background: var(--theme-default);
+    color: #fff;
 }

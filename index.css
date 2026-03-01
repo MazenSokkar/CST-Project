@@ -31,6 +31,36 @@ body {
     color: #333;
 }
 
+/* Active Navbar Link */
+.navbar .nav-link.active-link {
+    color: var(--theme-default) !important;
+    position: relative;
+    font-weight: 600;
+}
+
+.navbar .nav-link.active-link::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--theme-default) !important;
+    border-radius: 2px;
+}
+
+/* Active state for navbar icons */
+.navbar-icons a.active-icon {
+    color: var(--theme-default) !important;
+}
+
+.navbar-icons a.active-icon i,
+.navbar-icons a.active-icon .icon-label {
+    color: var(--theme-default) !important;
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
 /* Dropdown hover for desktop */
 @media (min-width: 992px) {
     .navbar-nav .dropdown:hover .dropdown-menu {
@@ -75,6 +105,31 @@ body {
     padding: 0 0.75rem;
     color: #555;
     cursor: pointer;
+}
+
+/* Dropdown نتائج البحث */
+.search-results {
+    position: absolute;
+    top: 100%;
+    /* تحت input مباشرة */
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-results div {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-results div:hover {
+    background-color: #f1f1f1;
 }
 
 .navbar-icons {

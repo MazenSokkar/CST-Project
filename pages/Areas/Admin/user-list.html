@@ -31,12 +31,6 @@
             margin-left: 72px;
         }
 
-        .category {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #8C593B;
-        }
-
         .action-bar {
             background: #8C593B;
             padding: 20px 30px;
@@ -98,15 +92,25 @@
             border-top: none !important;
         }
 
-        .pagination .page-link {
+        /* Pagination Styles */
+        .pagination .page-item .page-link {
+            background-color: white;
+            color: #8C593B;
             border-radius: 8px;
-            margin: 0 4px;
             border: none;
+            margin: 0 4px;
+            transition: background-color 0.2s, color 0.2s;
         }
 
-        .pagination .active {
-            background: #8C593B;
-            color: white !important;
+        .pagination .page-item .page-link:hover {
+            background-color: #8C593B;
+            color: white;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #8C593B;
+            color: white;
+            border: none;
         }
 
         .modal-content {
@@ -130,6 +134,11 @@
             border-radius: 8px;
             padding: 8px 16px;
         }
+
+        .btn:hover {
+            background: #8C593B;
+            color: white;
+        }
     </style>
 </head>
 
@@ -149,7 +158,7 @@
         <!-- ACTION BAR -->
         <div class="action-bar d-flex mb-3">
             <div class="topbar d-flex justify-content-between align-items-center">
-                <h5 class="category bg-white p-3 rounded m-0">User List</h5>
+                <h1 class="text-white p-3 rounded m-0">User List</h1>
             </div>
             <button class="btn ms-auto" id="addUserBtn"><i class="fa fa-plus me-1"></i>Add User</button>
             <div class="search-box d-flex align-items-center">

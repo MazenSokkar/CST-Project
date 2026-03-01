@@ -7,6 +7,7 @@ import {
 } from "../../shared/js/local-storage-management.js";
 
 import { GetProductById } from "../../services/product.service.js"; 
+import { showToast } from "../../shared/js/toast.js";
 
 
 let emptyMessage;
@@ -21,10 +22,10 @@ export function addToWishlist(productId) {
     if (!wishlist.includes(productId)) {
         wishlist.push(productId);
         saveToLocalStorage(key, wishlist);
-        alert("Product added to wishlist ✅");
+        showToast("product added to wishlist successfully");
         renderWishlist(); // تحديث العرض بعد الإضافة
     } else {
-        alert("Product already in wishlist");
+        showToast("Product already in wishlist");
     }
 }
 
@@ -71,7 +72,7 @@ async function renderWishlist() {
                 <div class="col-md-6">
                     <p class="mb-1"><strong>Name:</strong> ${product.Name}</p>
                     <p class="mb-1"><strong>Description:</strong> ${product.Description}</p>
-                    <p class="mb-0"><strong>Price:</strong> $${product.Price}</p>
+                    <p class="mb-0"><strong>Price:</strong> $${((product.Price) - (product.Price * product.Discount / 100))}</p>
                 </div>
                 <div class="col-md-4 text-center">
                     <button class="btn btn-danger btn-sm" onclick="removeFromWishlistUI(${index})">Remove 🗑️</button>
@@ -110,7 +111,6 @@ async function addWishlistItemToCart(index) {
     // saveToLocalStorage(cartKey, cart);
 
     await removeFromWishlistUI(index);
-    alert("Added to cart ✅");
 }
 
 // جعل الدوال متاحة للزرار

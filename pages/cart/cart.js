@@ -48,7 +48,7 @@ function renderCart() {
         let card = document.createElement("div");
         card.className = "card p-3 mb-3";
 
-card.innerHTML = `
+        card.innerHTML = `
     <div class="card p-3 mb-3 border">
         <div class="row align-items-center">
 
@@ -59,7 +59,7 @@ card.innerHTML = `
             <div class="col-md-6">
                 <p class="mb-1"><strong>Name:</strong> ${item.product.Name}</p>
                 <p class="mb-1"><strong>Description:</strong> ${item.product.Description}</p>
-                <p class="mb-0"><strong>Price:</strong> $${item.product.Price * item.quantity}</p>
+                <p class="mb-0"><strong>Price:</strong> $${((item.product.Price) - (item.product.Price * item.product.Discount / 100)) * item.quantity}</p>
             </div>
 
             <div class="col-md-2 text-center">
@@ -72,7 +72,7 @@ card.innerHTML = `
             </div>
 
             <div class="col-md-2 text-center">
-                <button class="btn btn-danger btn-sm mt-3 mt-md-0" onclick="removeItem(${index})">
+                <button class="btn btn-danger btn-sm p-2 border border-0 rounded-3" style="background-color: #8C593B" onclick="removeItem(${index})">
                     Remove 🗑️
                 </button>
             </div>
@@ -82,12 +82,12 @@ card.innerHTML = `
 `;
         cartContainer.appendChild(card);
     });
-        const totals = calculateTotals(cart);
+    const totals = calculateTotals(cart);
 
-        const summarySection = document.createElement("div");
-        summarySection.className = "card p-3 mt-3";
+    const summarySection = document.createElement("div");
+    summarySection.className = "card p-3 mt-3";
 
-        summarySection.innerHTML = `
+    summarySection.innerHTML = `
         <div class="d-flex justify-content-between">
         <span>Subtotal:</span>
         <strong>$${totals.subtotal.toFixed(2)}</strong>
@@ -131,7 +131,7 @@ card.innerHTML = `
     const checkoutbtn = document.createElement("div");
     checkoutbtn.innerHTML = `
     <div class="d-flex justify-content-end mt-2">
-    <button class="btn btn-danger btn-sm" onclick="checkout()">Check Out</button>
+    <button class="btn btn-danger btn-sm p-2 border border-0 rounded-3" style="background-color: #8C593B" onclick="checkout()">Check Out</button>
     </div>
     `;
 
@@ -142,7 +142,7 @@ function calculateTotals(cart) {
     let subtotal = 0;
 
     cart.forEach(item => {
-        subtotal += item.product.Price * item.quantity;
+        subtotal += ((item.product.Price) - (item.product.Price * item.product.Discount / 100)) * item.quantity;
     });
 
     const vatRate = 0.14; // 14%
@@ -158,6 +158,8 @@ function increaseQty(index) {
     cart[index].quantity++;
     saveCart(cart);
     renderCart();
+    // Dispatch a custom event to notify navbar of the application about the cart update
+    window.dispatchEvent(new Event("cartUpdated"));
 }
 
 // Decrease quantity
@@ -167,6 +169,8 @@ function decreaseQty(index) {
         cart[index].quantity--;
         saveCart(cart);
         renderCart();
+        // Dispatch a custom event to notify navbar of the application about the cart update
+        window.dispatchEvent(new Event("cartUpdated"));
     }
 }
 
@@ -176,6 +180,8 @@ function removeItem(index) {
     cart.splice(index, 1);
     saveCart(cart);
     renderCart();
+    // Dispatch a custom event to notify navbar of the application about the cart update
+    window.dispatchEvent(new Event("cartUpdated"));
 }
 
 // check out
@@ -195,7 +201,7 @@ function checkout() {
 }
 //ده يخليهم متاحين للـ 
 window.increaseQty = increaseQty;
-window.decreaseQty = decreaseQty; 
-window.removeItem = removeItem; 
+window.decreaseQty = decreaseQty;
+window.removeItem = removeItem;
 window.checkout = checkout;
 renderCart();

@@ -1,0 +1,85 @@
+/* Dribbble Style Order Summary */
+.order-summary-box {
+  background-color: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea;
+  font-family: "Inter", sans-serif;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.order-summary-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+}
+
+.summary-title {
+  font-weight: 700;
+  font-size: 20px;
+  color: #000000;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.summary-item:last-child {
+  margin-bottom: 0;
+}
+
+.item-thumbnail {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 1.25rem;
+  background-color: #f0f0f0;
+}
+
+.item-details {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.item-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #000000;
+  margin-bottom: 0.25rem;
+}
+
+.item-subdesc {
+  font-size: 13px;
+  color: #666666;
+}
+
+.item-price {
+  font-weight: 700;
+  font-size: 16px;
+  color: #000000;
+}
+
+.summary-divider {
+  border-top: 1px solid #eaeaea;
+  background: none;
+  opacity: 1;
+}
+
+.total-label {
+  font-weight: 600;
+  font-size: 18px;
+  color: #000000;
+}
+
+.total-price {
+  font-weight: 700;
+  font-size: 20px;
+  color: #000000;
+}

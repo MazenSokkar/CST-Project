@@ -1,11 +1,22 @@
 import { getAllProducts } from "../../services/product.service.js";
-import { addToWishlist , removeFromWishlist, addToCart, removeFromCart, buyNow, getWishlistItems, isAuthenticated} from "../../shared/js/local-storage-management.js";
+import {
+  addToWishlist,
+  removeFromWishlist,
+  addToCart,
+  removeFromCart,
+  buyNow,
+  getWishlistItems,
+  isAuthenticated,
+} from "../../shared/js/local-storage-management.js";
+// ================= Global Variables =================
 let allProducts = [];
 let filteredProducts = [];
 let currentPage = 1;
 let itemsPerPage = 9;
 let sortBy = "";
 let maxProductPrice = 1000;
+
+// ================= Initialization =================
 document.addEventListener("DOMContentLoaded", async () => {
   await loadProducts();
   setupFilters();
@@ -13,6 +24,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderProducts();
   setupPagination();
 });
+
+// ================= Data Loading =================
+/**
+ * Fetches all products from the service and sets up the initial maximum price bounds
+ * for the price slider filters based on the loaded data.
+ */
 async function loadProducts() {
   try {
     allProducts = await getAllProducts();
@@ -36,6 +53,10 @@ async function loadProducts() {
     console.error("Error loading products:", error);
   }
 }
+// ================= Helpers =================
+/**
+ * Helper to determine category size (Small, Medium, Large) from string values containing "cm"
+ */
 function getProductSize(sizeStr) {
   if (!sizeStr) return null;
   const match = sizeStr.match(/(\d+)cm/);
@@ -45,6 +66,12 @@ function getProductSize(sizeStr) {
   if (width <= 150) return "Medium";
   return "Large";
 }
+
+// ================= Filter Setup & Logic =================
+/**
+ * Wires up event listeners for all the filtering inputs: Price sliders, Color, Size, and Rating checkboxes.
+ * Also handles filter reset logic for both Desktop and Mobile views.
+ */
 function setupFilters() {
   const priceMin = document.getElementById("priceMin");
   if (priceMin) {
@@ -135,6 +162,9 @@ function setupFilters() {
     updateRangeTrack();
   });
 }
+/**
+ * Wires up the dropdown that sorts products by default, low price, or high price.
+ */
 function setupSort() {
   const sortSelect = document.getElementById("sortSelect");
   if (sortSelect) {
@@ -144,6 +174,12 @@ function setupSort() {
     });
   }
 }
+
+/**
+ * The core filtering logic. It evaluates every product against the active
+ * filters (price boundaries, selected colors, sizes, and ratings).
+ * Finally, it triggers sorting and re-renders the DOM with the filtered dataset.
+ */
 function applyFilters() {
   const minPrice = parseFloat(document.getElementById("priceMin").value);
   const maxPrice = parseFloat(document.getElementById("priceMax").value);
@@ -154,9 +190,9 @@ function applyFilters() {
   );
   filteredProducts = allProducts.filter((product) => {
     if (product.Price < minPrice || product.Price > maxPrice) return false;
-    
+
     // Ensure product.Color is an array to prevent "includes is not a function" error
-    const productColors = Array.isArray(product.Color) ? product.Color : (product.Color ? [product.Color] : []);
+    const productColors = Array.isArray(product.Color) ? product.Color : product.Color ? [product.Color] : [];
     if (selectedColors.length > 0 && !selectedColors.some((c) => productColors.includes(c))) return false;
     if (selectedSizes.length > 0 && !selectedSizes.includes(getProductSize(product.Size))) return false;
     if (selectedRatings.length > 0 && !selectedRatings.includes(Math.round(product.Rate || 0))) return false;
@@ -171,6 +207,11 @@ function applyFilters() {
   setupPagination();
   renderProducts();
 }
+// ================= Grid Rendering & Pagination =================
+/**
+ * Renders the visible product cards to the DOM depending on the current pagination slice.
+ * It injects HTML for each card, binds hover logic, and re-syncs cart and wishlist logic.
+ */
 function renderProducts() {
   const container = document.getElementById("productsContainer");
   if (!container) return;
@@ -257,78 +298,87 @@ function setupPagination() {
     paginationEl.appendChild(nextLi);
   }
 }
+// ================= Global Window Actions =================
+/**
+ * Triggers a page change from pagination click, updates the UI, and scrolls the user back up.
+ */
 window.goToPage = function (page) {
   currentPage = page;
   renderProducts();
   setupPagination();
   window.scrollTo({ top: 300, behavior: "smooth" });
 };
-window.addToCart = function(productId, maxQuantity) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const currentUser = localStorage.getItem('currentUser');
-    if (!isLoggedIn || !currentUser) {
-        window.location.href = '../auth/login/login.html';
-        return;
-    }
-    const product = allProducts.find(p => p.Id === productId);
-    if (!product) return;
-    addToCart(product);
-    updateCartControl(productId, maxQuantity);
+
+/**
+ * Handles attempting to add an item to the user's cart.
+ * Checks for authentication and redirects to login if they are a guest.
+ */
+window.addToCart = function (productId, maxQuantity) {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const currentUser = localStorage.getItem("currentUser");
+  if (!isLoggedIn || !currentUser) {
+    window.location.href = "../auth/login/login.html";
+    return;
+  }
+  const product = allProducts.find((p) => p.Id === productId);
+  if (!product) return;
+  addToCart(product);
+  updateCartControl(productId, maxQuantity);
 };
-window.increaseInCart = function(productId, maxQuantity) {
-    const product = allProducts.find(p => p.Id === productId);
-    if (!product) return;
-    let user = JSON.parse(localStorage.getItem('currentUser'));
-    let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
-    const item = cart.find(i => i.product.Id === productId);
-    if (!item) return;
-    if (item.quantity >= maxQuantity) {
-        alert(`Maximum quantity available is ${maxQuantity}`);
-        return;
-    }
-    addToCart(product);
-    updateCartControl(productId, maxQuantity);
+window.increaseInCart = function (productId, maxQuantity) {
+  const product = allProducts.find((p) => p.Id === productId);
+  if (!product) return;
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
+  const item = cart.find((i) => i.product.Id === productId);
+  if (!item) return;
+  if (item.quantity >= maxQuantity) {
+    alert(`Maximum quantity available is ${maxQuantity}`);
+    return;
+  }
+  addToCart(product);
+  updateCartControl(productId, maxQuantity);
 };
-window.decreaseFromCart = function(productId, maxQuantity) {
-    const product = allProducts.find(p => p.Id === productId);
-    if (!product) return;
-    let user = JSON.parse(localStorage.getItem('currentUser'));
-    let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
-    const item = cart.find(i => i.product.Id === productId);
-    if (!item) return;
-    if (item.quantity > 1) {
-        item.quantity -= 1;
-        localStorage.setItem(`cart_${user.Id}`, JSON.stringify(cart));
-        window.dispatchEvent(new Event("cartUpdated"));
-    } else {
-        removeFromCart(productId);
-    }
-    updateCartControl(productId, maxQuantity);
+window.decreaseFromCart = function (productId, maxQuantity) {
+  const product = allProducts.find((p) => p.Id === productId);
+  if (!product) return;
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  let cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
+  const item = cart.find((i) => i.product.Id === productId);
+  if (!item) return;
+  if (item.quantity > 1) {
+    item.quantity -= 1;
+    localStorage.setItem(`cart_${user.Id}`, JSON.stringify(cart));
+    window.dispatchEvent(new Event("cartUpdated"));
+  } else {
+    removeFromCart(productId);
+  }
+  updateCartControl(productId, maxQuantity);
 };
-window.updateCartControl = function(productId, maxQuantity) {
-    let user = JSON.parse(localStorage.getItem('currentUser'));
-    const cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
-    const item = cart.find(i => i.product.Id === productId);
-    const control = document.getElementById(`cart-control-${productId}`);
-    if (!control) return;
-    if (item) {
-        control.innerHTML = `
+window.updateCartControl = function (productId, maxQuantity) {
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  const cart = JSON.parse(localStorage.getItem(`cart_${user?.Id}`)) || [];
+  const item = cart.find((i) => i.product.Id === productId);
+  const control = document.getElementById(`cart-control-${productId}`);
+  if (!control) return;
+  if (item) {
+    control.innerHTML = `
             <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); decreaseFromCart(${productId}, ${maxQuantity})">-</button>
                 <span class="fw-bold">${item.quantity}</span>
                 <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); increaseInCart(${productId}, ${maxQuantity})">+</button>
             </div>
         `;
-    } else {
-        control.innerHTML = `
+  } else {
+    control.innerHTML = `
             <button class="btn btn-primary w-100" onclick="event.stopPropagation(); addToCart(${productId}, ${maxQuantity})">Add To Cart</button>
         `;
-    }
+  }
 };
-window.buyNow = function(productId) {
-    const product = allProducts.find(p => p.Id === productId);
-    if (!product) return;
-    buyNow(product);
+window.buyNow = function (productId) {
+  const product = allProducts.find((p) => p.Id === productId);
+  if (!product) return;
+  buyNow(product);
 };
 function setupCardHover() {
   document.querySelectorAll(".product-card").forEach((card) => {
@@ -364,70 +414,70 @@ function syncCheckboxes(changedCheckbox, className) {
     }
   });
 }
-window.handleWishlist = function(productId, btn) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (!isLoggedIn) {
-        window.location.href = '../auth/login/login.html';
-        return;
-    }
-    const icon = btn.querySelector('i');
-    if (icon.classList.contains('bi-heart-fill')) {
-        removeFromWishlist(productId);
-        icon.classList.remove('bi-heart-fill');
-        icon.classList.add('bi-heart');
-        btn.style.backgroundColor = '';
-        btn.style.color = '';
-    } else {
-        addToWishlist(productId);
-        icon.classList.remove('bi-heart');
-        icon.classList.add('bi-heart-fill');
-        btn.style.backgroundColor = 'white';
-        btn.style.color = '#8A593D';
-    }
-    updateWishlistCount();
+window.handleWishlist = function (productId, btn) {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  if (!isLoggedIn) {
+    window.location.href = "../auth/login/login.html";
+    return;
+  }
+  const icon = btn.querySelector("i");
+  if (icon.classList.contains("bi-heart-fill")) {
+    removeFromWishlist(productId);
+    icon.classList.remove("bi-heart-fill");
+    icon.classList.add("bi-heart");
+    btn.style.backgroundColor = "";
+    btn.style.color = "";
+  } else {
+    addToWishlist(productId);
+    icon.classList.remove("bi-heart");
+    icon.classList.add("bi-heart-fill");
+    btn.style.backgroundColor = "white";
+    btn.style.color = "#8A593D";
+  }
+  updateWishlistCount();
 };
 
 // Sync wishlist heart icons with localStorage on render
 function syncWishlistIcons() {
-    if (!isAuthenticated()) return;
-    const wishlist = getWishlistItems();
-    document.querySelectorAll('.wishlist-btn').forEach(btn => {
-        const onclickAttr = btn.getAttribute('onclick');
-        const match = onclickAttr?.match(/handleWishlist\((\d+)/);
-        if (!match) return;
-        const productId = parseInt(match[1]);
-        const icon = btn.querySelector('i');
-        if (wishlist.includes(productId)) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill');
-            btn.style.backgroundColor = 'white';
-            btn.style.color = '#8A593D';
-        } else {
-            icon.classList.remove('bi-heart-fill');
-            icon.classList.add('bi-heart');
-            btn.style.backgroundColor = '';
-            btn.style.color = '';
-        }
-    });
+  if (!isAuthenticated()) return;
+  const wishlist = getWishlistItems();
+  document.querySelectorAll(".wishlist-btn").forEach((btn) => {
+    const onclickAttr = btn.getAttribute("onclick");
+    const match = onclickAttr?.match(/handleWishlist\((\d+)/);
+    if (!match) return;
+    const productId = parseInt(match[1]);
+    const icon = btn.querySelector("i");
+    if (wishlist.includes(productId)) {
+      icon.classList.remove("bi-heart");
+      icon.classList.add("bi-heart-fill");
+      btn.style.backgroundColor = "white";
+      btn.style.color = "#8A593D";
+    } else {
+      icon.classList.remove("bi-heart-fill");
+      icon.classList.add("bi-heart");
+      btn.style.backgroundColor = "";
+      btn.style.color = "";
+    }
+  });
 }
 
 // Update wishlist count in navbar
 function updateWishlistCount() {
-    let badge = document.getElementById('wishlist-count');
-    // Dynamically inject the badge if it doesn't exist in the navbar
-    if (!badge) {
-        const wishlistLink = document.querySelector('.navbar-icons a[href*="wishlist"]');
-        if (!wishlistLink) return;
-        wishlistLink.style.position = 'relative';
-        badge = document.createElement('span');
-        badge.id = 'wishlist-count';
-        badge.className = 'badge position-absolute top-0 start-100 translate-middle rounded-pill';
-        wishlistLink.appendChild(badge);
-    }
-    if (!isAuthenticated()) {
-        badge.textContent = '0';
-        return;
-    }
-    const wishlist = getWishlistItems();
-    badge.textContent = wishlist.length;
+  let badge = document.getElementById("wishlist-count");
+  // Dynamically inject the badge if it doesn't exist in the navbar
+  if (!badge) {
+    const wishlistLink = document.querySelector('.navbar-icons a[href*="wishlist"]');
+    if (!wishlistLink) return;
+    wishlistLink.style.position = "relative";
+    badge = document.createElement("span");
+    badge.id = "wishlist-count";
+    badge.className = "badge position-absolute top-0 start-100 translate-middle rounded-pill";
+    wishlistLink.appendChild(badge);
+  }
+  if (!isAuthenticated()) {
+    badge.textContent = "0";
+    return;
+  }
+  const wishlist = getWishlistItems();
+  badge.textContent = wishlist.length;
 }

@@ -1,0 +1,196 @@
+:root {
+  --theme-default: #8c593b;
+  --theme-dark: #6f452e;
+  --theme-light: #b27a58;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f6f3f1;
+  overflow-x: hidden;
+}
+
+/* ===== Topbar Gradient From Project Color ===== */
+.desktop-topbar {
+  background: linear-gradient(135deg, var(--theme-dark), var(--theme-default), var(--theme-light));
+  border-radius: 0 0 35px 35px;
+  padding: 40px 20px;
+}
+
+.desktop-topbar h1 {
+  font-size: 28px;
+  letter-spacing: 0.5px;
+}
+
+.desktop-topbar i {
+  font-size: 24px;
+  vertical-align: middle;
+}
+
+/* ===== Card ===== */
+.card {
+  border: none;
+  border-radius: 25px;
+  box-shadow: 0 15px 35px rgba(140, 89, 59, 0.15);
+}
+
+/* ===== Section Title ===== */
+.card h5 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--theme-dark);
+}
+
+.card h5 i {
+  font-size: 18px;
+  color: var(--theme-default);
+}
+
+/* ===== Table ===== */
+.table thead {
+  background-color: #f1eae6;
+}
+
+.table thead th {
+  background-color: var(--theme-default);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: none;
+  padding: 20px;
+}
+
+.table tbody td {
+  font-size: 16px;
+  color: #555;
+  vertical-align: middle;
+  padding: 20px;
+}
+
+.table tbody tr {
+  transition: none;
+}
+
+/* ===== View Button ===== */
+.view-btn {
+  border-radius: 30px;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  background-color: var(--theme-default);
+  border: none;
+  color: #fff;
+  transition: none;
+}
+
+.view-btn:hover,
+.view-btn:active,
+.view-btn:focus {
+  background-color: var(--theme-default) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.view-btn i {
+  font-size: 14px;
+}
+
+/* ===== Empty State ===== */
+#emptyState i {
+  font-size: 50px;
+  color: var(--theme-default);
+  opacity: 0.6;
+}
+
+#emptyState h5 {
+  font-size: 18px;
+  margin-top: 10px;
+  color: var(--theme-dark);
+}
+
+#emptyState p {
+  font-size: 14px;
+  color: #777;
+}
+
+/* ===== Pagination ===== */
+.pagination .page-link {
+  border-radius: 8px !important;
+  margin: 0 4px;
+  border: none;
+  color: #374151;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  min-width: 38px;
+  height: 38px;
+}
+
+.pagination .page-link:hover {
+  background-color: #f3f4f6;
+  color: var(--theme-default);
+}
+
+.pagination .page-link.active {
+  background-color: var(--theme-default) !important;
+  border-color: var(--theme-default) !important;
+  color: #fff !important;
+}
+
+/* ===== Table Rows - Fixed Height & Polish ===== */
+.table tbody td {
+  font-size: 16px;
+  color: #555;
+  vertical-align: middle;
+  padding: 15px;
+  height: 75px; /* Fixed height for stability */
+}
+
+/* Remove all break lines/borders for empty rows */
+.empty-row-placeholder,
+.empty-row-placeholder td {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.empty-row-placeholder {
+  pointer-events: none;
+}
+
+/* ===== Badges ===== */
+.status-badge {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  min-width: 110px;
+  display: inline-block;
+  text-align: center;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.bg-primary {
+  background-color: #3b82f6 !important;
+}
+
+.bg-info {
+  background-color: #0ea5e9 !important;
+}
+
+.bg-success {
+  background-color: #22c55e !important;
+}
+
+.bg-danger {
+  background-color: #ef4444 !important;
+}
