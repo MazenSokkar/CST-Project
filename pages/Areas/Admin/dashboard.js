@@ -21,7 +21,7 @@ let filterInStock    = document.getElementById("filterInStock");
 let filterOutOfStock = document.getElementById("filterOutOfStock");
 let sortLowToHigh  = document.getElementById("sortLowToHigh");
 let sortHighToLow  = document.getElementById("sortHighToLow");
-let logoutBtn = document.getElementById("logoutBtn");
+let logoutBtns = document.querySelectorAll("#logoutBtn");
 let usersStat = document.getElementById("users-stat");
 
 // filter/sort state
@@ -31,10 +31,12 @@ let currentSort   = "relevance";
 
 await loadSidebar("dashboard");
 
-logoutBtn.addEventListener("click", () => {
-    LSManager.removeFromLocalStorage("currentUser");
-    LSManager.saveToLocalStorage("isLoggedIn", false);
-    window.location.href = "/pages/auth/login/login.html";
+logoutBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        LSManager.removeFromLocalStorage("currentUser");
+        LSManager.saveToLocalStorage("isLoggedIn", false);
+        window.location.href = "/pages/auth/login/login.html";
+    });
 });
 
 initTopbarPanels();
