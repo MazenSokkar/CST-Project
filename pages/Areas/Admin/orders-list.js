@@ -3,7 +3,7 @@ import { getCurrentUser } from "../../../../shared/js/local-storage-management.j
 import { getAllOrders, updateOrder } from "../../../../services/orders.service.js";
 import { getAllUsers } from "../../../../services/users.service.js";
 
-await loadSidebar("Orders");
+await loadSidebar("Order");
 
 // --- State ---
 let allOrders = [];

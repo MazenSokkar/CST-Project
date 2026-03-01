@@ -3,7 +3,7 @@ import * as LSManager from "../../../shared/js/local-storage-management.js";
 import * as OrderService from "../../../services/orders.service.js";
 import * as UserService from "../../../services/users.service.js";
 
-await loadSidebar("Orders");
+await loadSidebar("Order");
 
 // Get order ID from URL
 const params = new URLSearchParams(window.location.search);
