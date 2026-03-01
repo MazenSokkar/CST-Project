@@ -1,5 +1,14 @@
 import { loadSidebar } from "../../../shared/admin-sidebar/sidebar.js";
 import { getAllProducts, deleteProduct, UpdateProduct, addProduct } from "../../../services/product.service.js";
+import { getCurrentUser } from "../../../shared/js/local-storage-management.js";
+
+const currentUser = getCurrentUser();
+
+if (!currentUser) {
+    window.location.replace("../../../index.html");
+} else if (currentUser.Role !== "Admin" && currentUser.Role !== "Seller") {
+    window.location.replace("../../../index.html");
+}
 
 await loadSidebar("Products");
 
@@ -39,18 +48,36 @@ let selectedProductId = null;
 let categoriesFromDB = [];
 
 async function loadProducts() {
-    products = await getAllProducts();
+    const all = await getAllProducts();
+
+    const mapAll = {};
+    all.forEach(p => mapAll[p.Category] = true);
+    categoriesFromDB = Object.keys(mapAll);
+
+    if (currentUser.Role === "Seller") {
+        products = all.filter(p => {
+            return p.SellerName === currentUser.Name || p.SellerName === currentUser.Username;
+        });
+    } else {
+        products = all;
+    }
+
     filteredProducts = [...products];
-
-    const map = {};
-    products.forEach(p => map[p.Category] = true);
-    categoriesFromDB = Object.keys(map);
-
     renderTable();
 }
 
 function renderTable() {
     tableBody.innerHTML = "";
+
+    if (filteredProducts.length === 0) {
+        tableBody.innerHTML = `
+            <tr><td colspan="7" class="text-center">No products to display. You can add one.</td></tr>
+        `;
+        pagination.innerHTML = "";
+        paginationInfo.innerText = "";
+        return;
+    }
+
     const start = (currentPage - 1) * rowsPerPage;
     const paginated = filteredProducts.slice(start, start + rowsPerPage);
 
@@ -143,8 +170,13 @@ document.getElementById("saveEdit").addEventListener("click", async () => {
     const Price = Number(document.getElementById("editPrice").value);
     const Quantity = Number(document.getElementById("editQuantity").value);
     const Category = document.getElementById("editCategory").value.trim();
-    const Color = document.getElementById("editColor").value.trim();
-    const SellerName = document.getElementById("editSellerName").value.trim();
+    const Color = document.getElementById("editColor").value
+    .split(",")         
+    .map(c => c.trim());
+    let SellerName = document.getElementById("editSellerName").value.trim();
+    if (currentUser.Role === "Seller") {
+        SellerName = currentUser.Name;
+    }
     const Discount = Number(document.getElementById("editDiscount").value);
     const Rate = Number(document.getElementById("editRate").value);
     const Description = document.getElementById("editDescription").value.trim();
@@ -160,7 +192,7 @@ document.getElementById("saveEdit").addEventListener("click", async () => {
     if(isNaN(Quantity) || Quantity < 0) { document.getElementById("errorEditQuantity").innerText = "Quantity must be 0 or more"; hasError = true; }
     if(!Category) { document.getElementById("errorEditCategory").innerText = "Category required"; hasError = true; }
     else if(!categoriesFromDB.includes(Category)) { document.getElementById("errorEditCategory").innerText = `Category must be one of: ${categoriesFromDB.join(", ")}`; hasError = true; }
-    if(!Color || !lettersOnly.test(Color)) { document.getElementById("errorEditColor").innerText = "Color is required and letters only"; hasError = true; }
+    if(!Color ) { document.getElementById("errorEditColor").innerText = "Color is required and letters only"; hasError = true; }
     if(SellerName && !lettersOnly.test(SellerName)) { document.getElementById("errorEditSellerName").innerText = "Seller Name must be letters only"; hasError = true; }
     if(isNaN(Discount) || Discount < 0 || Discount > 100) { document.getElementById("errorEditDiscount").innerText = "Discount 0-100"; hasError = true; }
     if(isNaN(Rate) || Rate < 0 || Rate > 5) { document.getElementById("errorEditRate").innerText = "Rate 0-5"; hasError = true; }
@@ -189,8 +221,13 @@ document.getElementById("saveAddProduct").addEventListener("click", async () => 
     const Price = Number(document.getElementById("addPrice").value);
     const Quantity = Number(document.getElementById("addQuantity").value);
     const Category = document.getElementById("addCategory").value.trim();
-    const Color = document.getElementById("addColor").value.trim();
+    const Color = document.getElementById("addColor").value
+    .split(",")          
+    .map(c => c.trim());
     let SellerName = document.getElementById("addSellerName").value.trim() || "Admin";
+    if (currentUser.Role === "Seller") {
+        SellerName = currentUser.Name;
+    }
     const Discount = Number(document.getElementById("addDiscount").value);
     const Rate = Number(document.getElementById("addRate").value);
     const Description = document.getElementById("addDescription").value.trim();
@@ -206,7 +243,7 @@ document.getElementById("saveAddProduct").addEventListener("click", async () => 
     if(isNaN(Quantity) || Quantity < 0) { document.getElementById("errorQuantity").innerText = "Quantity must be 0 or more"; hasError = true; }
     if(!Category) { document.getElementById("errorCategory").innerText = "Category required"; hasError = true; }
     else if(!categoriesFromDB.includes(Category)) { document.getElementById("errorCategory").innerText = `Category must be one of: ${categoriesFromDB.join(", ")}`; hasError = true; }
-    if(!Color || !lettersOnly.test(Color)) { document.getElementById("errorColor").innerText = "Color required and letters only"; hasError = true; }
+    if(!Color) { document.getElementById("errorColor").innerText = "Color required and letters only"; hasError = true; }
     if(SellerName && !lettersOnly.test(SellerName)) { document.getElementById("errorSellerName").innerText = "Seller Name must be letters only"; hasError = true; }
     if(isNaN(Discount) || Discount < 0 || Discount > 100) { document.getElementById("errorDiscount").innerText = "Discount 0-100"; hasError = true; }
     if(isNaN(Rate) || Rate < 0 || Rate > 5) { document.getElementById("errorRate").innerText = "Rate 0-5"; hasError = true; }
