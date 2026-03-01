@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
 
     const apiOrder = {
+        DeliveryPrice: 50,
         Subtotal: subtotalAfterDiscount,
         Vats: vatAfterDiscount,
         Saving: totals.subtotal * discountRate,
