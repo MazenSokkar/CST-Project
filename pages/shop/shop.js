@@ -226,7 +226,6 @@ function renderProducts() {
   setupCardHover();
   pageProducts.forEach((product) => updateCartControl(product.Id, product.Quantity));
   syncWishlistIcons();
-  updateWishlistCount();
 }
 function createProductCard(product) {
   const discountedPrice = product.Discount
@@ -434,7 +433,6 @@ window.handleWishlist = function (productId, btn) {
     btn.style.backgroundColor = "white";
     btn.style.color = "#8A593D";
   }
-  updateWishlistCount();
 };
 
 // Sync wishlist heart icons with localStorage on render
@@ -459,25 +457,4 @@ function syncWishlistIcons() {
       btn.style.color = "";
     }
   });
-}
-
-// Update wishlist count in navbar
-function updateWishlistCount() {
-  let badge = document.getElementById("wishlist-count");
-  // Dynamically inject the badge if it doesn't exist in the navbar
-  if (!badge) {
-    const wishlistLink = document.querySelector('.navbar-icons a[href*="wishlist"]');
-    if (!wishlistLink) return;
-    wishlistLink.style.position = "relative";
-    badge = document.createElement("span");
-    badge.id = "wishlist-count";
-    badge.className = "badge position-absolute top-0 start-100 translate-middle rounded-pill";
-    wishlistLink.appendChild(badge);
-  }
-  if (!isAuthenticated()) {
-    badge.textContent = "0";
-    return;
-  }
-  const wishlist = getWishlistItems();
-  badge.textContent = wishlist.length;
 }
