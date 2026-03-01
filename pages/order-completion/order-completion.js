@@ -9,10 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const user = getCurrentUser();
-  if (user && (user.Role === "Admin" || user.Role === "Seller")) {
-    window.location.href = "../../index.html";
-    return;
-  }
   let orders = await getOrdersByUserId(user.Id);
 
   const orderDetailsContainer = document.querySelector(".order-details");
