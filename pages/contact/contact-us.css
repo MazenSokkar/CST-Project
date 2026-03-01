@@ -1,0 +1,326 @@
+/* Colors*/
+:root {
+    --body-font-family: 'Poppins', sans-serif;
+    --theme-default: #8C593B;
+    --secondary: #222;
+    --theme-default-2: #267D92;
+    --background-color: #f7f7f7;
+}
+
+/* Fonts */
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.main-font {
+    font-family: var(--body-font-family);
+}
+
+/* Navbar */
+.navbar-brand img {
+    height: 55px;
+}
+
+.navbar-nav .nav-link {
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #333;
+}
+
+/* Active Navbar Link */
+.navbar .nav-link.active-link {
+    color: var(--theme-default) !important;
+    position: relative;
+    font-weight: 600;
+}
+
+.navbar .nav-link.active-link::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--theme-default) !important;
+    border-radius: 2px;
+}
+
+/* Active state for navbar icons */
+.navbar-icons a.active-icon {
+    color: var(--theme-default) !important;
+}
+
+.navbar-icons a.active-icon i,
+.navbar-icons a.active-icon .icon-label {
+    color: var(--theme-default) !important;
+    transform: scale(1.05);
+    transition: 0.3s;
+}
+
+/* Dropdown hover for desktop */
+@media (min-width: 992px) {
+    .navbar-nav .dropdown:hover .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navbar-nav .dropdown .dropdown-toggle::after {
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-nav .dropdown:hover .dropdown-toggle::after {
+        transform: rotate(-180deg);
+    }
+}
+
+.navbar-search {
+    position: relative;
+    width: 250px;
+}
+
+.navbar-search input {
+    width: 100%;
+    padding-right: 2.5rem;
+    color: #555;
+}
+
+.navbar-search input::placeholder {
+    color: #888;
+}
+
+.navbar-search button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 0 0.75rem;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Dropdown نتائج البحث */
+.search-results {
+    position: absolute;
+    top: 100%;
+    /* تحت input مباشرة */
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-results div {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-results div:hover {
+    background-color: #f1f1f1;
+}
+
+.navbar-icons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navbar-icons a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #555;
+    text-decoration: none;
+    position: relative;
+}
+
+.navbar-icons a i {
+    font-size: 1.5rem;
+}
+
+.navbar-icons a span.badge {
+    font-size: 0.65rem;
+    background-color: var(--theme-default);
+}
+
+.navbar-icons a span.icon-label {
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 991px) {
+    .navbar-search {
+        width: 100%;
+        margin-bottom: 0.75rem;
+    }
+
+    .navbar-icons {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Footer */
+footer {
+    background-color: #f8f9fa;
+}
+
+.footer-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.footer-menu a {
+    text-decoration: none;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+    transition: 0.3s;
+}
+
+.footer-menu a:hover {
+    color: #000;
+    padding-left: 5px;
+}
+
+.footer-logo img {
+    height: 50px;
+}
+
+.newsletter {
+    background-color: var(--secondary);
+    color: #fff;
+    padding: 1.5rem 0;
+}
+
+
+#header {
+    background-image: url(../../assets/images/banner-shoppage.png);
+    background-size: cover;
+    background-position: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    height: 350px;
+}
+
+#home,
+.breadcrumb-item+.breadcrumb-item::before {
+    color: #8a593d !important;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+
+#shop {
+    font-weight: bold;
+}
+
+.contact-section {
+    background-color: var(--background-color);
+    min-height: calc(100vh - 200px);
+}
+
+.contact-info {
+    padding: 2rem 0;
+}
+
+.info-item {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.icon-wrapper {
+    flex-shrink: 0;
+}
+
+.icon-wrapper i {
+    font-size: 1.5rem;
+    color: #666;
+}
+
+.info-content h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 0.75rem;
+}
+
+.info-content p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.info-content .fw-bold {
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.contact-form {
+    padding: 2.5rem;
+    border-radius: 8px;
+}
+
+.contact-form .form-control {
+    padding: 0.85rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form .form-control:focus {
+    background-color: #fff;
+    border-color: var(--theme-default);
+    box-shadow: 0 0 0 0.2rem rgba(140, 89, 59, 0.15);
+}
+
+.contact-form textarea.form-control {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.btn-send-message {
+    background-color: var(--theme-default);
+    color: #fff;
+    padding: 0.85rem 3rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-send-message:hover {
+    border: 1px solid var(--theme-default);
+}
+
+.btn-send-message:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .contact-form {
+        padding: 1.5rem;
+    }
+    
+    .info-item {
+        margin-bottom: 2rem;
+    }
+    
+    .btn-send-message {
+        width: 100%;
+    }
+}
