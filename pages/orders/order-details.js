@@ -4,11 +4,6 @@ import { getOrdersByUserId } from "../../services/orders.service.js";
 async function init() {
   const currentUser = getCurrentUser();
 
-  if (!currentUser || currentUser.Role !== "Customer") {
-    window.location.replace("../../index.html");
-    return;
-  }
-
   const params = new URLSearchParams(window.location.search);
   const orderId = params.get("id");
 
