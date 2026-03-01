@@ -4,7 +4,13 @@ import * as OrderService from "../../../services/orders.service.js  ";
 import * as ProductService from "../../../services/product.service.js  ";
 import * as UserService from "../../../services/users.service.js  ";
 
-// fetch data
+// Check authentication first
+let currentUser = LSManager.getCurrentUser();
+if (!currentUser) {
+    window.location.href = "/pages/auth/login/login.html";
+}
+
+// fetch data (only after authentication check)
 let allOrders   = await OrderService.getAllOrders();
 let allProducts = await ProductService.getAllProducts();
 let allUsers    = await UserService.getAllUsers();
@@ -41,8 +47,6 @@ logoutBtns.forEach(btn => {
 
 initTopbarPanels();
 
-let currentUser = LSManager.getCurrentUser();
-
 renderDashboard();
 
 initFilterSortListeners();
@@ -59,9 +63,8 @@ function checkAuthorization() {
 
 // return Role after checking authorization
 function getRole() {
-    if (checkAuthorization()) {
+    if (checkAuthorization())
         return currentUser.Role;
-    }
 }
 
 // render dashboard based on role
