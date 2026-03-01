@@ -75,8 +75,8 @@ async function renderWishlist() {
                     <p class="mb-0"><strong>Price:</strong> $${((product.Price) - (product.Price * product.Discount / 100))}</p>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button class="btn btn-danger btn-sm" onclick="removeFromWishlistUI(${index})">Remove 🗑️</button>
-                    <button class="btn btn-danger btn-sm" onclick="addWishlistItemToCart(${index})">Add To Cart</button>
+                    <button class="btn btn-danger btn-sm p-2 border border-0 rounded-3" style="background-color: #8C593B" onclick="removeFromWishlistUI(${index})">Remove 🗑️</button>
+                    <button class="btn btn-danger btn-sm p-2 border border-0 rounded-3" style="background-color: #8C593B" onclick="addWishlistItemToCart(${index})">Add To Cart</button>
                 </div>
             </div>
         `;
