@@ -134,20 +134,18 @@ The main product browsing page with advanced filtering:
 
 - **Search Bar**: Search products by name
 - **Price Filter**: Set minimum and maximum price range using dual sliders
-- **Category Filter**: Filter by product categories (Shoes, Accessories, etc.)
 - **Color Filter**: Filter by available colors
-- **Size Filter**: Filter by sizes (XS, S, M, L, XL, XXL)
+- **Size Filter**: Filter by sizes (S, M, L)
+- **Rating Filter**: Filter by ratings (5, 4, 3, 2, 1)
 - **Sort Options**:
   - Price: Low to High
   - Price: High to Low
-  - Newest First
-  - Best Selling
 
 **How to Use:**
 
 1. Use the sidebar filters (desktop) or filter button (mobile)
 2. Adjust price range by dragging the sliders
-3. Select categories, colors, or sizes
+3. Select Rating, colors, or sizes
 4. Apply filters to see matching products
 5. Click on any product card to view details
 
@@ -285,15 +283,13 @@ View and track all your orders:
   - Total Amount
   - Payment Method
   - Shipping Method
-  - Order Status (Pending, Processing, Shipped, Delivered, Cancelled)
-- Search and filter orders
+  - Order Status (Pending, Processing, Delivered, Cancelled)
 - View detailed information for each order
 
 **Order Status:**
 
 - **Pending**: Order received, awaiting processing
 - **Processing**: Order is being prepared
-- **Shipped**: Order dispatched for delivery
 - **Delivered**: Order successfully delivered
 - **Cancelled**: Order cancelled
 
@@ -448,28 +444,20 @@ View and manage all customer orders:
 **Features:**
 
 - Complete order list with details:
-  - Order ID
+  - Invoice ID
   - Customer Name
-  - Order Date
+  - Payment Method
   - Total Amount
-  - Payment Status
+  - Order Time
   - Order Status
   - Actions
 
-**Filters:**
-
-- Filter by status (All, Pending, Processing, Shipped, Delivered, Cancelled)
-- Filter by date range
-- Filter by payment status
-- Search by order ID or customer name
-
 **Actions:**
 
-1. **View Order Details**: Click on order to see full information
+1. **View Order Details**: Click on order dots then view to see full information
 2. **Update Order Status**:
    - Select order
    - Change status dropdown
-   - Save changes
 3. **Process Order**:
    - Review order details
    - Verify payment
@@ -479,6 +467,7 @@ View and manage all customer orders:
    - Select order
    - Change status to "Cancelled"
    - Refund if necessary
+5. **View Order Invoide**: Click on order dots then invoice to see the order invoice
 
 #### Order Details Page (`/pages/Areas/Admin/order-details.html`)
 
@@ -493,14 +482,7 @@ Detailed view of a specific order:
 - List of ordered items
 - Order total breakdown
 - Order status history
-- Special instructions
 
-**Actions:**
-
-- Update order status
-- Print invoice
-- Contact customer
-- Process refund
 
 #### Invoice Page (`/pages/Areas/Admin/invoice.html`)
 
