@@ -174,28 +174,32 @@ async function getBestSellingProducts(limit = 3) {
     let productMap = new Map();
     allOrders.forEach(order => {
         order.Items.forEach(item => {
-            if (productMap.has(item.ProductId)) {
-                let existing = productMap.get(item.ProductId);
+            if (productMap.has(item.Id)) {
+                let existing = productMap.get(item.Id);
                 existing.Quantity += item.Quantity;
-                existing.Total    += item.Total;
+                existing.Total    += (item.Price * item.Quantity);
             } else {
-                productMap.set(item.ProductId, {
-                    ProductId:   item.ProductId,
-                    ProductName: item.ProductName,
-                    Color:       item.Color,
+                productMap.set(item.Id, {
+                    ProductId:   item.Id,
+                    ProductName: item.Name,
                     Price:       item.Price,
                     Quantity:    item.Quantity,
-                    Total:       item.Total
+                    Total:       item.Price * item.Quantity,
+                    SellerName:  item.SellerName
                 });
             }
         });
     });
     let bestSellingProducts = Array.from(productMap.values());
-    bestSellingProducts.sort((a, b) => b.Quantity - a.Quantity).slice(0, limit);
-    let firstBestSeller =  await ProductService.GetProductById(bestSellingProducts[0].ProductId);
-    let secondBestSeller = await ProductService.GetProductById(bestSellingProducts[1].ProductId);
-    let thirdBestSeller = await ProductService.GetProductById(bestSellingProducts[2].ProductId);
-    return [firstBestSeller, secondBestSeller, thirdBestSeller];
+    bestSellingProducts = bestSellingProducts.sort((a, b) => b.Quantity - a.Quantity).slice(0, limit);
+    let results = [];
+    for (let i = 0; i < Math.min(limit, bestSellingProducts.length); i++) {
+        if (bestSellingProducts[i] && bestSellingProducts[i].ProductId) {
+            let product = await ProductService.GetProductById(bestSellingProducts[i].ProductId);
+            results.push(product);
+        }
+    }
+    return results;
 }
 // best selling for seller
 async function getBestSellingProductsBySellerName(sellerName, limit = 3) {
@@ -203,29 +207,33 @@ async function getBestSellingProductsBySellerName(sellerName, limit = 3) {
     allOrders.forEach(order => {
         order.Items.forEach(item => {
             if (item.SellerName == sellerName) {
-                if (productMap.has(item.ProductId)) {
-                    let existing = productMap.get(item.ProductId);
+                if (productMap.has(item.Id)) {
+                    let existing = productMap.get(item.Id);
                     existing.Quantity += item.Quantity;
-                    existing.Total    += item.Total;
+                    existing.Total    += (item.Price * item.Quantity);
                 } else {
-                    productMap.set(item.ProductId, {
-                        ProductId:   item.ProductId,
-                        ProductName: item.ProductName,
-                        Color:       item.Color,
+                    productMap.set(item.Id, {
+                        ProductId:   item.Id,
+                        ProductName: item.Name,
                         Price:       item.Price,
                         Quantity:    item.Quantity,
-                        Total:       item.Total
+                        Total:       item.Price * item.Quantity,
+                        SellerName:  item.SellerName
                     });
                 }
             }
         });
     });
     let bestSellingProducts = Array.from(productMap.values());
-    bestSellingProducts.sort((a, b) => b.Quantity - a.Quantity).slice(0, limit);
-    let firstBestSeller =  await ProductService.GetProductById(bestSellingProducts[0].ProductId);
-    let secondBestSeller = await ProductService.GetProductById(bestSellingProducts[1].ProductId);
-    let thirdBestSeller = await ProductService.GetProductById(bestSellingProducts[2].ProductId);
-    return [firstBestSeller, secondBestSeller, thirdBestSeller];
+    bestSellingProducts = bestSellingProducts.sort((a, b) => b.Quantity - a.Quantity).slice(0, limit);
+    let results = [];
+    for (let i = 0; i < Math.min(limit, bestSellingProducts.length); i++) {
+        if (bestSellingProducts[i] && bestSellingProducts[i].ProductId) {
+            let product = await ProductService.GetProductById(bestSellingProducts[i].ProductId);
+            results.push(product);
+        }
+    }
+    return results;
 }
 
 // topbar panel toggle (bell + profile)
