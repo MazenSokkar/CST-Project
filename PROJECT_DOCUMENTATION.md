@@ -22,7 +22,7 @@ This is a comprehensive e-commerce platform built with HTML, CSS, JavaScript, an
 - **Frontend**: HTML5, CSS3, JavaScript (ES6 Modules)
 - **UI Framework**: Bootstrap 5.3.8
 - **Icons**: Bootstrap Icons, Font Awesome
-- **Backend**: Firebase Realtime Database
+- **Backend**: Firebase Realtime Database For Hosting The Json File
 - **Storage**: Local Storage for cart, wishlist, and session management
 
 ### Key Features
@@ -73,9 +73,8 @@ Similar to Admin role but may have restricted permissions (shares admin interfac
 **Access Level**: Administrative access (similar to Admin)
 
 - Access admin dashboard
-- Manage products
-- View and process orders
-- Handle customer inquiries
+- Manage only his own products
+- View and process his own orders orders
 
 ---
 
@@ -581,17 +580,10 @@ Handle customer inquiries and support tickets:
 - Message list with:
   - Customer name
   - Subject
-  - Date
-  - Status (New, In Progress, Resolved)
-  - Priority
 
 **Actions:**
 
 1. **View Messages**: Click message to read full inquiry
-2. **Respond**: Send reply to customer
-3. **Update Status**: Mark as resolved or in progress
-4. **Assign Priority**: Set urgency level
-5. **Search**: Find specific inquiries
 
 ---
 
@@ -609,7 +601,6 @@ Handle customer inquiries and support tickets:
 | **Login**           | `/pages/auth/login/login.html`                     | User authentication                             |
 | **Register**        | `/pages/auth/register/register.html`               | New user registration                           |
 | **Forgot Password** | `/pages/auth/forgot-password/forgot-password.html` | Password recovery                               |
-| **Not Found**       | `/pages/not-found/not-found.html`                  | 404 error page                                  |
 
 ### Customer Pages (Requires Authentication)
 
@@ -661,7 +652,7 @@ Handle customer inquiries and support tickets:
 **Acceptance Criteria:**
 
 - Can view all products on the shop page
-- Can filter products by price, category, color, and size
+- Can filter products by price, color, and size
 - Can search products by name
 - Can sort products by price and date
 - Can view product details by clicking on product cards
@@ -836,7 +827,6 @@ Handle customer inquiries and support tickets:
 - Can edit existing product information
 - Can delete products
 - Can update stock quantities
-- Can activate/deactivate products
 
 **Steps:**
 
@@ -1247,24 +1237,5 @@ For technical assistance or questions:
 **Last Updated**: March 2, 2026  
 **Platform Version**: 1.0  
 **Supported Browsers**: Chrome, Firefox, Safari, Edge (latest versions)
-
----
-
-## Future Enhancements
-
-Planned features for future releases:
-
-- Multiple payment gateway integration
-- Product reviews and ratings system
-- Advanced analytics dashboard
-- Email notifications for orders
-- Multi-language support
-- Mobile app version
-- Live chat support
-- Loyalty program
-- Gift cards
-- Advanced search with AI
-
----
 
 _This documentation is maintained by the development team. For updates or corrections, please contact the project administrator._
