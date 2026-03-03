@@ -523,11 +523,7 @@ Manage all user accounts:
 4. **Delete User**:
    - Click delete icon
    - Confirm deletion
-5. **View User Activity**:
-   - Click on user
-   - View order history
-   - See wishlist
-   - Check cart
+
 
 **User Roles:**
 
@@ -736,14 +732,12 @@ Handle customer inquiries and support tickets:
 #### 6. Manage Profile
 
 **As a** customer  
-**I want to** update my profile information  
+**I want to** View my profile information  
 **So that** my account details are current
 
 **Acceptance Criteria:**
 
 - Can view current profile information
-- Can update name, address, and contact details
-- Changes are saved and reflected immediately
 - Can see account creation date
 
 **Steps:**
@@ -751,10 +745,7 @@ Handle customer inquiries and support tickets:
 1. Login to account
 2. Click on profile icon in navbar
 3. Navigate to Profile page
-4. Click "Edit Profile"
-5. Update information
-6. Save changes
-
+4. View information
 ---
 
 #### 7. Contact Support
@@ -815,7 +806,6 @@ Handle customer inquiries and support tickets:
 **Acceptance Criteria:**
 
 - Can view all categories
-- Can add new categories
 - Can edit category names
 - Can delete unused categories
 - Categories appear in shop filters
@@ -823,10 +813,9 @@ Handle customer inquiries and support tickets:
 **Steps:**
 
 1. Navigate to Category List
-2. Click "Add Category"
-3. Enter category name
-4. Save category
-5. Edit or delete as needed
+2. Edit category name
+3. Save category
+4. can delete as needed
 
 ---
 
@@ -962,7 +951,6 @@ Handle customer inquiries and support tickets:
 
 - Can add new products
 - Can edit product details
-- Can update inventory
 - Can view product performance
 - Same functionality as admin for products
 
