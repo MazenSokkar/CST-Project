@@ -2,14 +2,49 @@
 
 ## Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [User Roles](#user-roles)
-3. [Getting Started](#getting-started)
-4. [Customer Guide](#customer-guide)
-5. [Admin & Seller Guide](#admin--seller-guide)
-6. [All Pages Reference](#all-pages-reference)
-7. [User Stories](#user-stories)
-8. [Transaction Workflows](#transaction-workflows)
+1. [Team Members](#team-members)
+2. [Task Tracker](#task-tracker)
+3. [Github Repo](#github-repo)
+4. [Project Overview](#project-overview)
+5. [User Roles](#user-roles)
+6. [Getting Started](#getting-started)
+7. [Customer Guide](#customer-guide)
+8. [Admin & Seller Guide](#admin--seller-guide)
+9. [All Pages Reference](#all-pages-reference)
+10. [User Stories](#user-stories)
+11. [Transaction Workflows](#transaction-workflows)
+
+---
+
+## Team Members
+
+- Mazen Haitham Mohamed Sokar
+- Eman Muhammed Ahmed Genedy
+- Ziad MOhamed Abdelghany Gad
+- Aliaa Abdelkader Mohamed Shahin
+- Esraa Ahmed Ebrahim Shiref
+
+---
+
+## Task Tracker
+
+**Task Tracking Tool**: [Notion]
+
+**Task Tracker Link**: https://www.notion.so/30b0ba5086158009b6a7d2535f68f259?v=30b0ba50861580768383000c7ab60166
+
+---
+
+## Github Repo
+
+### Repository Information
+
+**Repository URL**: https://github.com/MazenSokkar/CST-Project
+
+**Branch Structure**:
+
+- `main` - Production-ready code
+- `dev` - Development branch
+- `feature/*` - Feature branches
 
 ---
 
@@ -412,6 +447,7 @@ Manage product categories:
 - Search categories
 
 **How to Manage Categories:**
+
 1. **Edit Category**:
    - Click edit icon
    - Modify name
@@ -468,7 +504,6 @@ Detailed view of a specific order:
 - Order total breakdown
 - Order status history
 
-
 #### Invoice Page (`/pages/Areas/Admin/invoice.html`)
 
 Generate and view order invoices:
@@ -523,7 +558,6 @@ Manage all user accounts:
 4. **Delete User**:
    - Click delete icon
    - Confirm deletion
-
 
 **User Roles:**
 
@@ -746,6 +780,7 @@ Handle customer inquiries and support tickets:
 2. Click on profile icon in navbar
 3. Navigate to Profile page
 4. View information
+
 ---
 
 #### 7. Contact Support
@@ -1138,59 +1173,3 @@ Handle customer inquiries and support tickets:
 3. **Use high-quality images** for better conversion
 4. **Process orders quickly** for customer satisfaction
 5. **Monitor product performance** and adjust pricing
-
----
-
-## Troubleshooting
-
-### Common Issues:
-
-#### Can't Login
-
-- Verify username and password are correct
-- Username is case-sensitive
-- Password must be at least 6 characters
-- Check if account exists (register if needed)
-
-#### Cart Not Updating
-
-- Clear browser cache and cookies
-- Check local storage is enabled
-- Refresh the page
-- Try different browser
-
-#### Order Not Showing
-
-- Verify you're logged in
-- Check "My Orders" page
-- Wait a moment for database sync
-- Contact support if issue persists
-
-#### Admin Pages Not Accessible
-
-- Verify your role is Admin or Seller
-- Logout and login again
-- Check navigation URL is correct
-- Contact system admin for role update
-
----
-
-## Support & Contact
-
-For technical assistance or questions:
-
-- Visit the **Contact Us** page
-- Use the **Customer Service** system if logged in
-- Email: support@yourstore.com (configure your email)
-- Check FAQ section on About Us page
-
----
-
-## Version Information
-
-**Documentation Version**: 1.0  
-**Last Updated**: March 2, 2026  
-**Platform Version**: 1.0  
-**Supported Browsers**: Chrome, Firefox, Safari, Edge (latest versions)
-
-_This documentation is maintained by the development team. For updates or corrections, please contact the project administrator._
