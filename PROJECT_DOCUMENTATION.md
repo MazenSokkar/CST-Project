@@ -212,7 +212,6 @@ Save products for future purchase:
 
 1. **Add to Cart**: Move item from wishlist to shopping cart
 2. **Remove from Wishlist**: Delete saved item
-3. **View Product**: Click item to see full details
 
 ### Checkout Process
 
@@ -250,6 +249,7 @@ Review your order:
 - Subtotal
 - Shipping cost
 - Total amount
+- Discount (if available)
 
 **5. Place Order**
 
@@ -705,8 +705,8 @@ Handle customer inquiries and support tickets:
 
 **Acceptance Criteria:**
 
-- Can enter shipping information
-- Can select payment method
+- Can enter shipping information (one option)
+- Can select payment method (one option)
 - Can review order before placing
 - Can see order total including shipping
 - Receive order confirmation after placing order
