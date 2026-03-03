@@ -381,7 +381,6 @@ Complete product inventory management:
   - Category
   - Price
   - Stock
-  - Status (Active/Inactive)
 
 **Actions:**
 
