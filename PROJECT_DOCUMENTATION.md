@@ -278,11 +278,10 @@ View and track all your orders:
 
 - Complete order history
 - Order details:
-  - Order ID
+  - Inovice Number
   - Order Date
   - Total Amount
   - Payment Method
-  - Shipping Method
   - Order Status (Pending, Processing, Delivered, Cancelled)
 - View detailed information for each order
 
@@ -314,18 +313,12 @@ Manage your account information:
 - View/edit personal information:
   - Name
   - Username
+  - Email
   - Address
   - Role (display only)
 - Profile image
 - Account creation date
-- Update profile button
-
-**How to Update Profile:**
-
-1. Navigate to Profile page (from navbar)
-2. Click "Edit Profile" button
-3. Modify information
-4. Save changes
+- Forget Password button
 
 ---
 
@@ -377,7 +370,6 @@ Complete product inventory management:
   - Category
   - Price
   - Stock
-  - Status (Active/Inactive)
 
 **Actions:**
 
@@ -407,7 +399,6 @@ Complete product inventory management:
 - Available Sizes
 - Available Colors
 - Stock Quantity
-- Status (Active/Inactive)
 
 #### Category Management (`/pages/Areas/Admin/category-list.html`)
 
@@ -416,22 +407,16 @@ Manage product categories:
 **Features:**
 
 - View all categories
-- Add new category
 - Edit category name
 - Delete category
 - Search categories
 
 **How to Manage Categories:**
-
-1. **Add Category**:
-   - Click "Add Category" button
-   - Enter category name
-   - Save
-2. **Edit Category**:
+1. **Edit Category**:
    - Click edit icon
    - Modify name
    - Save changes
-3. **Delete Category**:
+2. **Delete Category**:
    - Click delete icon
    - Confirm deletion
 
