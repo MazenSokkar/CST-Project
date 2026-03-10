@@ -34,7 +34,7 @@ signupForm.addEventListener("submit", async (e) => {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const address = document.getElementById("address").value.trim();
-    const role = document.getElementById("roleSelect").value;
+    //const role = document.getElementById("roleSelect").value;
     const privacyChecked = document.getElementById("privacyCheck").checked;
 
     formMessage.innerHTML = "";
@@ -48,7 +48,7 @@ signupForm.addEventListener("submit", async (e) => {
     else if (password.length < 6) { setError("password", "At least 6 characters"); isValid = false; }
     else clearError("password");
     if (!address) { setError("address", "Address is required"); isValid = false; } else clearError("address");
-    if (!role) { setError("roleSelect", "Select a role"); isValid = false; } else clearError("roleSelect");
+    //if (!role) { setError("roleSelect", "Select a role"); isValid = false; } else clearError("roleSelect");
     if (!privacyChecked) { setError("privacyCheck", "You must agree to the Privacy Policy!"); isValid = false; } else clearError("privacyCheck");
     if (!isValid) return;
 
@@ -66,7 +66,7 @@ signupForm.addEventListener("submit", async (e) => {
             Name: `${firstName} ${lastName}`,
             Username: email,
             Password: password,
-            Role: role,
+            Role: "Customer",
             Address: address,
             CreatedAt: new Date().toISOString()
         };
