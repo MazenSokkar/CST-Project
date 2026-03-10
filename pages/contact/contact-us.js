@@ -44,7 +44,7 @@ function setActiveNavLink() {
     });
 }
 // Load Navbar
-fetch('/Shared/Navbar/navbar.html')
+fetch('/shared/navbar/navbar.html')
     .then(res => res.text())
     .then(html => {
         document.getElementById('navbar-container').innerHTML = html;
@@ -125,7 +125,7 @@ fetch('/Shared/Navbar/navbar.html')
     .catch(err => console.error("Error loading Navbar:", err));
 
 // Load Footer
-fetch('/Shared/Footer/footer.html')
+fetch('/shared/footer/footer.html')
     .then(res => res.text())
     .then(html => {
         const footerContainer = document.getElementById('footer-container');
