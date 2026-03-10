@@ -371,8 +371,6 @@ Central hub for administrative operations:
 - **Total Orders**: Count of all orders
 - **Total Products**: Number of products in catalog
 - **Total Customers**: Number of registered customers
-- **Pending Orders**: Orders awaiting processing
-- **Low Stock Alert**: Products running low on inventory
 
 **Quick Actions:**
 
@@ -1143,7 +1141,6 @@ Handle customer inquiries and support tickets:
 - `/users.json` - User data
 - `/products.json` - Product catalog
 - `/orders.json` - Order records
-- `/categories.json` - Product categories
 
 ---
 
