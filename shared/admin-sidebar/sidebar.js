@@ -4,8 +4,8 @@ let htmlPath = new URL("./sidebar.html", import.meta.url).href;
 
 function getUserRole() {
     let currentUser = LSManager.getCurrentUser();
-    if (currentUser && currentUser.role) {
-        return currentUser.role;
+    if (currentUser && currentUser.Role) {
+        return currentUser.Role;
     }
 }
 
@@ -18,7 +18,6 @@ export async function loadSidebar(activePage = "") {
         let categoriesMenuItem = document.getElementById("categoryMenuItem");
         let customersMenuItem = document.getElementById("customerMenuItem");
         let customerServiceMenuItem = document.getElementById("customerServiceMenuItem");
-        
         if (categoriesMenuItem) categoriesMenuItem.style.display = "none";
         if (customersMenuItem) customersMenuItem.style.display = "none";
         if (customerServiceMenuItem) customerServiceMenuItem.style.display = "none";
