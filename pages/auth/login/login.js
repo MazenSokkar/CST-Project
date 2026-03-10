@@ -41,12 +41,12 @@ form.addEventListener("submit", async (e) => {
     passwordError.style.display = "none";
 
     // Email validation 
-    if (!isValidEmail(email)) {
+    if (!email) {
         emailError.style.display = "block";
         emailInput.classList.add("is-invalid");
         isValid = false;
     } else {
-        emailInput.classList.remove("is-invalid");
+        emailInput.classList.remove("is-sinvalid");
     }
 
     // Password validation
