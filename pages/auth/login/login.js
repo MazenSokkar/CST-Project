@@ -10,6 +10,13 @@ const loginError = document.getElementById("loginError");
 const passwordError = document.getElementById("passwordError");
 const emailError = document.getElementById("emailError");
 
+
+// Validate email format
+function isValidEmail(email) {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+}
+
 // Show / Hide Password
 togglePassword.addEventListener("click", () => {
     const type = passwordInput.type === "password" ? "text" : "password";
@@ -34,7 +41,7 @@ form.addEventListener("submit", async (e) => {
     passwordError.style.display = "none";
 
     // Email validation 
-    if (!email) {
+    if (!isValidEmail(email)) {
         emailError.style.display = "block";
         emailInput.classList.add("is-invalid");
         isValid = false;

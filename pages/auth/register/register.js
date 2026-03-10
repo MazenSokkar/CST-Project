@@ -26,6 +26,15 @@ function clearError(inputId) {
     errorDiv.textContent = "";
 }
 
+
+// Validate email format
+function isValidEmail(email) {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+}
+
+
+
 signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -43,7 +52,7 @@ signupForm.addEventListener("submit", async (e) => {
 
     if (!firstName) { setError("firstName", "First name is required"); isValid = false; } else clearError("firstName");
     if (!lastName) { setError("lastName", "Last name is required"); isValid = false; } else clearError("lastName");
-    if (!email) { setError("email", "Email is required"); isValid = false; } else clearError("email");
+    if (!isValidEmail(email)) { setError("email", "Please enter a valid email address"); isValid = false; } else clearError("email");
     if (!password) { setError("password", "Password is required"); isValid = false; }
     else if (password.length < 6) { setError("password", "At least 6 characters"); isValid = false; }
     else clearError("password");
