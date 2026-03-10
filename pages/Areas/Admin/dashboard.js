@@ -111,7 +111,7 @@ function getTotalRevenueBySellerName(sellerName){
             totalRevenue += order.TotalPrice;
         }
     });
-    return totalRevenue;
+    return totalRevenue.toFixed(2);
 }
 // get total orders
 function getTotalOrdersCount() {

@@ -1,9 +1,28 @@
+import * as LSManager from "../js/local-storage-management.js";
+
 let htmlPath = new URL("./sidebar.html", import.meta.url).href;
+
+function getUserRole() {
+    let currentUser = LSManager.getCurrentUser();
+    if (currentUser && currentUser.role) {
+        return currentUser.role;
+    }
+}
 
 export async function loadSidebar(activePage = "") {
     let placeholder = document.getElementById("sidebar-placeholder");
     let res = await fetch(htmlPath);
     placeholder.innerHTML = await res.text();
+
+    if (getUserRole() !== "Admin") {
+        let categoriesMenuItem = document.getElementById("categoryMenuItem");
+        let customersMenuItem = document.getElementById("customerMenuItem");
+        let customerServiceMenuItem = document.getElementById("customerServiceMenuItem");
+        
+        if (categoriesMenuItem) categoriesMenuItem.style.display = "none";
+        if (customersMenuItem) customersMenuItem.style.display = "none";
+        if (customerServiceMenuItem) customerServiceMenuItem.style.display = "none";
+    }
     if (activePage) {
         let links = placeholder.querySelectorAll(".sidebar-link");
         links.forEach(link => {

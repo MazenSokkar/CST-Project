@@ -4,10 +4,7 @@ A comprehensive e-commerce web application with customer shopping features and a
 
 ## 🚀 Quick Links
 
-- **[Quick Start Guide](QUICK_START_GUIDE.md)** - Get started in 5 minutes
 - **[Complete Documentation](PROJECT_DOCUMENTATION.md)** - Full platform documentation
-- **[User Stories](USER_STORIES.md)** - Detailed requirements and user stories
-- **[Usage Guide](USAGE_GUIDE.md)** - Examples and best practices
 
 ## 📋 Overview
 
